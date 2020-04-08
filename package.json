@@ -1,0 +1,38 @@
+{
+  "name": "react-webpack-init",
+  "version": "1.0.0",
+  "description": "Initiate webpack configuration for React project",
+  "bin": {
+    "react-init": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "bin",
+    "config",
+    "template"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xroah/react-webpack-init.git"
+  },
+  "keywords": [
+    "react",
+    "webpack",
+    "cli",
+    "node",
+    "init"
+  ],
+  "author": "xroah",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xroah/react-webpack-init/issues"
+  },
+  "homepage": "https://github.com/xroah/react-webpack-init#readme",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "commander": "^5.0.0",
+    "inquirer": "^7.1.0"
+  }
+}
