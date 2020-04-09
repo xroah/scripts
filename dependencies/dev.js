@@ -1,0 +1,23 @@
+module.exports = [
+    "@babel/core",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-runtime",
+    "@babel/preset-env",
+    "@babel/preset-react",
+    "@babel/preset-typescript",
+    "babel-loader",
+    "css-loader",
+    "file-loader",
+    "html-webpack-plugin",
+    "mini-css-extract-plugin",
+    "optimize-css-assets-webpack-plugin",
+    "open",
+    "react-hot-loader",
+    "style-loader",
+    "terser-webpack-plugin",
+    "typescript",
+    "url-loader",
+    "webpack",
+    "webpack-cli",
+    "webpack-dev-server"
+];
