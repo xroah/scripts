@@ -1,13 +1,24 @@
 const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
-const babelConf = require("./.babelrc.json");
+const babelConf = require("./babel.js");
+
 
 module.exports = function getBaseConf(typescript) {
-    let _babelConf = { ...babelConf };
+    const babelConf = {
+        presets: [
+            "@babel/preset-env",
+            "@babel/preset-react"
+        ],
+        plugins: [
+            "react-hot-loader/babel",
+            "@babel/plugin-transform-runtime",
+            "@babel/plugin-proposal-class-properties"
+        ]
+    };
     let test = /\.jsx?$/;
 
     if (typescript) {
-        _babelConf.presets.push("@babel/preset-typescript");
+        babelConf.presets.push("@babel/preset-typescript");
         test = /\.(j|t)sx?$/;
     }
 
