@@ -11,7 +11,8 @@
   "files": [
     "bin",
     "config",
-    "template"
+    "template",
+    "dependencies"
   ],
   "repository": {
     "type": "git",
@@ -32,7 +33,6 @@
   "homepage": "https://github.com/xroah/react-webpack-init#readme",
   "dependencies": {
     "chalk": "^4.0.0",
-    "commander": "^5.0.0",
-    "inquirer": "^7.1.0"
+    "commander": "^5.0.0"
   }
 }
