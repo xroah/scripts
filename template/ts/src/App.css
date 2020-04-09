@@ -1,0 +1,43 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+.app {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #282c34;
+}
+
+.app .logo {
+    min-height: 100px;
+    height: 40vmin;
+    padding: 20px;
+    animation: spin 8s linear infinite;
+}
+
+.app .content {
+    margin: 30px 0;
+    text-align: center;
+    font-size: 20px;
+    line-height: 36px;
+    color: #fff;
+}
+
+.app .learn-link {
+    color: #61dafb;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
