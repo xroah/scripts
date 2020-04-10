@@ -41,4 +41,6 @@ module.exports = env => {
         );
         base.optimization = optimization;
     }
+
+    return base;
 }

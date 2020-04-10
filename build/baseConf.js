@@ -31,7 +31,7 @@ module.exports = function getBaseConf(typescript) {
     return {
         entry: typescript ? "../src/index.tsx" : "../src/index.jsx",
         output: {
-            path: path.resolve(__dirname, "dist"),
+            path: path.resolve(__dirname, "..", "dist"),
             filename: "index.js",
             chunkFilename: "chunk.[name].[id].js"
         },
