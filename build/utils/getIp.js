@@ -20,4 +20,4 @@ function getIp(type) {
     }
 }
 
-exports.getIp = getIp;
+module.exports = getIp;
