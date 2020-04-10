@@ -13,8 +13,9 @@ const PORT = 8000;
 
 function startDevServer(port, host) {
     const host = "0.0.0.0";
+    const devConf = conf("development");
     const options = {
-        contentBase: path.resolve("..", __dirname, "dist"),
+        contentBase: devConf.output.path,
         hot: true,
         compress: true,
         quiet: true,
@@ -24,7 +25,7 @@ function startDevServer(port, host) {
         host,
         port
     };
-    const compiler = webpack(conf("development"));
+    const compiler = webpack(devConf);
     const server = new DevServer(compiler, options);
 
     compiler.hooks.done.tap("done", stats => {
