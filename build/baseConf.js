@@ -1,7 +1,5 @@
 const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
-const babelConf = require("./babel.js");
-
 
 module.exports = function getBaseConf(typescript) {
     const babelConf = {
