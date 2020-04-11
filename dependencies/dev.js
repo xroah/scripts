@@ -14,7 +14,6 @@ module.exports = [
     "optimize-css-assets-webpack-plugin",
     "open",
     "ora",
-    "react-hot-loader",
     "style-loader",
     "terser-webpack-plugin",
     "typescript",
