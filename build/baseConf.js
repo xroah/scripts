@@ -2,36 +2,14 @@ const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = function getBaseConf(typescript) {
-    const babelConf = {
-        presets: [
-            "@babel/preset-env",
-            "@babel/preset-react"
-        ],
-        plugins: [
-            "react-hot-loader/babel",
-            "@babel/plugin-transform-runtime",
-            "@babel/plugin-proposal-class-properties"
-        ]
-    };
-    let test = /\.jsx?$/;
-
-    if (typescript) {
-        babelConf.presets.push("@babel/preset-typescript");
-        test = /\.(j|t)sx?$/;
-    }
-
-    const babelLoaderConf = {
-        test,
-        use: [{
-            loader: "babel-loader",
-            options: _babelConf
-        }]
-    }
+    const context = path.resolve(__dirname, "..");
+    const entry = typescript ? "src/index.tsx" : "src/index.jsx";
 
     return {
-        entry: typescript ? "../src/index.tsx" : "../src/index.jsx",
+        entry: path.join(context, entry),
+        context,
         output: {
-            path: path.resolve(__dirname, "..", "dist"),
+            path: path.join(context, "dist"),
             filename: "index.js",
             chunkFilename: "chunk.[name].[id].js"
         },
@@ -44,18 +22,22 @@ module.exports = function getBaseConf(typescript) {
                         limit: 8192
                     }
                 }]
-            },
-                babelLoaderConf
-            ]
+            }, {
+                test: typescript ? /|.(j|t)sx?$/ : /\.jsx?$/,
+                use: ["babel-loader"]
+            }]
         },
         plugins: [
             new HTMLWebpackPlugin({
-                template: "./public/index.html",
+                template: path.join(context, "public", "index.html"),
                 hash: true,
             })
         ],
         resolve: {
-            extensions: [".js", ".jsx"].concat(typescript ? [".ts", ".tsx"] : [])
+            extensions: [".js", ".jsx"].concat(typescript ? [".ts", ".tsx"] : []),
+            alias: {
+                "react-dom": "@hot-loader/react-dom"
+            }
         }
     };
 }
