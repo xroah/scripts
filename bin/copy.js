@@ -37,17 +37,15 @@ function copyFile(source, target) {
 
     if (
         !fs.existsSync(target) ||
-        fs.statSync(target).isFile()
+        !fs.statSync(target).isDirectory()
     ) {
         return _copyFile(source, target);
     }
+    //copy source file to the target directory
+    const srcObj = path.parse(source);
+    const file = path.resolve(target, srcObj.base);
 
-    if (stat.isDirectory()) {
-        const srcObj = path.parse(source);
-        const file = path.resolve(target, srcObj.base);
-
-        _copyFile(source, file);
-    }
+    _copyFile(source, file);
 }
 
 module.exports = function copy(source, target) {
@@ -71,7 +69,7 @@ module.exports = function copy(source, target) {
                 copy(
                     path.resolve(src),
                     path.resolve(absTgt, base)
-                )
+                );
             }
         );
     }
@@ -83,7 +81,7 @@ module.exports = function copy(source, target) {
 
         (
             stat.isDirectory() ?
-            copyDir : copyFile
-        ) (absSrc, absTgt);
+                copyDir : copyFile
+        )(absSrc, absTgt);
     }
 }
