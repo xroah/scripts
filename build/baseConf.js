@@ -23,7 +23,7 @@ module.exports = function getBaseConf(typescript) {
                     }
                 }]
             }, {
-                test: typescript ? /|.(j|t)sx?$/ : /\.jsx?$/,
+                test: typescript ? /\.(j|t)sx?$/ : /\.jsx?$/,
                 use: ["babel-loader"]
             }]
         },
