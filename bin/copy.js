@@ -1,26 +1,31 @@
 const fs = require("fs");
 const path = require("path");
 
+function isDirectory(dir) {
+    if (!fs.existsSync(dir)) {
+        return false;
+    }
+
+    return fs.statSync(dir).isDirectory();
+}
+
 function copyDir(source, target) {
-    if (
-        !fs.existsSync(target) ||
-        fs.statSync(target).isFile()
-    ) {
+    const files = fs.readdirSync(source);
+
+    if (!isDirectory(target)) {
         fs.mkdirSync(target);
     }
 
-    const files = fs.readdirSync(source);
-
-    while(files.length) {
+    while (files.length) {
         const file = files.pop();
         const filePath = path.resolve(source, file);
         const stat = fs.statSync(filePath);
         const dest = path.resolve(target, file);
 
-        if (stat.isFile()) {
-            fs.copyFileSync(filePath, dest);
-        } else {
+        if (stat.isDirectory()) {
             copyDir(filePath, dest);
+        } else {
+            fs.copyFileSync(filePath, dest);
         }
     }
 }
@@ -30,33 +35,55 @@ function copyFile(source, target) {
         fs.copyFileSync(src, dest);
     };
 
-    if (!fs.existsSync(target)) {
+    if (
+        !fs.existsSync(target) ||
+        fs.statSync(target).isFile()
+    ) {
         return _copyFile(source, target);
     }
-
-    const stat = fs.statSync(target);
 
     if (stat.isDirectory()) {
         const srcObj = path.parse(source);
         const file = path.resolve(target, srcObj.base);
 
         _copyFile(source, file);
-    } else {
-        _copyFile(source, target);
     }
 }
 
 module.exports = function copy(source, target) {
-    const absSrc = path.resolve(source);
     const absTgt = path.resolve(target);
 
-    if (!fs.existsSync(absSrc)) return;
+    if (Array.isArray(source)) {
+        if (fs.existsSync(absTgt)) {
+            if (!fs.statSync(absTgt).isDirectory()) {
+                throw new Error(
+                    "The second param is not a directory"
+                );
+            }
+        } else {
+            fs.mkdirSync(absTgt);
+        }
 
-    const stat = fs.statSync(absSrc);
+        return source.forEach(
+            src => {
+                const base = path.parse(src).base;
 
-    if (stat.isDirectory()) {
-        copyDir(absSrc, absTgt);
-    } else {
-        copyFile(absSrc, absTgt);
+                copy(
+                    path.resolve(src),
+                    path.resolve(absTgt, base)
+                )
+            }
+        );
+    }
+
+    const absSrc = path.resolve(source);
+
+    if (source && fs.existsSync(absSrc)) {
+        const stat = fs.statSync(absSrc);
+
+        (
+            stat.isDirectory() ?
+            copyDir : copyFile
+        ) (absSrc, absTgt);
     }
 }
