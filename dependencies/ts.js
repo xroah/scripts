@@ -1,5 +1,6 @@
 module.exports = [
-    "typescript",
+    "@babel/preset-typescript",
     "@types/react",
-    "@types/react-dom"
+    "@types/react-dom",
+    "typescript"
 ]
