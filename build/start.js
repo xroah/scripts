@@ -7,7 +7,6 @@ const getDate = require("./utils/getDate");
 const getIp = require("./utils/getIp");
 const open = require("open");
 const chalk = require("chalk");
-
 const PORT = 8000;
 
 function startDevServer(port) {
@@ -27,54 +26,59 @@ function startDevServer(port) {
     const compiler = webpack(devConf);
     const server = new DevServer(compiler, options);
     let isFirstRun = true;
-    const clearLine = function clearLine() {
-        process.stdout.clearLine();
-        process.stdout.cursorTo(0);
-    }
 
     compiler.hooks.compile.tap("compile", () => {
-        clearLine();
-        process.stdout.write(
+        clearConsole();
+        console.log(
             chalk.greenBright("Compiling")
         );
     });
 
-    compiler.hooks.done.tap("done", stats => {
+    compiler.hooks.done.tap("done", (stats) => {
         const date = `${getDate()}:      `;
+        const compilation = stats.compilation;
 
-        if (isFirstRun) {
-            clearConsole();
-            //print empty line
-            console.log();
+        clearConsole();
+
+        //error
+        if (stats.hasErrors()) {
+            console.log(chalk.red("Failed to compile."));
+            console.log(compilation.errors.join("\n\n"));
+        } else {
+            if (isFirstRun) {
+                open(`http://localhost:${port}`);
+            }
+            isFirstRun = false;
+
             console.log(
-                chalk.greenBright("Server started successfully!")
+                date +
+                chalk.green("Compiled successfully")
             );
             console.log();
-            console.log(`${chalk.bold("Local")}: localhost:${port}`);
-            console.log(`${chalk.bold("Network")}: ${getIp("IPv4")}:${port}`);
+            console.log("You can view the app in you browser: ");
+            console.log()
+            console.log(
+                `${chalk.bold("Local")}: `,
+                chalk.bold(chalk.cyan(`localhost:${port}`))
+            );
+            console.log(
+                `${chalk.bold("Network")}: `,
+                chalk.bold(chalk.cyan(`${getIp("IPv4")}:${port}`))
+            );
             console.log();
             console.log(
                 "To create production bundle, run:",
                 chalk.green("npm run build")
             );
             console.log();
-
-            process.stdout.write(
-                date +
-                chalk.green("Compiled successfully")
-            );
-        } else {
-            clearLine();
-            process.stdout.write(
-                date +
-                chalk.green("Updated")
-            );
         }
-
-        isFirstRun = false;
     });
 
-    server.listen(port, host, async err => {
+    compiler.hooks.failed.tap("failed", err => {
+        console.log(err)
+    });
+
+    server.listen(port, host, err => {
         if (err) {
             throw err;
         }
@@ -87,8 +91,6 @@ function startDevServer(port) {
         }
         console.log();
         console.log(chalk.greenBright("Starting dev server..."));
-
-        await open(`http://localhost:${port}`);
     });
 }
 
