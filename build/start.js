@@ -92,6 +92,13 @@ function startDevServer(port) {
         console.log();
         console.log(chalk.greenBright("Starting dev server..."));
     });
+
+    ["SIGINT", "SIGTERM"].forEach(sig => {
+        process.on(sig, function () {
+            server.close();
+            process.exit();
+        });
+    });
 }
 
 checkPort(PORT, (err, port) => {
