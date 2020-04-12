@@ -43,6 +43,8 @@ module.exports = env => {
             })
         );
         base.optimization = optimization;
+    } else {
+        base.devtool = "eval-source-map";
     }
 
     return base;
