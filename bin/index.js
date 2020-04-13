@@ -71,7 +71,13 @@ function cleanAppDir() {
 
     dirCleaning = true;
 
-    clean(appDir);
+    //may cause error on windows:
+    //Error: EBUSY: resource busy or locked
+    try {
+        clean(appDir);
+    } catch (error) {
+        
+    }
 }
 
 process.on("SIGINT", () => {

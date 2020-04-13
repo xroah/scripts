@@ -7,12 +7,14 @@ module.exports = function install(appDir, args, msg) {
     }
 
     return new Promise((resolve, reject) => {
+
         const proc = childProc.spawn(
             "npm",
             args,
             {
                 cwd: appDir,
-                stdio: "inherit"
+                stdio: "inherit",
+                shell: true
             }
         );
 
@@ -24,6 +26,6 @@ module.exports = function install(appDir, args, msg) {
             }
 
             resolve();
-        })
+        });
     });
 }
