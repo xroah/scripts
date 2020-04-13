@@ -10,8 +10,8 @@ module.exports = function getBaseConf(typescript) {
         context,
         output: {
             path: path.join(context, "dist"),
-            filename: "index.js",
-            chunkFilename: "chunk.[name].[id].js"
+            filename: "js/index.[hash].js",
+            chunkFilename: "js/chunk.[hash].[id].js"
         },
         module: {
             rules: [{

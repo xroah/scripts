@@ -17,7 +17,11 @@ const optimization = {
             }
         }),
         new OptimizeCSSPlugin()
-    ]
+    ],
+    splitChunks: {
+        chunks: "all",
+        name: false
+    }
 }
 
 module.exports = env => {
@@ -38,8 +42,8 @@ module.exports = env => {
     if (isProd) {
         base.plugins.push(
             new MiniCSSPlugin({
-                filename: "index.css",
-                chunkFilename: "chunk.[name].[id].css"
+                filename: "css/index.[hash].css",
+                chunkFilename: "css/chunk.[hash].[id].css"
             })
         );
         base.optimization = optimization;
