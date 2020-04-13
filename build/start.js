@@ -34,7 +34,7 @@ function startDevServer(port) {
         );
     });
 
-    compiler.hooks.done.tap("done", (stats) => {
+    compiler.hooks.done.tap("done", stats => {
         const date = `${getDate()}:      `;
         const compilation = stats.compilation;
 
@@ -50,6 +50,7 @@ function startDevServer(port) {
             }
             isFirstRun = false;
 
+            console.log();
             console.log(
                 date +
                 chalk.green("Compiled successfully")
@@ -70,7 +71,6 @@ function startDevServer(port) {
                 "To create production bundle, run:",
                 chalk.green("npm run build")
             );
-            console.log();
         }
     });
 
@@ -89,6 +89,7 @@ function startDevServer(port) {
         if (port !== PORT) {
             console.log(chalk.red(`The default port ${PORT} already in use`));
         }
+
         console.log();
         console.log(chalk.greenBright("Starting dev server..."));
     });
