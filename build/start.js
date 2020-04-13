@@ -87,7 +87,7 @@ function startDevServer(port) {
 
         //port already in use
         if (port !== PORT) {
-            console.log(chalk.red(`${port} already in use`));
+            console.log(chalk.red(`The default port ${PORT} already in use`));
         }
         console.log();
         console.log(chalk.greenBright("Starting dev server..."));
