@@ -48,6 +48,7 @@ function startDevServer(port) {
             if (isFirstRun) {
                 open(`http://localhost:${port}`);
             }
+
             isFirstRun = false;
 
             console.log();
@@ -72,10 +73,6 @@ function startDevServer(port) {
                 chalk.green("npm run build")
             );
         }
-    });
-
-    compiler.hooks.failed.tap("failed", err => {
-        console.log(err)
     });
 
     server.listen(port, host, err => {
