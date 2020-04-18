@@ -1,3 +1,6 @@
+//original code from:
+//https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/lib/react-app.d.ts
+
 declare module "*.gif" {
     const src: string;
     export default src;
