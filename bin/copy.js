@@ -1,18 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 
-function isDirectory(dir) {
-    if (!fs.existsSync(dir)) {
-        return false;
-    }
-
-    return fs.statSync(dir).isDirectory();
-}
-
 function copyDir(source, target) {
     const files = fs.readdirSync(source);
 
-    if (!isDirectory(target)) {
+    if (!fs.existsSync(target)) {
         fs.mkdirSync(target);
     }
 

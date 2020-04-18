@@ -5,10 +5,7 @@ module.exports = function checkAppDir(appName) {
     const cwd = process.cwd();
     const appDir = path.join(cwd, appName);
 
-    if (
-        !fs.existsSync(appDir) ||
-        !fs.statSync(appDir).isDirectory()
-    ) {
+    if (!fs.existsSync(appDir)) {
         fs.mkdirSync(appDir);
     } else {
         const files = fs.readdirSync(appDir);
