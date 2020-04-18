@@ -1,6 +1,6 @@
 {
   "name": "react-webpack-init",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Initialize webpack configuration for React project",
   "bin": {
     "react-init": "./bin/index.js"
