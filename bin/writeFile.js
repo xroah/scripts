@@ -1,19 +1,19 @@
 const fs = require("fs");
 const path = require("path");
 let tsconfigJSON = {
-    "compilerOptions": {
-        "target": "ES6",
-        "module": "ESNext",
-        "jsx": "react",
-        "strict": true,
-        "moduleResolution": "node",
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true
+    compilerOptions: {
+        target: "ES6",
+        module: "ESNext",
+        jsx: "react",
+        strict: true,
+        moduleResolution: "node",
+        esModuleInterop: true,
+        forceConsistentCasingInFileNames: true
     },
-    "include": [
+    include: [
         "src/**/*"
     ],
-    "exclude": [
+    exclude: [
         "node_modules"
     ]
 };
