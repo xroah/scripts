@@ -43,7 +43,7 @@ function startDevServer(port) {
         //error
         if (stats.hasErrors()) {
             console.log(chalk.red("Failed to compile."));
-            console.log(compilation.errors.join("\n\n"));
+            console.log(compilation.errors.map(e => e.message).join("\n\n"));
         } else {
             if (isFirstRun) {
                 open(`http://localhost:${port}`);

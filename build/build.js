@@ -38,7 +38,7 @@ function convertSize(size) {
     return `${Math.ceil(sizeKB / Base)}MB`;
 }
 
-function statsAssets(assets)  {
+function statsAssets(assets) {
     const js = [];
     const css = [];
 
@@ -83,15 +83,20 @@ try {
 spinner.start();
 
 webpack(prodConf, (err, stats) => {
+    spinner.stop();
+
     if (err || stats.hasErrors()) {
         if (err) {
             throw err;
         }
 
-        throw new Error();
-    }
+        console.log(chalk.red("Failed to build."));
+        console.log(
+            stats.compilation.errors.map(e => e.message).join("\n\n")
+        );
 
-    spinner.stop();
+        return;
+    }
 
     console.log(chalk.green("Built successfully"));
     console.log();
