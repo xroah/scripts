@@ -45,7 +45,7 @@ module.exports = function copy(source, target) {
         if (fs.existsSync(target)) {
             if (!fs.statSync(target).isDirectory()) {
                 throw new Error(
-                    "The second param is not a directory"
+                    `${target} is not a directory`
                 );
             }
         } else {
