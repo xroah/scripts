@@ -19,4 +19,4 @@ module.exports = [
     "webpack",
     "webpack-cli",
     "webpack-dev-server"
-];
+]

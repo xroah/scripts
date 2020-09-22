@@ -1,9 +1,9 @@
-const path = require("path");
-const HTMLWebpackPlugin = require("html-webpack-plugin");
+const path = require("path")
+const HTMLWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = function getBaseConf(typescript) {
-    const context = path.resolve(__dirname, "..");
-    const entry = typescript ? "src/index.tsx" : "src/index.jsx";
+    const context = path.resolve(__dirname, "..")
+    const entry = typescript ? "src/index.tsx" : "src/index.jsx"
 
     return {
         entry: path.join(context, entry),
@@ -39,5 +39,5 @@ module.exports = function getBaseConf(typescript) {
                 "react-dom": "@hot-loader/react-dom"
             }
         }
-    };
+    }
 }

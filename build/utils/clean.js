@@ -1,21 +1,21 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require("fs")
+const path = require("path")
 
 module.exports = function clean(dir) {
-    let stat = fs.lstatSync(dir);
+    let stat = fs.lstatSync(dir)
 
     if (stat.isDirectory(dir)) {
-        const files = fs.readdirSync(dir);
+        const files = fs.readdirSync(dir)
 
         while (files.length) {
-            const file = files.pop();
-            const filePath = path.resolve(dir, file);
+            const file = files.pop()
+            const filePath = path.resolve(dir, file)
 
-            clean(filePath);
+            clean(filePath)
         }
 
-        fs.rmdirSync(dir);
+        fs.rmdirSync(dir)
     } else {
-        fs.unlinkSync(dir);
+        fs.unlinkSync(dir)
     }
 }

@@ -4,4 +4,4 @@ module.exports = [
     "react",
     "react-dom",
     "react-hot-loader"
-];
+]
