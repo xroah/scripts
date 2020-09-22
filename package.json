@@ -1,6 +1,6 @@
 {
   "name": "react-webpack-init",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Initialize webpack configuration for React project",
   "bin": {
     "react-init": "./bin/index.js"
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/xroah/react-webpack-init#readme",
   "dependencies": {
-    "chalk": "^4.0.0",
-    "commander": "^5.0.0"
+    "chalk": "^4.1.0",
+    "commander": "^6.1.0"
   }
 }

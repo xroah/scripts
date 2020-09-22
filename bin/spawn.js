@@ -1,6 +1,6 @@
 const childProc = require("child_process")
 
-module.exports = function install(appDir, args, msg) {
+module.exports = function spawn(dir, cmd, args, msg) {
     if (msg) {
         console.log()
         console.log(msg)
@@ -9,10 +9,10 @@ module.exports = function install(appDir, args, msg) {
     return new Promise((resolve, reject) => {
 
         const proc = childProc.spawn(
-            "npm",
+            cmd,
             args,
             {
-                cwd: appDir,
+                cwd: dir,
                 stdio: "inherit",
                 shell: true
             }

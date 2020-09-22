@@ -2,34 +2,37 @@
 
 const chalk = require("chalk")
 const { program } = require("commander")
+const spawn = require("./spawn");
 const path = require("path")
 const checkAppDir = require("./checkAppDir")
 const package = require("../package.json")
 const copy = require("./copy")
 const clean = require("../build/utils/clean")
-const install = require("./install")
 const writeFile = require("./writeFile")
 let deps = require("../dependencies/dep")
 let devDeps = require("../dependencies/dev")
 let tsDeps = require("../dependencies/ts")
 let appName
-let useTypescript = false
 let dirCleaning = false//in case clean dir repetitively
 
-program.version(
-    package.version,
-    "-v, --version",
-    "show version"
-)
+program
+    .version(
+        package.version,
+        "-v, --version",
+        "show version"
+    )
     .arguments("[app-name]")
+    .action(name => {
+        appName = name
+    })
     .option(
         "-t, --typescript",
         "use typescript in your project"
     )
-    .action((name, cmdObj) => {
-        appName = name
-        useTypescript = !!cmdObj.typescript
-    })
+    .option(
+        "-g, --git",
+        "init git"
+    )
     .name("react-init")
     .usage("<app-name> [option]")
     .parse(process.argv)
@@ -57,13 +60,13 @@ dirs.push(
     path.join(
         baseDir,
         "template",
-        useTypescript ? "ts" : "js",
+        program.typescript ? "ts" : "js",
         "src"
     )
 )
 
 console.log(
-    chalk.bold("Installing packages, this might take a few minutes.")
+    chalk.bold("This might take a few minutes.")
 )
 
 function cleanAppDir() {
@@ -76,7 +79,7 @@ function cleanAppDir() {
     try {
         clean(appDir)
     } catch (error) {
-        
+
     }
 }
 
@@ -92,45 +95,56 @@ const commonArgs = ["--loglevel", "error"]
 const msg1 = chalk.bold("Installing dependencies:")
 const msg2 = chalk.bold("Installing dev dependencies:")
 
-writeFile(appDir, appName, useTypescript)
+writeFile(appDir, appName, program.typescript)
 
-//install dependencies
-install(
-    appDir,
-    ["i"]
-        .concat(commonArgs)
-        .concat(deps),
-    msg1
-).then(() => {
-    //install dev dependencies
-    return install(
-        appDir,
-        ["i", "-D"]
-            .concat(commonArgs)
-            .concat(devDeps)
-            .concat(useTypescript ? tsDeps : []),
-        msg2
-    )
-}).then(() => {
-    copy(dirs, appDir)
+function install(dir, args, msg) {
+    return spawn(dir, "npm", args, msg)
+}
 
-    console.log(chalk.green(`Initialized ${appName} successfully.`))
-    console.log()
-    console.log("Now you can run:")
-    console.log()
-    console.log(
-        chalk.cyan(
-            chalk.bold(`cd ${appName}`)
+(
+    program.git ?
+        spawn(appDir, "git", ["init"]) : //init git
+        Promise.resolve()
+)
+    .then(() => {
+        //install dependencies
+        return install(
+            appDir,
+            ["i"]
+                .concat(commonArgs)
+                .concat(deps),
+            msg1
         )
-    )
-    console.log(
-        chalk.cyan(
-            chalk.bold("npm start")
+    }).then(() => {
+        //install dev dependencies
+        return install(
+            appDir,
+            ["i", "-D"]
+                .concat(commonArgs)
+                .concat(devDeps)
+                .concat(program.typescript ? tsDeps : []),
+            msg2
         )
-    )
-    console.log()
-    console.log("Enjoy!")
-    console.log()
-}).catch(() => {
-    cleanAppDir()
-})
+    }).then(() => {
+        copy(dirs, appDir)
+
+        console.log(chalk.green(`${appName} initialized successfully.`))
+        console.log()
+        console.log("Now you can run:")
+        console.log()
+        console.log(
+            chalk.cyan(
+                chalk.bold(`cd ${appName}`)
+            )
+        )
+        console.log(
+            chalk.cyan(
+                chalk.bold("npm start")
+            )
+        )
+        console.log()
+        console.log("Enjoy!")
+        console.log()
+    }).catch(() => {
+        cleanAppDir()
+    })

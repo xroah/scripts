@@ -9,24 +9,10 @@ module.exports = function checkAppDir(appName) {
         fs.mkdirSync(appDir)
     } else {
         const files = fs.readdirSync(appDir)
-        let valid = true
-
-        for (let file of files) {
-            const stat = fs.statSync(path.join(appDir, file))
-            //directory name does not start with "." or
-            //package.json already exists
-            if (
-                (!/^\./.test(file) && stat.isDirectory()) ||
-                file === "package.json"
-            ) {
-                valid = false
-                break
-            }
-        }
-
-        if (!valid) {
+        
+        if (!files.length) {
             throw new Error(
-                `The ${appName} directory already exists, please try another.`
+                `The ${appName} is not empty, please try another.`
             )
         }
     }
