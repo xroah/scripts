@@ -1,17 +1,15 @@
 #!/usr/bin/env node
 
 const chalk = require("chalk")
-const { program } = require("commander")
+const {program} = require("commander")
 const spawn = require("./spawn");
 const path = require("path")
 const checkAppDir = require("./checkAppDir")
 const package = require("../package.json")
 const copy = require("./copy")
 const clean = require("../build/utils/clean")
-const writeFile = require("./writeFile")
-let deps = require("../dependencies/dep")
-let devDeps = require("../dependencies/dev")
-let tsDeps = require("../dependencies/ts")
+const initBabelPackageTS = require("./initBabelPackageTS")
+const {deps, devDeps, tsDeps} = require("./deps");
 let appName
 let dirCleaning = false//in case clean dir repetitively
 
@@ -97,7 +95,7 @@ const commonArgs = ["--loglevel", "error"]
 const msg1 = chalk.bold("Installing dependencies:")
 const msg2 = chalk.bold("Installing dev dependencies:")
 
-writeFile(appDir, appName, program.typescript)
+initBabelPackageTS(appDir, appName, program.typescript)
 
 function install(dir, args, msg) {
     return spawn(dir, "npm", args, msg)

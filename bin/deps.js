@@ -1,9 +1,16 @@
-module.exports = [
+const deps = [
+    "@babel/runtime",
+    "@hot-loader/react-dom",
+    "react",
+    "react-dom"
+]
+const devDeps = [
     "@babel/core",
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-transform-runtime",
     "@babel/preset-env",
     "@babel/preset-react",
+    "@pmmmwh/react-refresh-webpack-plugin",
     "babel-loader",
     "chalk",
     "css-loader",
@@ -13,6 +20,7 @@ module.exports = [
     "optimize-css-assets-webpack-plugin",
     "open",
     "ora",
+    "react-refresh",
     "style-loader",
     "terser-webpack-plugin",
     "url-loader",
@@ -20,3 +28,16 @@ module.exports = [
     "webpack-cli",
     "webpack-dev-server"
 ]
+const tsDeps = [
+    "@babel/preset-typescript",
+    "@types/react",
+    "@types/react-dom",
+    "typescript",
+    "type-fest"
+]
+
+module.exports = {
+    deps,
+    devDeps,
+    tsDeps
+}
