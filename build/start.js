@@ -25,6 +25,7 @@ function startDevServer(port) {
     }
     const compiler = webpack(devConf)
     const server = new DevServer(compiler, options)
+    const events = ["SIGINT", "SIGTERM"]
     let isFirstRun = true
 
     compiler.hooks.compile.tap("compile", () => {
@@ -57,7 +58,7 @@ function startDevServer(port) {
                 chalk.green("Compiled successfully")
             )
             console.log()
-            console.log("You can view the app in you browser: ")
+            console.log("You can view the app in your browser: ")
             console.log()
             console.log(
                 `${chalk.bold("Local")}: `,
@@ -91,8 +92,8 @@ function startDevServer(port) {
         console.log(chalk.greenBright("Starting dev server..."))
     })
 
-    ["SIGINT", "SIGTERM"].forEach(sig => {
-        process.on(sig, function () {
+    events.forEach(sig => {
+        process.on(sig, () => {
             server.close()
             process.exit()
         })

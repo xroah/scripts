@@ -66,10 +66,8 @@ module.exports = function copy(source, target) {
 
     if (source && fs.existsSync(source)) {
         const stat = fs.statSync(source)
+        const fn = stat.isDirectory() ? copyDir : copyFile
 
-        (
-            stat.isDirectory() ?
-                copyDir : copyFile
-        )(source, target)
+        fn(source, target)
     }
 }

@@ -56,6 +56,10 @@ const dirs = [
     path.join(baseDir, "template", "public")
 ]
 
+if (appDir === false) {
+    process.exit(1)
+}
+
 dirs.push(
     path.join(
         baseDir,
@@ -65,9 +69,7 @@ dirs.push(
     )
 )
 
-console.log(
-    chalk.bold("This might take a few minutes.")
-)
+console.log(chalk.bold("This might take a few minutes."))
 
 function cleanAppDir() {
     if (dirCleaning) return
@@ -145,6 +147,7 @@ function install(dir, args, msg) {
         console.log()
         console.log("Enjoy!")
         console.log()
-    }).catch(() => {
+    }).catch(err => {
+        console.error(err)
         cleanAppDir()
     })

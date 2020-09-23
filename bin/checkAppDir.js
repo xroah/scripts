@@ -1,3 +1,4 @@
+const chalk = require("chalk")
 const fs = require("fs")
 const path = require("path")
 
@@ -7,14 +8,13 @@ module.exports = function checkAppDir(appName) {
 
     if (!fs.existsSync(appDir)) {
         fs.mkdirSync(appDir)
-    } else {
-        const files = fs.readdirSync(appDir)
-        
-        if (!files.length) {
-            throw new Error(
-                `The ${appName} is not empty, please try another.`
-            )
-        }
+    } else if (fs.readdirSync(appDir).length) {
+        console.log()
+        console.log(
+            chalk.red(`The ${appName} directory is not empty, please try another.`)
+        )
+
+        return false
     }
 
     return appDir

@@ -8,9 +8,7 @@ function startServer(port, host, callback) {
     const server = new net.Server()
 
     server.listen(port, host, () => {
-        server.close(
-            () => callback(null, port)
-        )
+        server.close(() => callback(null, port))
     })
 
     server.on("error", err => {
