@@ -20,6 +20,7 @@ and then:
 
 ## Options
 
-    -v, --version     Show version
-    -t, --typescript  Use typescript in your project
     -h, --help        Display help for command
+    -v, --version     Show version
+    -g, --git         Init git
+    -t, --typescript  Use typescript in your project
