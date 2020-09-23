@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 const chalk = require("chalk")
-const {program} = require("commander")
+const { program } = require("commander")
 const spawn = require("./spawn");
 const path = require("path")
 const checkAppDir = require("./checkAppDir")
 const package = require("../package.json")
 const copy = require("./copy")
-const clean = require("../build/utils/clean")
+const rimraf = require("rimraf")
 const initBabelPackageTS = require("./initBabelPackageTS")
-const {deps, devDeps, tsDeps} = require("./deps");
+const { deps, devDeps, tsDeps } = require("./deps");
 let appName
 let dirCleaning = false//in case clean dir repetitively
 
@@ -48,26 +48,22 @@ if (appName === undefined) {
 }
 
 const appDir = checkAppDir(appName)
-const baseDir = path.resolve(__dirname, "..")
-const dirs = [
-    path.join(baseDir, "build"),
-    path.join(baseDir, "template", "public")
-]
 
 if (appDir === false) {
     process.exit(1)
 }
 
-dirs.push(
-    path.join(
-        baseDir,
-        "template",
-        program.typescript ? "ts" : "js",
-        "src"
-    )
+const gitPromise = (
+    program.git ?
+        spawn(appDir, "git", ["init"]) : //init git
+        Promise.resolve()
 )
 
 console.log(chalk.bold("This might take a few minutes."))
+
+function install(dir, args, msg) {
+    return spawn(dir, "npm", args, msg)
+}
 
 function cleanAppDir() {
     if (dirCleaning) return
@@ -77,7 +73,7 @@ function cleanAppDir() {
     //may cause error on windows:
     //Error: EBUSY: resource busy or locked
     try {
-        clean(appDir)
+        rimraf.sync(appDir)
     } catch (error) {
 
     }
@@ -91,41 +87,46 @@ process.on("SIGINT", () => {
     }
 })
 
-const commonArgs = ["--loglevel", "error"]
-const msg1 = chalk.bold("Installing dependencies:")
-const msg2 = chalk.bold("Installing dev dependencies:")
-
 initBabelPackageTS(appDir, appName, program.typescript)
 
-function install(dir, args, msg) {
-    return spawn(dir, "npm", args, msg)
-}
+const commonArgs = ["--loglevel", "error"]
+const depMsg = chalk.bold("Installing dependencies:")
+const devDepMsg = chalk.bold("Installing dev dependencies:")
 
-(
-    program.git ?
-        spawn(appDir, "git", ["init"]) : //init git
-        Promise.resolve()
-)
-    .then(() => {
+gitPromise
+    .then(() => (
         //install dependencies
-        return install(
+        install(
             appDir,
             ["i"]
                 .concat(commonArgs)
                 .concat(deps),
-            msg1
+            depMsg
         )
-    }).then(() => {
+    ))
+    .then(() => (
         //install dev dependencies
-        return install(
+        install(
             appDir,
             ["i", "-D"]
                 .concat(commonArgs)
                 .concat(devDeps)
                 .concat(program.typescript ? tsDeps : []),
-            msg2
+            devDepMsg
         )
-    }).then(() => {
+    ))
+    .then(() => {
+        const baseDir = path.resolve(__dirname, "../template")
+        const dirs = [
+            path.join(baseDir, "build"),
+            path.join(baseDir, "public"),
+            path.join(
+                baseDir,
+                program.typescript ? "ts" : "js",
+                "src"
+            )
+        ]
+
         copy(dirs, appDir)
 
         console.log(chalk.green(`${appName} initialized successfully.`))

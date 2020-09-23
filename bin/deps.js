@@ -21,6 +21,7 @@ const devDeps = [
     "open",
     "ora",
     "react-refresh",
+    "rimraf",
     "style-loader",
     "terser-webpack-plugin",
     "url-loader",

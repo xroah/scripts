@@ -1,10 +1,10 @@
 const conf = require("./webpack.config")
-const clean = require("./utils/clean")
 const webpack = require("webpack")
 const chalk = require("chalk")
 const ora = require("ora")
 const spinner = ora("Building")
 const path = require("path")
+const rimraf = require("rimraf");
 const prodConf = conf("production")
 const outputPath = prodConf.output.path || path.join(process.cwd(), "dist")
 
@@ -75,7 +75,7 @@ function statsAssets(assets) {
 }
 
 try {
-    clean(outputPath)
+    rimraf.sync(outputPath)
 } catch (error) {
     console.log(error)
 }
