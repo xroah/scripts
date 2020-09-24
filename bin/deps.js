@@ -1,6 +1,5 @@
 const deps = [
     "@babel/runtime",
-    "@hot-loader/react-dom",
     "react",
     "react-dom"
 ]

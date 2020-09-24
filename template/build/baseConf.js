@@ -36,10 +36,7 @@ module.exports = function getBaseConf(typescript) {
             })
         ],
         resolve: {
-            extensions: [".js", ".jsx"].concat(typescript ? [".ts", ".tsx"] : []),
-            alias: {
-                "react-dom": "@hot-loader/react-dom"
-            }
+            extensions: [".js", ".jsx"].concat(typescript ? [".ts", ".tsx"] : [])
         }
     }
 }
