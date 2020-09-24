@@ -7,7 +7,15 @@ module.exports = function spawn(dir, cmd, args, msg) {
     }
 
     return new Promise((resolve, reject) => {
+        const _reject = err => {
+            if (rejected) {
+                return
+            }
 
+            rejected = true
+
+            reject(err)
+        }
         const proc = childProc.spawn(
             cmd,
             args,
@@ -17,15 +25,17 @@ module.exports = function spawn(dir, cmd, args, msg) {
                 shell: true
             }
         )
+        let rejected = false
 
-        proc.on("close", code => {
+        proc.on("close", (code, signal) => {
             if (code !== 0) {
-                reject()
+                _reject(signal)
 
                 return
             }
 
             resolve()
         })
+        proc.on("error", _reject)
     })
 }
