@@ -4,6 +4,7 @@ const HTMLWebpackPlugin = require("html-webpack-plugin")
 module.exports = function getBaseConf(typescript) {
     const context = path.resolve(__dirname, "..")
     const entry = typescript ? "src/index.tsx" : "src/index.jsx"
+    const publicDir = path.join(context, "public")
 
     return {
         entry: path.join(context, entry),
@@ -29,8 +30,9 @@ module.exports = function getBaseConf(typescript) {
         },
         plugins: [
             new HTMLWebpackPlugin({
-                template: path.join(context, "public", "index.html"),
+                template: path.join(publicDir, "index.html"),
                 hash: true,
+                favicon: path.join(publicDir, "favicon.ico")
             })
         ],
         resolve: {
