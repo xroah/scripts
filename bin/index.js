@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 const chalk = require("chalk")
-const { program } = require("commander")
-const spawn = require("./spawn");
+const {program} = require("commander")
 const path = require("path")
+const {spawn, killProcess} = require("./spawn");
 const checkAppDir = require("./checkAppDir")
+const clean = require("./clean")
 const package = require("../package.json")
 const copy = require("./copy")
-const rimraf = require("rimraf")
 const initBabelPackageTS = require("./initBabelPackageTS")
-const { deps, devDeps, tsDeps } = require("./deps");
+const {deps, devDeps, tsDeps} = require("./deps");
 let appName
 let dirCleaning = false//in case clean dir repetitively
 
@@ -69,18 +69,18 @@ function cleanAppDir() {
     if (dirCleaning) return
 
     dirCleaning = true
-
     //may cause error on windows:
     //Error: EBUSY: resource busy or locked
     try {
-        rimraf.sync(appDir)
+        clean(appDir)
     } catch (error) {
-
+        
     }
 }
 
 process.on("SIGINT", () => {
-    process.exit(1)
+    killProcess()
+    cleanAppDir()
 }).on("exit", code => {
     if (code !== 0) {
         cleanAppDir()
@@ -147,6 +147,9 @@ gitPromise
         console.log("Enjoy!")
         console.log()
     }).catch(err => {
-        console.error(err)
+        if (err) {
+            console.error(err, "child EEEEEEEEEEEEEEEEEEEEEEE")
+        }
+
         cleanAppDir()
     })

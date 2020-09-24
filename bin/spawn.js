@@ -1,6 +1,7 @@
 const childProc = require("child_process")
+const processes = new Map()
 
-module.exports = function spawn(dir, cmd, args, msg) {
+exports.spawn = function spawn(dir, cmd, args, msg) {
     if (msg) {
         console.log()
         console.log(msg)
@@ -14,7 +15,8 @@ module.exports = function spawn(dir, cmd, args, msg) {
 
             rejected = true
 
-            reject(err)
+            processes.delete(proc.pid)
+            reject(err === "SIGINT" ? null : err)
         }
         const proc = childProc.spawn(
             cmd,
@@ -27,7 +29,10 @@ module.exports = function spawn(dir, cmd, args, msg) {
         )
         let rejected = false
 
+        processes.set(proc.pid, proc)
         proc.on("close", (code, signal) => {
+            processes.delete(proc.pid)
+
             if (code !== 0) {
                 _reject(signal)
 
@@ -38,4 +43,11 @@ module.exports = function spawn(dir, cmd, args, msg) {
         })
         proc.on("error", _reject)
     })
+}
+
+exports.killProcess = function killProcess() {
+    for (let [_, proc] of processes) {
+        //if process still running, clean dirs may cause error(EBUSY)
+        proc.kill("SIGINT")
+    }
 }
