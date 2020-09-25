@@ -3,7 +3,7 @@
 const chalk = require("chalk")
 const {program} = require("commander")
 const path = require("path")
-const {spawn, killProcess} = require("./spawn");
+const {spawn, killProcess, KILL_SIG} = require("./spawn");
 const checkAppDir = require("./checkAppDir")
 const clean = require("./clean")
 const package = require("../package.json")
@@ -148,7 +148,19 @@ gitPromise
         console.log()
     }).catch(err => {
         if (err) {
-            console.error(err, "child EEEEEEEEEEEEEEEEEEEEEEE")
+            const proc = err.proc
+
+            if (proc) {
+                if (!proc.exitCode !== null || !proc.killed) {
+                    proc.kill(KILL_SIG)
+                }
+
+                if (err.err) {
+                    console.error(err.err)
+                }
+            } else {
+                console.error(err)
+            }
         }
 
         cleanAppDir()
