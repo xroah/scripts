@@ -74,7 +74,7 @@ function cleanAppDir() {
     try {
         clean(appDir)
     } catch (error) {
-        
+
     }
 }
 
@@ -117,17 +117,14 @@ gitPromise
     ))
     .then(() => {
         const baseDir = path.resolve(__dirname, "../template")
-        const dirs = [
-            path.join(baseDir, "build"),
-            path.join(baseDir, "public"),
-            path.join(
-                baseDir,
-                program.typescript ? "ts" : "js",
-                "src"
-            )
-        ]
+        const srcDir = path.join(
+            baseDir,
+            "src",
+            program.typescript ? "ts" : "js"
+        )
 
-        copy(dirs, appDir)
+        copy(path.join(baseDir, "build"), appDir)
+        copy(srcDir, appName)
 
         console.log(chalk.green(`${appName} initialized successfully.`))
         console.log()
