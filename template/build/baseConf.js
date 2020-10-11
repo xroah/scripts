@@ -24,7 +24,7 @@ module.exports = function getBaseConf(typescript) {
                     }
                 }]
             }, {
-                test: typescript ? /\.(j|t)sx?$/ : /\.jsx?$/,
+                test: /\.(j|t)sx?$/,
                 use: ["babel-loader"]
             }]
         },
@@ -36,7 +36,7 @@ module.exports = function getBaseConf(typescript) {
             })
         ],
         resolve: {
-            extensions: [".js", ".jsx"].concat(typescript ? [".ts", ".tsx"] : [])
+            extensions: [".js", ".jsx", ...(typescript ? [".ts", ".tsx"] : [])]
         }
     }
 }

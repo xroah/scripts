@@ -11,7 +11,7 @@ module.exports = function getDate() {
     ])
 
     return "Y-M-D h:m:s".replace(
-        /(Y+)|(M+)|(D+)|(h+)|(m+)|(s+)/g,
+        /(Y)|(M)|(D)|(h)|(m)|(s)/g,
         k => k === "Y" ? map.get(k) : convert(map.get(k))
     )
 }
