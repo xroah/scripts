@@ -41,29 +41,6 @@ function copyFile(source, target) {
 }
 
 module.exports = function copy(source, target) {
-    if (Array.isArray(source)) {
-        if (fs.existsSync(target)) {
-            if (!fs.statSync(target).isDirectory()) {
-                throw new Error(
-                    `${target} is not a directory`
-                )
-            }
-        } else {
-            fs.mkdirSync(target)
-        }
-
-        return source.forEach(
-            src => {
-                const base = path.parse(src).base
-
-                copy(
-                    src,
-                    path.join(target, base)
-                )
-            }
-        )
-    }
-
     if (source && fs.existsSync(source)) {
         const stat = fs.statSync(source)
         const fn = stat.isDirectory() ? copyDir : copyFile
