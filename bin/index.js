@@ -123,8 +123,9 @@ gitPromise
             program.typescript ? "ts" : "js"
         )
 
-        copy(path.join(baseDir, "build"), appDir)
-        copy(srcDir, appName)
+        copy(path.join(baseDir, "build"), path.join(appName, "build"))
+        copy(srcDir, path.join(appName, "src"))
+        copy(path.join(baseDir, "public"), path.join(appName, "public"))
 
         console.log(chalk.green(`${appName} initialized successfully.`))
         console.log()
