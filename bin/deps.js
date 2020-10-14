@@ -24,8 +24,7 @@ const devDeps = [
     "style-loader",
     "terser-webpack-plugin",
     "url-loader",
-    "webpack@4.44.2",
-    "webpack-cli@3.3.12",
+    "webpack",
     "webpack-dev-server"
 ]
 const tsDeps = [
