@@ -1,0 +1,28 @@
+{
+  "name": "reap-scripts",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "reap-scripts": "bin/index.mjs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reap-ui/reap-scripts.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "files": [
+    "bin"
+  ],
+  "bugs": {
+    "url": "https://github.com/reap-ui/reap-scripts/issues"
+  },
+  "homepage": "https://github.com/reap-ui/reap-scripts#readme",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "commander": "^6.2.0"
+  }
+}
