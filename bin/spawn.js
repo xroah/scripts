@@ -4,6 +4,10 @@ const KILL_SIG = "SIGINT"
 
 exports.KILL_SIG = KILL_SIG
 
+function removeProc(proc) {
+    processes.delete(proc.pid)
+}
+
 exports.spawn = function spawn(dir, cmd, args, msg) {
     if (msg) {
         console.log()
@@ -18,7 +22,7 @@ exports.spawn = function spawn(dir, cmd, args, msg) {
 
             rejected = true
 
-            processes.delete(proc.pid)
+            removeProc(proc.pid)
             reject(err)
         }
         const _resolve = () => {
@@ -44,7 +48,7 @@ exports.spawn = function spawn(dir, cmd, args, msg) {
 
         processes.set(proc.pid, proc)
         proc.on("close", code => {
-            processes.delete(proc.pid)
+            removeProc(proc.pid)
 
             if (code !== 0) {
                 _reject({
@@ -83,6 +87,6 @@ exports.killProcess = function killProcess() {
     for (let [_, proc] of processes) {
         //if process still running, clean dirs may cause error(EBUSY)
         proc.kill(KILL_SIG)
-        processes.delete(proc.pid)
+        removeProc(proc.pid)
     }
 }
