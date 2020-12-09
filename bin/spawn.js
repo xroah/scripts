@@ -1,8 +1,8 @@
 const childProc = require("child_process")
 const processes = new Map()
-const KILL_SIG = "SIGINT"
+const SIGINT = "SIGINT"
 
-exports.KILL_SIG = KILL_SIG
+exports.SIGINT = SIGINT
 
 function removeProc(proc) {
     processes.delete(proc.pid)
@@ -86,7 +86,7 @@ exports.spawn = function spawn(dir, cmd, args, msg) {
 exports.killProcess = function killProcess() {
     for (let [_, proc] of processes) {
         //if process still running, clean dirs may cause error(EBUSY)
-        proc.kill(KILL_SIG)
+        proc.kill(SIGINT)
         removeProc(proc.pid)
     }
 }
