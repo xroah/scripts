@@ -1,13 +1,14 @@
 const path = require("path")
 const HTMLWebpackPlugin = require("html-webpack-plugin")
+//config.js: generated via cli
+const config = require("./config");
 
-module.exports = function getBaseConf(typescript) {
+module.exports = function getBaseConf() {
     const context = path.resolve(__dirname, "..")
-    const entry = typescript ? "./src/index.tsx" : "./src/index.jsx"
     const publicDir = path.join(context, "public")
 
     return {
-        entry,
+        entry: config.appIndex,
         context,
         output: {
             path: path.join(context, "dist"),
@@ -36,7 +37,7 @@ module.exports = function getBaseConf(typescript) {
             })
         ],
         resolve: {
-            extensions: [".js", ".jsx", ...(typescript ? [".ts", ".tsx"] : [])]
+            extensions: [".js", ".jsx", ...(config.typescript ? [".ts", ".tsx"] : [])]
         }
     }
 }

@@ -12,8 +12,15 @@ const checkAppDir = require("./checkAppDir")
 const clean = require("./clean")
 const package = require("../package.json")
 const copy = require("./copy")
-const initBabelPackageTS = require("./initBabelPackageTS")
-const {deps, devDeps, tsDeps} = require("./deps");
+const {
+    initCfg,
+    initPaths
+} = require("./initCfg")
+const {
+    deps,
+    devDeps,
+    tsDeps
+} = require("./deps");
 let appName
 let dirCleaning = false//in case clean dir repetitively
 
@@ -91,7 +98,7 @@ process.on(SIGINT, () => {
     }
 })
 
-initBabelPackageTS(appDir, appName, program.typescript)
+initCfg(appDir, appName, program.typescript)
 
 const commonArgs = ["--loglevel", "error"]
 const depMsg = chalk.bold("Installing dependencies:")
@@ -126,10 +133,12 @@ gitPromise
             "src",
             program.typescript ? "ts" : "js"
         )
+        const buildDir = path.join(appName, "build")
 
-        copy(path.join(baseDir, "build"), path.join(appName, "build"))
+        copy(path.join(baseDir, "build"), buildDir)
         copy(srcDir, path.join(appName, "src"))
         copy(path.join(baseDir, "public"), path.join(appName, "public"))
+        initPaths(buildDir, program.typescript)
 
         console.log(chalk.green(`${appName} initialized successfully.`))
         console.log()

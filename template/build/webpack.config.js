@@ -2,9 +2,7 @@
 const MiniCSSPlugin = require("mini-css-extract-plugin")
 const TerserPlugin = require("terser-webpack-plugin")
 const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin")
-const fs = require("fs")
 const webpack = require("webpack")
-const path = require("path")
 const getBaseConf = require("./baseConf")
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
@@ -28,10 +26,7 @@ const optimization = {
 
 module.exports = env => {
     const isProd = env === "production"
-    const useTypescript = fs.existsSync(
-        path.resolve(__dirname, "..", "tsconfig.json")
-    )
-    const base = getBaseConf(useTypescript)
+    const base = getBaseConf()
     base.mode = process.env.NODE_ENV = env
     base.module.rules.push({
         test: /\.css$/,

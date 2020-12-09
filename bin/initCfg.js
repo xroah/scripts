@@ -48,7 +48,7 @@ function babelConf(api) {
     return cfg
 }
 
-module.exports = function initBabelPackageTS(appDir, appName, useTypescript) {
+exports.initCfg = function initCfg(appDir, appName, useTypescript) {
     packageJSON.name = appName
 
     //write package.json
@@ -76,4 +76,15 @@ module.exports = function initBabelPackageTS(appDir, appName, useTypescript) {
             JSON.stringify(babelPresets)
         )
     )
+}
+
+exports.initPaths = function initPaths(dir, useTypescript) {
+    const code = `
+module.exports = {
+    appIndex: "${useTypescript ? "./src/index.tsx" : "./src/index.jsx"}",
+    typescript: ${useTypescript}
+}
+    `;
+
+    fs.writeFileSync(path.join(dir, "config.js"), code);
 }
