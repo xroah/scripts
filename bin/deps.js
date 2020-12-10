@@ -31,8 +31,7 @@ const tsDeps = [
     "@babel/preset-typescript",
     "@types/react",
     "@types/react-dom",
-    "typescript",
-    "type-fest"
+    "typescript"
 ]
 
 module.exports = {
