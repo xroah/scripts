@@ -1,0 +1,26 @@
+{
+  "name": "webpack-build-helper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xroah/webpack-build-helper.git"
+  },
+  "author": "xroah",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xroah/webpack-build-helper/issues"
+  },
+  "homepage": "https://github.com/xroah/webpack-build-helper#readme",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "default-gateway": "^6.0.2",
+    "open": "^7.3.0",
+    "webpack": "^5.10.1",
+    "webpack-dev-server": "^3.11.0"
+  }
+}
