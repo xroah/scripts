@@ -7,8 +7,8 @@
 
 ## API
 
-helper.start(webpackConfig, devServerConfig)<br>
+**helper.start(webpackConfig, devServerConfig)**<br>
 Start a webpack-dev-server.
 
-helper.build(webpackConfig)<br>
+**helper.build(webpackConfig)**<br>
 Build your project.
