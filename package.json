@@ -1,6 +1,6 @@
 {
   "name": "webpack-build-helper",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
   },
   "files": [
     "index.js",
+    "index.d.ts",
     "lib"
   ],
   "homepage": "https://github.com/xroah/webpack-build-helper#readme",
