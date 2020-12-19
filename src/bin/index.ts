@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 
-import {program} from "commander"
+import commander from "commander"
+import createStartCommand from "./start"
 
-program
-    .version("1.0.0", "-v, --version")
-    .parse()
+const main = commander.program
+
+main.version("1.0.0", "-v, --version")
+
+createStartCommand(main)
+
+main.parse()
