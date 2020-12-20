@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
-import commander from "commander"
-import createStartCommand from "./start"
+import {program} from "commander"
+import "./start"
 
-const main = commander.program
+program
+    .version("1.0.0", "-v, --version")
+    .option("-c, --config <value>", "Configuration file")
+    .action(cmd => {
+        console.log("===>", cmd.config)
+    })
 
-main.version("1.0.0", "-v, --version")
-
-createStartCommand(main)
-
-main.parse()
+program.parse()
