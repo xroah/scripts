@@ -3,7 +3,7 @@ const MiniCSSPlugin = require("mini-css-extract-plugin")
 const TerserPlugin = require("terser-webpack-plugin")
 const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin")
 const webpack = require("webpack")
-const getBaseConf = require("./baseConf")
+const getBaseConf = require("./base.config")
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 const optimization = {
