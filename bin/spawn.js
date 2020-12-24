@@ -1,40 +1,27 @@
-const childProc = require("child_process")
-const processes = new Map()
-const SIGINT = "SIGINT"
+const crossSpawn = require("cross-spawn")
 
-exports.SIGINT = SIGINT
-
-function removeProc(proc) {
-    processes.delete(proc.pid)
-}
-
-exports.spawn = function spawn(dir, cmd, args, msg) {
+module.exports = function spawn(dir, cmd, args, msg) {
     if (msg) {
         console.log()
         console.log(msg)
     }
 
     return new Promise((resolve, reject) => {
-        const _reject = err => {
-            if (rejected) {
-                return
+        const rejectPromise = err => {
+            if (!rejected) {
+                rejected = true
+
+                reject(err)
             }
-
-            rejected = true
-
-            removeProc(proc.pid)
-            reject(err)
         }
-        const _resolve = () => {
-            if (resolved) {
-                return
+        const resolvePromise = () => {
+            if (!resolved) {
+                resolved = true
+
+                resolve()
             }
-
-            resolved = true
-
-            resolve()
         }
-        const proc = childProc.spawn(
+        const proc = crossSpawn(
             cmd,
             args,
             {
@@ -43,50 +30,19 @@ exports.spawn = function spawn(dir, cmd, args, msg) {
                 shell: true
             }
         )
+        const handleExit = code => {
+            if (code !== 0) {
+                return rejectPromise()
+            }
+
+            resolvePromise()
+        }
         let rejected = false
         let resolved = false
 
-        processes.set(proc.pid, proc)
-        proc.on("close", code => {
-            removeProc(proc.pid)
-
-            if (code !== 0) {
-                _reject({
-                    err: null,
-                    proc
-                })
-
-                return
-            }
-
-            _resolve()
-        }) 
-        
-        proc.on("exit", code => {
-            if (code !== 0) {
-                _reject({
-                    err: null,
-                    proc
-                })
-
-                return
-            }
-
-            _resolve()
-        })
-        proc.on("error", err => {
-            _reject({
-                err: err,
-                proc
-            })
-        })
+        proc
+            .on("close", handleExit)
+            .on("exit", handleExit)
+            .on("error", rejectPromise)
     })
-}
-
-exports.killProcess = function killProcess() {
-    for (let [_, proc] of processes) {
-        //if process still running, clean dirs may cause error(EBUSY)
-        proc.kill(SIGINT)
-        removeProc(proc.pid)
-    }
 }

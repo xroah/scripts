@@ -3,11 +3,7 @@
 const chalk = require("chalk")
 const {program} = require("commander")
 const path = require("path")
-const {
-    spawn,
-    killProcess,
-    SIGINT
-} = require("./spawn");
+const spawn = require("./spawn");
 const checkAppDir = require("./checkAppDir")
 const clean = require("./clean")
 const package = require("../package.json")
@@ -89,14 +85,14 @@ function cleanAppDir() {
     }
 }
 
-process.on(SIGINT, () => {
-    killProcess()
-    cleanAppDir()
-}).on("exit", code => {
-    if (code !== 0) {
-        cleanAppDir()
-    }
-})
+process
+    .on("SIGTERM", cleanAppDir)
+    .on("SIGINT", cleanAppDir)
+    .on("exit", code => {
+        if (code !== 0) {
+            cleanAppDir()
+        }
+    })
 
 initCfg(appDir, appName, program.typescript)
 
@@ -159,19 +155,7 @@ gitPromise
         console.log()
     }).catch(err => {
         if (err) {
-            const proc = err.proc
-
-            if (proc) {
-                if (!proc.exitCode !== null || !proc.killed) {
-                    proc.kill(SIGINT)
-                }
-
-                if (err.err) {
-                    console.error(err.err)
-                }
-            } else {
-                console.error(err)
-            }
+            console.log(err)
         }
 
         cleanAppDir()
