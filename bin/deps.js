@@ -11,21 +11,16 @@ const devDeps = [
     "@babel/preset-react",
     "@pmmmwh/react-refresh-webpack-plugin",
     "babel-loader",
-    "chalk",
     "css-loader",
     "file-loader",
     "html-webpack-plugin",
     "mini-css-extract-plugin",
     "optimize-css-assets-webpack-plugin",
-    "open",
-    "ora",
     "react-refresh",
-    "rimraf",
     "style-loader",
     "terser-webpack-plugin",
     "url-loader",
-    "webpack",
-    "webpack-dev-server"
+    "webpack-build-helper"
 ]
 const tsDeps = [
     "@babel/preset-typescript",
