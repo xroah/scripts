@@ -153,10 +153,4 @@ gitPromise
         console.log()
         console.log("Enjoy!")
         console.log()
-    }).catch(err => {
-        if (err) {
-            console.log(err)
-        }
-
-        cleanAppDir()
-    })
+    }).catch(cleanAppDir)
