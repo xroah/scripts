@@ -1,6 +1,10 @@
 const fs = require("fs")
 const path = require("path")
 
+function copyFileSync(src, dest) {
+    fs.copyFileSync(src, dest)
+}
+
 function copyDir(source, target) {
     const files = fs.readdirSync(source)
 
@@ -17,27 +21,24 @@ function copyDir(source, target) {
         if (stat.isDirectory()) {
             copyDir(filePath, dest)
         } else {
-            fs.copyFileSync(filePath, dest)
+            copyFileSync(filePath, dest)
         }
     }
 }
 
 function copyFile(source, target) {
-    const _copyFile = (src, dest) => {
-        fs.copyFileSync(src, dest)
-    }
 
     if (
         !fs.existsSync(target) ||
         !fs.statSync(target).isDirectory()
     ) {
-        return _copyFile(source, target)
+        return copyFileSync(source, target)
     }
     //copy source file to the target directory
     const srcObj = path.parse(source)
     const file = path.join(target, srcObj.base)
 
-    _copyFile(source, file)
+    copyFileSync(source, file)
 }
 
 module.exports = function copy(source, target) {

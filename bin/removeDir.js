@@ -4,7 +4,7 @@ const path = require("path")
 const MAX_RETRIES = 10
 const RETRY_INTERVAL = 150
 
-function _clean(dir) {
+function remove(dir) {
     let stat = fs.lstatSync(dir)
 
     if (stat.isDirectory(dir)) {
@@ -14,7 +14,7 @@ function _clean(dir) {
             const file = files.pop()
             const filePath = path.resolve(dir, file)
 
-            _clean(filePath)
+            remove(filePath)
         }
 
         fs.rmdirSync(dir)
@@ -23,9 +23,9 @@ function _clean(dir) {
     }
 }
 
-module.exports = function clean(dir) {
+module.exports = function removeDir(dir) {
     let count = 0
-    const cleanDir = () => {
+    const r = () => {
         if (count >= MAX_RETRIES) {
             return
         }
@@ -33,15 +33,15 @@ module.exports = function clean(dir) {
         count++
 
         try {
-            _clean(dir)
+            remove(dir)
         } catch (error) {
             if (error.code !== "EBUSY") {
                 throw error
             }
 
-            setTimeout(cleanDir, RETRY_INTERVAL)
+            setTimeout(r, RETRY_INTERVAL)
         }
     }
 
-    cleanDir()
+    r()
 }

@@ -5,7 +5,7 @@ const {program} = require("commander")
 const path = require("path")
 const spawn = require("./spawn");
 const checkAppDir = require("./checkAppDir")
-const clean = require("./clean")
+const removeDir = require("./removeDir")
 const package = require("../package.json")
 const copy = require("./copy")
 const {
@@ -72,25 +72,25 @@ function install(dir, args, msg) {
     return spawn(dir, "npm", args, msg)
 }
 
-function cleanAppDir() {
+function removeAppDir() {
     if (dirCleaning) return
 
     dirCleaning = true
     //may cause error on windows:
     //Error: EBUSY: resource busy or locked
     try {
-        clean(appDir)
+        removeDir(appDir)
     } catch (error) {
 
     }
 }
 
 process
-    .on("SIGTERM", cleanAppDir)
-    .on("SIGINT", cleanAppDir)
+    .on("SIGTERM", removeAppDir)
+    .on("SIGINT", removeAppDir)
     .on("exit", code => {
         if (code !== 0) {
-            cleanAppDir()
+            removeAppDir()
         }
     })
 
@@ -153,4 +153,4 @@ gitPromise
         console.log()
         console.log("Enjoy!")
         console.log()
-    }).catch(cleanAppDir)
+    }).catch(removeAppDir)
