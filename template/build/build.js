@@ -1,5 +1,4 @@
-const conf = require("./webpack.config")
-const prodConf = conf("production")
+const prodConf = require("./config/prod.config")
 const builderHelper = require("webpack-build-helper")
 
 builderHelper.build(prodConf)

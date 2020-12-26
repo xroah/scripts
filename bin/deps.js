@@ -15,7 +15,7 @@ const devDeps = [
     "file-loader",
     "html-webpack-plugin",
     "mini-css-extract-plugin",
-    "optimize-css-assets-webpack-plugin",
+    "css-minimizer-webpack-plugin",
     "react-refresh",
     "style-loader",
     "terser-webpack-plugin",

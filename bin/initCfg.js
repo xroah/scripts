@@ -86,5 +86,5 @@ module.exports = {
 }
     `;
 
-    fs.writeFileSync(path.join(dir, "config.js"), code);
+    fs.writeFileSync(path.join(dir, "config/app.config.js"), code);
 }

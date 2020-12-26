@@ -1,10 +1,10 @@
 const path = require("path")
 const HTMLWebpackPlugin = require("html-webpack-plugin")
-//config.js: generated via cli
-const config = require("./config");
+//app.config.js: generated via cli
+const config = require("./app.config.js")
+const context = process.cwd()
 
 module.exports = function getBaseConf() {
-    const context = path.resolve(__dirname, "..")
     const publicDir = path.join(context, "public")
 
     return {
@@ -13,7 +13,7 @@ module.exports = function getBaseConf() {
         output: {
             path: path.join(context, "dist"),
             filename: "js/index.[contenthash].js",
-            chunkFilename: "js/chunk.[chunkhash].[id].js"
+            chunkFilename: "js/chunk.[contenthash].[id].js"
         },
         module: {
             rules: [{
