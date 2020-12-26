@@ -9,7 +9,7 @@ function copyDir(source, target) {
     const files = fs.readdirSync(source)
 
     if (!fs.existsSync(target)) {
-        fs.mkdirSync(target)
+        fs.mkdirSync(target, {recursive: true})
     }
 
     while (files.length) {
@@ -44,8 +44,8 @@ function copyFile(source, target) {
 module.exports = function copy(source, target) {
     if (source && fs.existsSync(source)) {
         const stat = fs.statSync(source)
-        const fn = stat.isDirectory() ? copyDir : copyFile
+        const cp = stat.isDirectory() ? copyDir : copyFile
 
-        fn(source, target)
+        cp(source, target)
     }
 }

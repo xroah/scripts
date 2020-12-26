@@ -10,7 +10,7 @@ const package = require("../package.json")
 const copy = require("./copy")
 const {
     initCfg,
-    initPaths
+    createCfgFile
 } = require("./initCfg")
 const {
     deps,
@@ -73,7 +73,9 @@ function install(dir, args, msg) {
 }
 
 function removeAppDir() {
-    if (dirCleaning) return
+    if (dirCleaning) {
+        return
+    }
 
     dirCleaning = true
     //may cause error on windows:
@@ -134,7 +136,7 @@ gitPromise
         copy(path.join(baseDir, "build"), buildDir)
         copy(srcDir, path.join(appName, "src"))
         copy(path.join(baseDir, "public"), path.join(appName, "public"))
-        initPaths(buildDir, program.typescript)
+        createCfgFile(buildDir, program.typescript)
 
         console.log(chalk.green(`${appName} initialized successfully.`))
         console.log()

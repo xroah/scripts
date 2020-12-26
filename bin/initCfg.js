@@ -78,7 +78,7 @@ exports.initCfg = function initCfg(appDir, appName, useTypescript) {
     )
 }
 
-exports.initPaths = function initPaths(dir, useTypescript) {
+exports.createCfgFile = function createCfgFile(dir, useTypescript) {
     const code = `
 module.exports = {
     appIndex: "${useTypescript ? "./src/index.tsx" : "./src/index.jsx"}",
