@@ -19,7 +19,21 @@ baseConf.optimization = {
     ],
     splitChunks: {
         chunks: "all",
-        name: false
+        minChunks: 1,
+        maxSize: 200000,
+        minSize: 100000,
+        cacheGroups: {
+            vendors: {
+                test: /[\\/]node_modules[\\/]/,
+                priority: -10,
+                reuseExistingChunk: true
+            },
+            default: {
+                minChunks: 2,
+                priority: -20,
+                reuseExistingChunk: true
+            }
+        }
     }
 }
 
