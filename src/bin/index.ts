@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import {program} from "commander"
-import "./start"
-import "./build"
+import "./commands/start"
+import "./commands/build"
 
 program
     .version("1.0.0", "-v, --version")

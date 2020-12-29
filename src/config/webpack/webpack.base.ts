@@ -7,7 +7,7 @@ export default (mode: "production" | "development") => {
     const isDev = mode === "development"
     const config: Configuration = {
         mode,
-        entry: path.resolve(cwd, "src/index.tsx"),
+        entry: "./src/index.tsx",
         context: cwd,
         output: {
             filename: "main.[contenthash].js",
@@ -19,19 +19,23 @@ export default (mode: "production" | "development") => {
         },
         module: {
             rules: [{
-                test: /\.j|tsx?$/,
+                test: /\.[jt]sx?$/,
+                exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
                     options: {
-                        exclude: /node_modules/,
                         babelrc: false,
+                        configFile: false,
                         presets: [
                             "@babel/preset-env",
                             "@babel/preset-react",
                             "@babel/preset-typescript",
                             isDev && "react-refresh/babel"
                         ].filter(Boolean),
-                        plugins: ["@babel/plugin-transform-runtime"]
+                        plugins: [
+                            "@babel/plugin-transform-runtime",
+                            "@babel/plugin-proposal-class-properties"
+                        ]
                     }
                 }
             }, {
