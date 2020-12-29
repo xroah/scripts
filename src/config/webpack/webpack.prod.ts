@@ -1,42 +1,46 @@
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import TerserWebpackPlugin from "terser-webpack-plugin"
 import CSSMiniMinimizerPlugin from "css-minimizer-webpack-plugin"
-import {Configuration} from "webpack"
+import getBaseConf from "./webpack.base"
+import {merge} from "webpack-merge"
 
-const config: Configuration = {
-    optimization: {
-        minimizer: [
-            new TerserWebpackPlugin({
-                terserOptions: {
-                    output: {
-                        comments: false
+export default merge(
+    getBaseConf("production"),
+    {
+        optimization: {
+            minimizer: [
+                new TerserWebpackPlugin({
+                    terserOptions: {
+                        output: {
+                            comments: false
+                        }
+                    },
+                    extractComments: false,
+                }),
+                new CSSMiniMinimizerPlugin()
+            ],
+            splitChunks: {
+                minSize: 100 * 1024,
+                maxSize: 200 * 1024,
+                cacheGroups: {
+                    vendors: {
+                        chunks: "all",
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: -10,
+                        reuseExistingChunk: true
+                    },
+                    default: {
+                        minChunks: 2,
+                        priority: -20,
+                        reuseExistingChunk: true
                     }
-                },
-                extractComments: false,
-            }),
-            new CSSMiniMinimizerPlugin()
-        ],
-        splitChunks: {
-            minSize: 150 * 1024,
-            maxSize: 200 * 1024,
-            cacheGroups: {
-                vendors: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: "vendors",
-                    chunks: "all"
-                },
-                commons: {
-                    minChunks: 2,
-                    name: "commons"
                 }
             }
-        }
-    },
-    plugins: [
-        new MiniCssExtractPlugin({
-            filename: "css/style.[contenthash].css"
-        }),
-    ]
-}
-
-export default config
+        },
+        plugins: [
+            new MiniCssExtractPlugin({
+                filename: "css/style.[contenthash].css"
+            }),
+        ]
+    }
+)

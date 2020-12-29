@@ -54,9 +54,9 @@ export default (mode: "production" | "development") => {
                     "css-loader"
                 ]
             }]
-        },
-        plugins: []
+        }
     }
+    process.env.NODE_ENV = mode
 
     return config
 }
