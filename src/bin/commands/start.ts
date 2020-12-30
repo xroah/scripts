@@ -1,14 +1,10 @@
 import {program} from "commander"
-import {merge} from "webpack-merge"
 import devConf from "../../config/webpack/webpack.dev"
-import path from 'path'
 import {start as startDevServer} from "webpack-build-helper"
-import HTMLWebpackPlugin from "html-webpack-plugin"
 import devServerConf from "../../config/webpack/server.config"
-import fs from "fs"
+import merge from "../utils/merge"
 
 const start = program.command("start")
-const cwd = process.cwd()
 
 function action(cmd: any) {
     const {
@@ -20,11 +16,6 @@ function action(cmd: any) {
     let serverConf = {
         ...devServerConf
     }
-    let mergedConfig = {...devConf}
-
-    if (!ts) {
-        mergedConfig.entry = "./src/index.jsx"
-    }
 
     if (+port) {
         serverConf.port = port
@@ -32,27 +23,18 @@ function action(cmd: any) {
 
     serverConf.open = !!open
 
-    if (config) {
-        const customConfig = require(path.join(cwd, config))
+    const {
+        merged,
+        devServer
+    } = merge(devConf, config, ts)
 
-        mergedConfig = merge(devConf, customConfig.webpack)
-
-        mergedConfig.plugins!.push(
-            new HTMLWebpackPlugin(new customConfig.webpack?.htmlWebpackPlugin)
-        )
-
-        serverConf = {
+    startDevServer(
+        merged,
+        {
             ...serverConf,
-            ...customConfig.webpack?.devServer
+            ...devServer
         }
-    } else {
-        mergedConfig.plugins?.push(new HTMLWebpackPlugin({
-            template: "public/index.html"
-        }))
-    }
-    fs.writeFileSync("cfg.json", JSON.stringify(mergedConfig, null, 4))
-    fs.writeFileSync("scfg.json", JSON.stringify(serverConf, null, 4))
-    startDevServer(mergedConfig, serverConf)
+    )
 }
 
 start
