@@ -4,8 +4,10 @@ import {program} from "commander"
 import "./commands/start"
 import "./commands/build"
 
+const packageJSON = require("../package.json")
+
 program
-    .version("1.0.0", "-v, --version")
+    .version(packageJSON.version, "-v, --version")
     .action(cmd => {
         console.log("===>", cmd.config)
     })
