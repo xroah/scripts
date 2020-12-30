@@ -22,19 +22,19 @@ export default (mode: "production" | "development") => {
                 test: /\.[jt]sx?$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: "babel-loader",
+                    loader: require.resolve("babel-loader"),
                     options: {
                         babelrc: false,
                         configFile: false,
                         presets: [
-                            "@babel/preset-env",
-                            "@babel/preset-react",
-                            "@babel/preset-typescript"
+                            require.resolve("@babel/preset-env"),
+                            require.resolve("@babel/preset-react"),
+                            require.resolve("@babel/preset-typescript")
                         ],
                         plugins: [
-                            "@babel/plugin-transform-runtime",
-                            "@babel/plugin-proposal-class-properties",
-                            isDev && "react-refresh/babel"
+                            require.resolve("@babel/plugin-transform-runtime"),
+                            require.resolve("@babel/plugin-proposal-class-properties"),
+                            isDev && require.resolve("react-refresh/babel")
                         ].filter(Boolean)
                     }
                 }
@@ -42,7 +42,7 @@ export default (mode: "production" | "development") => {
                 test: /\.(png|jpe?g|gif|svg|bmp|webp)$/i,
                 use: [
                     {
-                        loader: "url-loader",
+                        loader: require.resolve("url-loader"),
                         options: {
                             limit: 8192,
                         },
@@ -50,12 +50,12 @@ export default (mode: "production" | "development") => {
                 ],
             }, {
                 test: /.scss$/,
-                use: "sass-loader"
+                use: require.resolve("sass-loader")
             }, {
                 test: /.css$/,
                 use: [
-                    isDev ? "style-loader" : MiniCssExtractPlugin.loader,
-                    "css-loader"
+                    isDev ? require.resolve("style-loader") : MiniCssExtractPlugin.loader,
+                    require.resolve("css-loader")
                 ]
             }]
         }
