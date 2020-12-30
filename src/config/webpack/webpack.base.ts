@@ -1,4 +1,4 @@
-import {Configuration} from "webpack"
+import { Configuration } from "webpack"
 import path from "path"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 
@@ -29,13 +29,13 @@ export default (mode: "production" | "development") => {
                         presets: [
                             "@babel/preset-env",
                             "@babel/preset-react",
-                            "@babel/preset-typescript",
-                            isDev && "react-refresh/babel"
-                        ].filter(Boolean),
+                            "@babel/preset-typescript"
+                        ],
                         plugins: [
                             "@babel/plugin-transform-runtime",
-                            "@babel/plugin-proposal-class-properties"
-                        ]
+                            "@babel/plugin-proposal-class-properties",
+                            isDev && "react-refresh/babel"
+                        ].filter(Boolean)
                     }
                 }
             }, {

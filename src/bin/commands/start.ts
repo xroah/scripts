@@ -5,6 +5,7 @@ import path from 'path'
 import {start as startDevServer} from "webpack-build-helper"
 import HTMLWebpackPlugin from "html-webpack-plugin"
 import devServerConf from "../../config/webpack/server.config"
+import fs from "fs"
 
 const start = program.command("start")
 const cwd = process.cwd()
@@ -21,7 +22,7 @@ function action(cmd: any) {
     }
     let mergedConfig = {...devConf}
 
-    if (!cmd.ts) {
+    if (!ts) {
         mergedConfig.entry = "./src/index.jsx"
     }
 
@@ -44,8 +45,13 @@ function action(cmd: any) {
             ...serverConf,
             ...customConfig.webpack?.devServer
         }
+    } else {
+        mergedConfig.plugins?.push(new HTMLWebpackPlugin({
+            template: "public/index.html"
+        }))
     }
-
+    fs.writeFileSync("cfg.json", JSON.stringify(mergedConfig, null, 4))
+    fs.writeFileSync("scfg.json", JSON.stringify(serverConf, null, 4))
     startDevServer(mergedConfig, serverConf)
 }
 
