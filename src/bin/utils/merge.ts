@@ -4,31 +4,43 @@ import path from "path"
 import {Configuration} from "webpack"
 import HTMLWebpackPlugin from "html-webpack-plugin"
 
-export default function mergeConfig(baseConf: Configuration, configFile: string, ts: boolean) {
+export default (
+    baseConf: Configuration,
+    configFile: string,
+    ts: boolean,
+    entry: string,
+    index: string
+) => {
+    let htmlOptions = {...defaultHTMLPluginOptions}
     let devServer = {}
     let merged = {...baseConf}
+    const cwd = process.cwd()
 
     if (!ts) {
-        merged.entry = "./src/index.jsx"
+        merged.entry = path.join(cwd, "./src/index.jsx")
     }
 
     if (configFile) {
         const customConfig = require(path.join(process.cwd(), configFile))
         const htmlPluginOptions = customConfig.htmlWebpackPlugin
         merged = merge(baseConf, customConfig.webpack)
-
-        if (htmlPluginOptions !== false) {
-            merged.plugins!.push(
-                new HTMLWebpackPlugin(htmlPluginOptions || defaultHTMLPluginOptions)
-            )
+        htmlOptions = {
+            ...htmlOptions,
+            ...htmlPluginOptions
         }
 
         devServer = customConfig.devServer || {}
-    } else {
-        merged.plugins!.push(
-            new HTMLWebpackPlugin(defaultHTMLPluginOptions)
-        )
     }
+
+    if (entry) {
+        merged.entry = path.join(cwd, entry)
+    }
+
+    if (index) {
+        htmlOptions.template = path.join(cwd, index)
+    }
+
+    merged.plugins!.push(new HTMLWebpackPlugin(htmlOptions))
 
     return {
         merged,

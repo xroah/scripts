@@ -11,12 +11,14 @@ function action(cmd: any) {
         config,
         port,
         open,
-        ts
+        ts,
+        entry,
+        index
     } = cmd
     const {
         merged,
         devServer
-    } = merge(devConf, config, ts)
+    } = merge(devConf, config, ts, entry, index)
     const serverConf = {
         ...devServerConf,
         ...devServer
@@ -39,4 +41,6 @@ start
     .option("-c, --config <value>", "Configuration file")
     .option("--no-ts", "Use javascript")
     .option("-o, --open", "Open browser")
+    .option("-e, --entry <value>", "Entry file")
+    .option("--index <value>", "index.html file")
     .action(action)

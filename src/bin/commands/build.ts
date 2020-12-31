@@ -9,18 +9,9 @@ import ora from "ora"
 import chalk from "chalk"
 import rimraf from "rimraf"
 
-interface RollupBuildOptions {
-    entry?: string
-    libName?: string
-    outDir?: string
-    ts?: boolean
-    config?: string,
-    include?: string
-}
-
 const build = program.command("build")
 
-async function rollupBuild(buildOptions: RollupBuildOptions) {
+async function rollupBuild(buildOptions: any) {
     const {
         ts,
         config
@@ -43,7 +34,7 @@ async function rollupBuild(buildOptions: RollupBuildOptions) {
 
     for (let c in buildOptions) {
         if (cmdSet.has(c)) {
-            cmdConfig[c] = (buildOptions as any)[c]
+            cmdConfig[c] = buildOptions[c]
         }
     }
 
@@ -61,7 +52,7 @@ async function rollupBuild(buildOptions: RollupBuildOptions) {
 
     try {
         rimraf.sync(dist)
-    } catch (error) {}
+    } catch (error) { }
 
     try {
         const bundle = await rollup(rollupOptions)
@@ -85,19 +76,16 @@ function action(cmd: any) {
         rollup,
         config,
         ts,
-        entry
+        entry,
+        index
     } = cmd
 
     if (!rollup) {
-        const {merged} = merge(prodConf, config, ts)
-
-        if (entry) {
-            merged.output!.path = path.join(process.cwd(), entry)
-        }
+        const {merged} = merge(prodConf, config, ts, entry, index)
 
         return webpackBuild(merged)
     }
-    
+
     rollupBuild(cmd)
 }
 
@@ -109,4 +97,5 @@ build
     .option("-e, --entry <value>", "Entry file")
     .option("-n, --libName <value>", "Library name(rollup only)")
     .option("-i, --include <value>", "Typescript includes(rollup only)")
+    .option("--index <value>", "index.html file")
     .action(action)
