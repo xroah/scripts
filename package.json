@@ -15,7 +15,9 @@
   "author": "",
   "license": "MIT",
   "files": [
-    "bin"
+    "bin",
+    "config",
+    "template"
   ],
   "bugs": {
     "url": "https://github.com/reap-ui/reap-scripts/issues"

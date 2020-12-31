@@ -3,6 +3,7 @@
 import {program} from "commander"
 import "./commands/start"
 import "./commands/build"
+import "./commands/tsc"
 
 const packageJSON = require("../package.json")
 
