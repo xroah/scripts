@@ -13,28 +13,25 @@ function action(cmd: any) {
         open,
         ts
     } = cmd
-    let serverConf = {
-        ...devServerConf
-    }
-
-    if (+port) {
-        serverConf.port = port
-    }
-
-    serverConf.open = !!open
-
     const {
         merged,
         devServer
     } = merge(devConf, config, ts)
+    const serverConf = {
+        ...devServerConf,
+        ...devServer
+    }
+    const _port = +port
+    
+    if (_port) {
+        serverConf.port = _port
+    }
 
-    startDevServer(
-        merged,
-        {
-            ...serverConf,
-            ...devServer
-        }
-    )
+    if (open !== undefined) {
+        serverConf.open = open
+    }
+
+    startDevServer(merged, serverConf)
 }
 
 start
