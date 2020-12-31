@@ -1,10 +1,13 @@
-import { Configuration } from "webpack"
+import {Configuration} from "webpack"
 import path from "path"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
+import getBabelConf from "../babel/babel.config"
 
 export default (mode: "production" | "development") => {
+    process.env.NODE_ENV = mode
     const cwd = process.cwd()
     const isDev = mode === "development"
+    const babelOptions = getBabelConf(isDev)
     const config: Configuration = {
         mode,
         entry: "./src/index.tsx",
@@ -23,20 +26,7 @@ export default (mode: "production" | "development") => {
                 exclude: /node_modules/,
                 use: {
                     loader: require.resolve("babel-loader"),
-                    options: {
-                        babelrc: false,
-                        configFile: false,
-                        presets: [
-                            require.resolve("@babel/preset-env"),
-                            require.resolve("@babel/preset-react"),
-                            require.resolve("@babel/preset-typescript")
-                        ],
-                        plugins: [
-                            require.resolve("@babel/plugin-transform-runtime"),
-                            require.resolve("@babel/plugin-proposal-class-properties"),
-                            isDev && require.resolve("react-refresh/babel")
-                        ].filter(Boolean)
-                    }
+                    options: babelOptions
                 }
             }, {
                 test: /\.(png|jpe?g|gif|svg|bmp|webp)$/i,
@@ -60,7 +50,6 @@ export default (mode: "production" | "development") => {
             }]
         }
     }
-    process.env.NODE_ENV = mode
 
     return config
 }
