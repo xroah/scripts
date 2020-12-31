@@ -96,6 +96,6 @@ build
     .option("-o, --outDir <value>", "Output dir")
     .option("-e, --entry <value>", "Entry file")
     .option("-n, --libName <value>", "Library name(rollup only)")
-    .option("-i, --include <value>", "Typescript includes(rollup only)")
+    .option("--include <value>", "Typescript includes(rollup only)")
     .option("--index <value>", "index.html file")
     .action(action)
