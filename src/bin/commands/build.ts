@@ -61,9 +61,7 @@ async function rollupBuild(buildOptions: RollupBuildOptions) {
 
     try {
         rimraf.sync(dist)
-    } catch (error) {
-
-    }
+    } catch (error) {}
 
     try {
         const bundle = await rollup(rollupOptions)
@@ -77,8 +75,8 @@ async function rollupBuild(buildOptions: RollupBuildOptions) {
         console.log(chalk.green("Built successfully"))
         console.log()
     } catch (error) {
-        console.log(error)
         loading.stop()
+        console.log(error)
     }
 }
 
@@ -99,7 +97,7 @@ function action(cmd: any) {
 
         return webpackBuild(merged)
     }
-console.log("000000000000", cmd.include)
+    
     rollupBuild(cmd)
 }
 
