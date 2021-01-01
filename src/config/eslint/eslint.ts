@@ -31,7 +31,7 @@ export default {
         //enforce the consistent use of either backticks, double, or single quotes
         "quotes": [2, "double"],
         //disallow the use of `console`
-        "no-console": 2,
+        "no-console": 1,
         //enforce consistent brace style for all control statements
         "curly": 2,
         //require the use of `===` and `!==`
@@ -56,8 +56,6 @@ export default {
         "new-cap": 2,
         //require `let` or `const` instead of `var`
         "no-var": 2,
-        //enforce variables to be declared either together or separately in functions, default always
-        "one-var": 2,
         //disallow unnecessary nested blocks
         "no-lone-blocks": 2,
         //enforce consistent line breaks inside braces
@@ -72,7 +70,7 @@ export default {
             }
         }],
         //enforce consistent spacing inside braces, default never
-        "object-curly-spacing": 2, 
+        "object-curly-spacing": 2,
         //enforce consistent line breaks inside braces
         "object-property-newline": 2,
         //disallow or enforce spaces inside of blocks after opening block and before closing block, default always

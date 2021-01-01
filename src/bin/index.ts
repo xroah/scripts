@@ -4,6 +4,7 @@ import {program} from "commander"
 import "./commands/start"
 import "./commands/build"
 import "./commands/tsc"
+import "./commands/lint"
 
 const packageJSON = require("../package.json")
 
