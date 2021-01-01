@@ -6,7 +6,7 @@ import path from "path"
 const tsc = program.command("tsc")
 
 function initTs() {
-    const filePath = path.join(__dirname, "../../template/tsconfig.json")
+    const filePath = path.join(__dirname, "../../tsconfig.json")
     const destFile = path.join(process.cwd(), "tsconfig.json")
 
     if (fs.existsSync(destFile)) {
