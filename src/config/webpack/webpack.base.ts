@@ -34,10 +34,10 @@ export default (mode: "production" | "development") => {
                     {
                         loader: require.resolve("url-loader"),
                         options: {
-                            limit: 8192,
-                        },
-                    },
-                ],
+                            limit: 8192
+                        }
+                    }
+                ]
             }, {
                 test: /.scss$/,
                 use: require.resolve("sass-loader")

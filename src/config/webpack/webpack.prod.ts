@@ -15,7 +15,7 @@ export default merge(
                             comments: false
                         }
                     },
-                    extractComments: false,
+                    extractComments: false
                 }),
                 new CSSMiniMinimizerPlugin()
             ],
@@ -40,7 +40,7 @@ export default merge(
         plugins: [
             new MiniCssExtractPlugin({
                 filename: "css/style.[contenthash].css"
-            }),
+            })
         ]
     }
 )

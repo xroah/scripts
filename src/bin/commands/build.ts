@@ -52,7 +52,9 @@ async function rollupBuild(buildOptions: any) {
 
     try {
         rimraf.sync(dist)
-    } catch (error) { }
+    } catch (error) {
+        //empty
+    }
 
     try {
         const bundle = await rollup(rollupOptions)
@@ -73,14 +75,14 @@ async function rollupBuild(buildOptions: any) {
 
 function action(cmd: any) {
     const {
-        rollup,
+        rollup: useRollup,
         config,
         ts,
         entry,
         index
     } = cmd
 
-    if (!rollup) {
+    if (!useRollup) {
         const {merged} = merge(prodConf, config, ts, entry, index)
 
         return webpackBuild(merged)

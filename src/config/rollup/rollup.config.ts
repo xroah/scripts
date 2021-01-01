@@ -1,4 +1,7 @@
-import {RollupOptions, OutputOptions, OutputPlugin} from "rollup"
+import {
+    RollupOptions,
+    OutputOptions
+} from "rollup"
 import path from "path"
 import {terser} from "rollup-plugin-terser"
 import typescript from "@rollup/plugin-typescript"
@@ -40,7 +43,7 @@ export default (customOption: any = {}, ts = true) => {
             babelHelpers: "runtime",
             ...getBabelConf()
         })
-    ].filter(Boolean) as any;
+    ].filter(Boolean) as any
     const outputOption: OutputOptions = {
         ...commonOutputConf,
         file: path.join(dist, `${name}.js`)

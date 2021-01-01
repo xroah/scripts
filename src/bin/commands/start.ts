@@ -24,7 +24,7 @@ function action(cmd: any) {
         ...devServer
     }
     const _port = +port
-    
+
     if (_port) {
         serverConf.port = _port
     }
