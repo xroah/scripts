@@ -7,6 +7,9 @@ import merge from "../utils/merge"
 const start = program.command("start")
 
 function action(cmd: any) {
+    process.env.NODE_ENV = "development"
+    process.env.BABEL_ENV = "development"
+
     const {
         config,
         port,

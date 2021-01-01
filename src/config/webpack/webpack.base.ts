@@ -4,10 +4,9 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import getBabelConf from "../babel/babel.config"
 
 export default (mode: "production" | "development") => {
-    process.env.NODE_ENV = mode
     const cwd = process.cwd()
     const isDev = mode === "development"
-    const babelOptions = getBabelConf(isDev)
+    const babelOptions = getBabelConf()
     const config: Configuration = {
         mode,
         entry: "./src/index.tsx",

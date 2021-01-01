@@ -12,6 +12,9 @@ import rimraf from "rimraf"
 const build = program.command("build")
 
 async function rollupBuild(buildOptions: any) {
+    process.env.NODE_ENV = "production"
+    process.env.BABEL_ENV = "production"
+
     const {
         ts,
         config
