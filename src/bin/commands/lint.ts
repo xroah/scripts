@@ -3,8 +3,6 @@ import {program} from "commander"
 import eslintConfig from "../../config/eslint/eslint"
 import ora from "ora"
 
-const lint = program.command("lint <file>")
-
 async function action(file: string, cmd: any) {
     const reg = /,|\s/g
     const files = file.split(reg)
@@ -44,7 +42,9 @@ async function action(file: string, cmd: any) {
     }
 }
 
-lint.option("--ext <value>", "Extensions")
+program
+    .command("lint <file>")
+    .option("--ext <value>", "Extensions")
     .option("--fix", "Autofix")
     .option("-c, --config <value>", "Configuration file")
     .option("--eslintrc", "Load .eslintrc.* files")

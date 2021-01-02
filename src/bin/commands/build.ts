@@ -9,8 +9,6 @@ import ora from "ora"
 import chalk from "chalk"
 import rimraf from "rimraf"
 
-const build = program.command("build")
-
 async function rollupBuild(buildOptions: any) {
     process.env.NODE_ENV = "production"
     process.env.BABEL_ENV = "production"
@@ -94,7 +92,8 @@ function action(cmd: any) {
     rollupBuild(cmd)
 }
 
-build
+program
+    .command("build")
     .option("-r, --rollup", "Use rollup to build")
     .option("--no-ts", "Use javascript")
     .option("-c, --config <value>", "Configuration file")

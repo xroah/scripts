@@ -5,8 +5,6 @@ import path from "path"
 import spawn from "cross-spawn"
 import rimraf from "rimraf"
 
-const tsc = program.command("tsc [file]")
-
 function initTs() {
     const filePath = path.join(__dirname, "../../tsconfig.json")
     const destFile = path.join(process.cwd(), "tsconfig.json")
@@ -91,7 +89,8 @@ function action(file: string, cmd: any) {
     }
 }
 
-tsc
+program
+    .command("tsc [file]")
     .option("--init", "Init tsconfig.json")
     .option("--lib", "Build commonjs")
     .option("--es", "Build ESNext")
