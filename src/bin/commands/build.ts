@@ -2,21 +2,21 @@ import {program} from "commander"
 import merge from "../utils/merge"
 import {build as webpackBuild} from "webpack-build-helper"
 import prodConf from "../../config/webpack/webpack.prod"
-import path from "path"
 import getRollupOptions from "../../config/rollup/rollup.config"
 import {rollup} from "rollup"
 import ora from "ora"
 import chalk from "chalk"
 import rimraf from "rimraf"
+import loadConfig from "../utils/load-config"
 
-async function rollupBuild(buildOptions: any) {
+async function rollupBuild(cmd: any) {
     process.env.NODE_ENV = "production"
     process.env.BABEL_ENV = "production"
 
     const {
         ts,
         config
-    } = buildOptions
+    } = cmd
     const cmdSet = new Set([
         "entry",
         "outDir",
@@ -25,31 +25,26 @@ async function rollupBuild(buildOptions: any) {
     ])
     const loading = ora("Building for production use rollup")
     const cmdConfig: any = {}
-    let mergedConfig: any = {}
+    let customConfig: any = loadConfig(config).rollup
 
-    loading.start()
-
-    if (config) {
-        mergedConfig = require(path.join(process.cwd(), config)).rollup
-    }
-
-    for (let c in buildOptions) {
+    for (let c in cmd) {
         if (cmdSet.has(c)) {
-            cmdConfig[c] = buildOptions[c]
+            cmdConfig[c] = cmd[c]
         }
     }
 
-    mergedConfig = {
-        ...mergedConfig,
+    const mergedConfig = {
+        ...customConfig,
         ...cmdConfig
     }
-
     const {
         options: rollupOptions,
         outputOption,
         outputProdOption,
         dist
     } = getRollupOptions(mergedConfig, ts)
+
+    loading.start()
 
     try {
         rimraf.sync(dist)

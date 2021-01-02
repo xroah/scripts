@@ -3,6 +3,7 @@ import {merge} from "webpack-merge"
 import path from "path"
 import {Configuration} from "webpack"
 import HTMLWebpackPlugin from "html-webpack-plugin"
+import loadConfig from "../utils/load-config"
 
 export default (
     baseConf: Configuration,
@@ -20,17 +21,15 @@ export default (
         merged.entry = path.join(cwd, "./src/index.jsx")
     }
 
-    if (configFile) {
-        const customConfig = require(path.join(process.cwd(), configFile))
-        const htmlPluginOptions = customConfig.htmlWebpackPlugin
-        merged = merge(baseConf, customConfig.webpack)
-        htmlOptions = {
-            ...htmlOptions,
-            ...htmlPluginOptions
-        }
-
-        devServer = customConfig.devServer || {}
+    const customConfig = loadConfig(configFile)
+    const htmlPluginOptions = customConfig.htmlWebpackPlugin || {}
+    merged = merge(baseConf, customConfig.webpack)
+    htmlOptions = {
+        ...htmlOptions,
+        ...htmlPluginOptions
     }
+
+    devServer = customConfig.devServer || {}
 
     if (entry) {
         merged.entry = path.join(cwd, entry)
