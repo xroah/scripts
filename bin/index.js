@@ -3,9 +3,9 @@
 const chalk = require("chalk")
 const {program} = require("commander")
 const path = require("path")
+const rimraf = require("rimraf")
 const spawn = require("./spawn");
 const checkAppDir = require("./checkAppDir")
-const removeDir = require("./removeDir")
 const package = require("../package.json")
 const copy = require("./copy")
 const {
@@ -81,7 +81,7 @@ function removeAppDir() {
     //may cause error on windows:
     //Error: EBUSY: resource busy or locked
     try {
-        removeDir(appDir)
+        rimraf.sync(appDir, {maxBusyTries: 10})
     } catch (error) {
 
     }
