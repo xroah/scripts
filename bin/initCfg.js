@@ -1,22 +1,5 @@
 const fs = require("fs")
 const path = require("path")
-const tsconfigJSON = {
-    compilerOptions: {
-        target: "ES6",
-        module: "ESNext",
-        jsx: "react",
-        strict: true,
-        moduleResolution: "node",
-        esModuleInterop: true,
-        forceConsistentCasingInFileNames: true
-    },
-    include: [
-        "src/**/*"
-    ],
-    exclude: [
-        "node_modules"
-    ]
-}
 const packageJSON = {
     name: "",
     version: "1.0.0",
@@ -26,19 +9,13 @@ const packageJSON = {
     }
 }
 const BABEL_PRESETS_PLACEHOLDER = "BABEL_PRESETS_PLACEHOLDER"
-const babelPresets = [
-    "@babel/preset-env",
-    "@babel/preset-react"
-]
+const babelPresets = ["@babel/preset-env", "@babel/preset-react"]
 
 function babelConf(api) {
     const isDev = api.env("development")
     const cfg = {
         presets: BABEL_PRESETS_PLACEHOLDER,
-        plugins: [
-            "@babel/plugin-transform-runtime",
-            "@babel/plugin-proposal-class-properties"
-        ]
+        plugins: ["@babel/plugin-transform-runtime", "@babel/plugin-proposal-class-properties"]
     }
 
     if (isDev) {
@@ -49,6 +26,7 @@ function babelConf(api) {
 }
 
 exports.initCfg = function initCfg(appDir, appName, useTypescript) {
+    const babelFunStr = `module.exports = ${babelConf.toString()}`
     packageJSON.name = appName
 
     //write package.json
@@ -59,18 +37,16 @@ exports.initCfg = function initCfg(appDir, appName, useTypescript) {
 
     if (useTypescript) {
         babelPresets.push("@babel/preset-typescript")
-        //write tsconfig.json
-        fs.writeFileSync(
-            path.join(appDir, "tsconfig.json"),
-            JSON.stringify(tsconfigJSON, null, 4)
+        //copy tsconfig.json
+        fs.copyFileSync(
+            path.join(__dirname, "../template/tsconfig.json"),
+            path.join(appDir, "tsconfig.json")
         )
     }
 
-    const babelFunStr = `module.exports = ${babelConf.toString()}`
-
-    //write .babelrc.js
+    //write babel.config.js
     fs.writeFileSync(
-        path.join(appDir, ".babelrc.js"),
+        path.join(appDir, "babel.config.js"),
         babelFunStr.replace(
             BABEL_PRESETS_PLACEHOLDER,
             JSON.stringify(babelPresets)
