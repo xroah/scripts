@@ -56,10 +56,6 @@ if (appName === undefined) {
 
 const appDir = checkAppDir(appName)
 
-if (appDir === false) {
-    process.exit(1)
-}
-
 const gitPromise = (
     program.git ?
         spawn(appDir, "git", ["init"]) : //init git

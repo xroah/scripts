@@ -10,11 +10,9 @@ module.exports = function checkAppDir(appName) {
         fs.mkdirSync(appDir)
     } else if (fs.readdirSync(appDir).length) {
         console.log()
-        console.log(
+        throw new Error(
             chalk.red(`The ${appName} directory is not empty, please try another.`)
         )
-
-        return false
     }
 
     return appDir
