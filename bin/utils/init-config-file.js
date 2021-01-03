@@ -8,6 +8,7 @@ const packageJSON = {
         build: "node build/build"
     }
 }
+const copy = require("./copy")
 const BABEL_PRESETS_PLACEHOLDER = "BABEL_PRESETS_PLACEHOLDER"
 const babelPresets = ["@babel/preset-env", "@babel/preset-react"]
 
@@ -25,8 +26,21 @@ function babelConf(api) {
     return cfg
 }
 
-exports.initCfg = function initCfg(appDir, appName, useTypescript) {
+module.exports = function initConfigFile(baseDir, appDir, appName, useTypescript) {
     const babelFunStr = `module.exports = ${babelConf.toString()}`
+    //confg/app.config.js
+    const appConfig = `
+module.exports = {
+    appIndex: "${useTypescript ? "./src/index.tsx" : "./src/index.jsx"}",
+    typescript: ${useTypescript}
+}
+    `;
+    const srcDir = path.join(
+        baseDir,
+        "src",
+        useTypescript ? "ts" : "js"
+    )
+    const buildDir = path.join(appName, "build")
     packageJSON.name = appName
 
     //write package.json
@@ -52,15 +66,12 @@ exports.initCfg = function initCfg(appDir, appName, useTypescript) {
             JSON.stringify(babelPresets)
         )
     )
-}
-
-exports.createCfgFile = function createCfgFile(dir, useTypescript) {
-    const code = `
-module.exports = {
-    appIndex: "${useTypescript ? "./src/index.tsx" : "./src/index.jsx"}",
-    typescript: ${useTypescript}
-}
-    `;
-
-    fs.writeFileSync(path.join(dir, "config/app.config.js"), code);
+    //copy build dir
+    copy(path.join(baseDir, "build"), buildDir)
+    //copy src dir
+    copy(srcDir, path.join(appName, "src"))
+    //copy public dir
+    copy(path.join(baseDir, "public"), path.join(appName, "public"))
+    //create app.config.js
+    fs.writeFileSync(path.join(buildDir, "config/app.config.js"), appConfig);
 }

@@ -3,8 +3,7 @@ const fs = require("fs")
 const path = require("path")
 
 module.exports = function checkAppDir(appName) {
-    const cwd = process.cwd()
-    const appDir = path.join(cwd, appName)
+    const appDir = path.join(process.cwd(), appName)
 
     if (!fs.existsSync(appDir)) {
         fs.mkdirSync(appDir)

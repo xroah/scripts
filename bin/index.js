@@ -3,22 +3,19 @@
 const chalk = require("chalk")
 const {program} = require("commander")
 const path = require("path")
-const rimraf = require("rimraf")
-const spawn = require("./spawn");
-const checkAppDir = require("./checkAppDir")
 const package = require("../package.json")
-const copy = require("./copy")
-const {
-    initCfg,
-    createCfgFile
-} = require("./initCfg")
 const {
     deps,
     devDeps,
     tsDeps
-} = require("./deps");
+} = require("./deps")
+const {
+    checkAppDir,
+    initConfigFile,
+    removeDirFactory,
+    spawn
+} = require("./utils")
 let appName
-let dirCleaning = false//in case clean dir repetitively
 
 program
     .version(
@@ -27,9 +24,6 @@ program
         "show version"
     )
     .arguments("[app-name]")
-    .action(name => {
-        appName = name
-    })
     .option(
         "-t, --typescript",
         "use typescript in your project"
@@ -40,48 +34,43 @@ program
     )
     .name("react-init")
     .usage("<app-name> [option]")
+    .action(name => {
+        if (name === undefined) {
+            console.log(chalk.red("\nNo application name provided\n"))
+            console.log(
+                chalk.bold("For example:"),
+                chalk.cyan("react-init "),
+                chalk.green("<app-name>"),
+                "\n"
+            )
+
+            process.exit(1)
+        }
+
+        appName = name
+    })
     .parse(process.argv)
 
-if (appName === undefined) {
-    console.log(chalk.red("\nNo application name provided\n"))
-    console.log(
-        chalk.bold("For example:"),
-        chalk.cyan("react-init "),
-        chalk.green("<app-name>"),
-        "\n"
-    )
-
-    process.exit(1)
-}
-
 const appDir = checkAppDir(appName)
-
+const removeAppDir = removeDirFactory(appDir)
 const gitPromise = (
     program.git ?
         spawn(appDir, "git", ["init"]) : //init git
         Promise.resolve()
 )
 
-console.log(chalk.bold("This might take a few minutes."))
-
 function install(dir, args, msg) {
     return spawn(dir, "npm", args, msg)
 }
 
-function removeAppDir() {
-    if (dirCleaning) {
-        return
-    }
+console.log(chalk.bold("This might take a few minutes."))
 
-    dirCleaning = true
-    //may cause error on windows:
-    //Error: EBUSY: resource busy or locked
-    try {
-        rimraf.sync(appDir, {maxBusyTries: 10})
-    } catch (error) {
-
-    }
-}
+initConfigFile(
+    path.resolve(__dirname, "../template"),
+    appDir,
+    appName,
+    program.typescript
+)
 
 process
     .on("SIGTERM", removeAppDir)
@@ -92,63 +81,53 @@ process
         }
     })
 
-initCfg(appDir, appName, program.typescript)
-
 const commonArgs = ["--loglevel", "error"]
 const depMsg = chalk.bold("Installing dependencies:")
 const devDepMsg = chalk.bold("Installing dev dependencies:")
 
 gitPromise
-    .then(() => (
-        //install dependencies
-        install(
+    //install dependencies
+    .then(
+        () => install(
             appDir,
-            ["i"]
-                .concat(commonArgs)
-                .concat(deps),
+            [
+                "i",
+                ...commonArgs,
+                ...deps
+            ],
             depMsg
         )
-    ))
-    .then(() => (
-        //install dev dependencies
-        install(
+    )
+    //install dev dependencies
+    .then(
+        () => install(
             appDir,
-            ["i", "-D"]
-                .concat(commonArgs)
-                .concat(devDeps)
-                .concat(program.typescript ? tsDeps : []),
+            [
+                "i",
+                "-D",
+                ...commonArgs,
+                ...devDeps,
+                ...(program.typescript ? tsDeps : [])
+            ],
             devDepMsg
         )
-    ))
-    .then(() => {
-        const baseDir = path.resolve(__dirname, "../template")
-        const srcDir = path.join(
-            baseDir,
-            "src",
-            program.typescript ? "ts" : "js"
-        )
-        const buildDir = path.join(appName, "build")
-
-        copy(path.join(baseDir, "build"), buildDir)
-        copy(srcDir, path.join(appName, "src"))
-        copy(path.join(baseDir, "public"), path.join(appName, "public"))
-        createCfgFile(buildDir, program.typescript)
-
-        console.log(chalk.green(`${appName} initialized successfully.`))
-        console.log()
-        console.log("Now you can run:")
-        console.log()
-        console.log(
-            chalk.cyan(
-                chalk.bold(`cd ${appName}`)
+    )
+    //print message
+    .then(
+        () => {
+            console.log(chalk.green(`${appName} initialized successfully.`))
+            console.log()
+            console.log("Now you can run:")
+            console.log()
+            console.log(
+                chalk.cyan(chalk.bold(`cd ${appName}`))
             )
-        )
-        console.log(
-            chalk.cyan(
-                chalk.bold("npm start")
+            console.log(
+                chalk.cyan(chalk.bold("npm start"))
             )
-        )
-        console.log()
-        console.log("Enjoy!")
-        console.log()
-    }).catch(removeAppDir)
+            console.log()
+            console.log("Enjoy!")
+            console.log()
+        }
+    )
+    .catch(removeAppDir)
