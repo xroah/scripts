@@ -17,11 +17,14 @@ export default (customOption: any = {}, ts = true) => {
     const commonOutputConf: OutputOptions = {
         name,
         format: "umd",
-        globals: {
-            "react": "React",
-            "react-dom": "ReactDOM",
-            ...customOption.globals
-        }
+        globals: customOption.globals === false ? {} :
+            (
+                customOption.globals ||
+                {
+                    "react": "React",
+                    "react-dom": "ReactDOM"
+                }
+            )
     }
     const plugins = [
         resolve(),
@@ -58,7 +61,8 @@ export default (customOption: any = {}, ts = true) => {
         input: path.join(cwd, customOption.entry || "./src/index.ts"),
         output: [outputOption, outputProdOption],
         plugins,
-        external: ["react", "react-dom"].concat(customOption.external)
+        external: customOption.external === false ? [] :
+            (customOption.external || ["react", "react-dom"])
     }
 
     return {

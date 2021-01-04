@@ -49,7 +49,7 @@ async function rollupBuild(cmd: any) {
     try {
         rimraf.sync(dist)
     } catch (error) {
-        //empty
+        //do nothing
     }
 
     try {
