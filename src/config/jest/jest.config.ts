@@ -1,11 +1,11 @@
 import path from "path"
 
-module.exports = {
+export default {
     clearMocks: true,
     coverageDirectory: path.join(process.cwd(), "coverage"),
     coverageProvider: "babel",
     testMatch: [
-        '<rootDir>/tests/**/*.spec.[jt]s?(x)'
+        "<rootDir>/tests/**/*.spec.[jt]s?(x)"
     ],
     testEnvironment: "jsdom",
     transform: {

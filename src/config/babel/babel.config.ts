@@ -1,4 +1,4 @@
-export default (react = true) => {
+export default () => {
     const env = process.env.BABEL_ENV
     const config = {
         babelrc: false,
@@ -10,7 +10,7 @@ export default (react = true) => {
                     modules: env === "test" ? "cjs" : false
                 }
             ],
-            react && require.resolve("@babel/preset-react"),
+            require.resolve("@babel/preset-react"),
             require.resolve("@babel/preset-typescript")
         ].filter(Boolean),
         plugins: [
@@ -19,6 +19,6 @@ export default (react = true) => {
             env === "development" && require.resolve("react-refresh/babel")
         ].filter(Boolean)
     }
-
+    
     return config
 }
