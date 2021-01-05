@@ -44,7 +44,7 @@ export default (customOption: any = {}, ts = true) => {
             exclude: /node_modules/,
             extensions: [".ts", ".tsx", ".js", ".jsx"],
             babelHelpers: "runtime",
-            ...getBabelConf()
+            ...getBabelConf() as any
         })
     ].filter(Boolean) as any
     const outputOption: OutputOptions = {
