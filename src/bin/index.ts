@@ -6,6 +6,7 @@ import "./commands/build"
 import "./commands/tsc"
 import "./commands/lint"
 import "./commands/test"
+import "./commands/rm"
 
 const packageJSON = require("../package.json")
 
