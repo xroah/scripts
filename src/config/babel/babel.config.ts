@@ -19,6 +19,6 @@ export default () => {
             env === "development" && require.resolve("react-refresh/babel")
         ].filter(Boolean)
     }
-    
+
     return config
 }

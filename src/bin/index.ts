@@ -12,8 +12,5 @@ const packageJSON = require("../package.json")
 
 program
     .version(packageJSON.version, "-v, --version")
-    .action(cmd => {
-        console.log("===>", cmd.config)
-    })
 
 program.parse()
