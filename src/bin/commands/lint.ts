@@ -1,7 +1,8 @@
 import {ESLint} from "eslint"
 import {program} from "commander"
-import eslintConfig from "../../config/eslint/eslint"
+import getBaseConfig from "../../config/eslint/eslint"
 import ora from "ora"
+import path from "path"
 
 async function action(files: string[], cmd: any) {
     const reg = /,|\s/g
@@ -9,17 +10,20 @@ async function action(files: string[], cmd: any) {
         fix,
         config,
         eslintrc,
-        ext
+        ext,
+        react
     } = cmd
-    const loading = ora("Eslint is working...")
-
+    const extensions = ext ? ext.toLowerCase().split(reg) : [".ts", ".tsx"]
+    const loading = ora("Linting...")
+    const lintTS = extensions.includes(".ts") || extensions.includes(".tsx")
     const eslint = new ESLint({
         useEslintrc: eslintrc,
-        extensions: ext ? ext.split(reg) : [".ts", ".tsx"],
+        extensions,
         fix,
         cwd: process.cwd(),
-        baseConfig: eslintConfig as any,
-        overrideConfigFile: config
+        baseConfig: getBaseConfig(react, lintTS),
+        overrideConfigFile: config,
+        resolvePluginsRelativeTo: path.join(__dirname, "../..")
     })
 
     loading.start()
@@ -45,6 +49,7 @@ program
     .command("lint <files...>")
     .option("--ext <value>", "Extensions")
     .option("--fix", "Autofix")
-    .option("-c, --config <value>", "Configuration file")
-    .option("--eslintrc", "Load .eslintrc.* files")
+    .option("-c, --config <value>", "Disable use of configuration from .eslintrc.*")
+    .option("--no-eslintrc", "Load .eslintrc.* files")
+    .option("--no-react", "No react")
     .action(action)
