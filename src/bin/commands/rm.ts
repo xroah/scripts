@@ -2,10 +2,10 @@ import {program} from "commander"
 import rimraf from "rimraf"
 
 program
-    .command("rm <files...>")
-    .action((files: string[]) => {
+    .command("rm <paths...>")
+    .action((paths: string[]) => {
         try {
-            files.forEach(file => rimraf.sync(file))
+            paths.forEach(p => rimraf.sync(p))
         } catch (error) {
             console.log(error)
         }

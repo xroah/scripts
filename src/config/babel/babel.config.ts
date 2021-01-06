@@ -1,5 +1,5 @@
 export default () => {
-    const env = process.env.BABEL_ENV
+    const env = process.env.BABEL_ENV || process.env.NODE_ENV
     const config = {
         babelrc: false,
         configFile: false,

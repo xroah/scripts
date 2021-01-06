@@ -1,6 +1,6 @@
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import TerserWebpackPlugin from "terser-webpack-plugin"
-import CSSMiniMinimizerPlugin from "css-minimizer-webpack-plugin"
+import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
 import getBaseConf from "./webpack.base"
 import {merge} from "webpack-merge"
 
@@ -17,7 +17,7 @@ export default merge(
                     },
                     extractComments: false
                 }),
-                new CSSMiniMinimizerPlugin()
+                new CSSMinimizerPlugin()
             ],
             splitChunks: {
                 minSize: 100 * 1024,

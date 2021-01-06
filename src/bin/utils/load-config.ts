@@ -1,21 +1,13 @@
 import path from "path"
 import fs from "fs"
+import getAbsPath from "./get-abs-path"
 
 export default (configFile: string) => {
-    const cwd = process.cwd()
-    const defaultConfFile = path.join(cwd, "reap-config.js")
+    const defaultConfFile = path.join(process.cwd(), "reap.config.js")
     let config: any = {}
 
     if (configFile) {
-        let absPath: string
-
-        if (path.isAbsolute(configFile)) {
-            absPath = configFile
-        } else {
-            absPath = path.join(cwd, configFile)
-        }
-
-        config = require(absPath)
+        config = require(getAbsPath(configFile))
     } else if (fs.existsSync(defaultConfFile)) {
         config = require(defaultConfFile)
     }

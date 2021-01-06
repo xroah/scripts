@@ -9,7 +9,7 @@ export default (mode: "production" | "development") => {
     const babelOptions = getBabelConf()
     const config: Configuration = {
         mode,
-        entry: "./src/index.tsx",
+        entry: path.join(cwd, "./src/index.tsx"),
         context: cwd,
         output: {
             filename: "main.[contenthash].js",

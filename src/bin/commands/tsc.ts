@@ -38,7 +38,8 @@ function action(file: string, cmd: any) {
         init,
         lib,
         es,
-        declaration
+        declaration,
+        dDir
     } = cmd
     const args = ["-t", "ES6"]
 
@@ -54,6 +55,10 @@ function action(file: string, cmd: any) {
 
     if (declaration) {
         args.push("-d")
+    }
+
+    if (dDir) {
+        args.push("--declarationDir", dDir)
     }
 
     if (!lib && !es) {
@@ -94,5 +99,6 @@ program
     .option("--init", "Init tsconfig.json")
     .option("--lib", "Build commonjs")
     .option("--es", "Build ESNext")
-    .option("-d, declaration", "Doesn't generate declaration files")
+    .option("-d, --declaration", "Generate declaration files")
+    .option("--dDir <dir>", "Output directory for generated declaration files")
     .action(action)

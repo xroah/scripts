@@ -131,9 +131,7 @@ export default (react: Boolean, lintTS: boolean) => {
             // disallow specified syntax
             "no-restricted-syntax": [2, "WithStatement"]
         },
-        "settings": {
-
-        }
+        "settings": {}
     }
     const noUseRule = [2, {functions: false}]
 
@@ -145,7 +143,7 @@ export default (react: Boolean, lintTS: boolean) => {
 
     if (lintTS) {
         config.parser = require.resolve("@typescript-eslint/parser")
-        // no-use-before-define may cause 'React' was used before it was defined 
+        // no-use-before-define may cause: 'React' was used before it was defined
         config.rules["@typescript-eslint/no-use-before-define"] = noUseRule
     } else {
         // disallow the use of variables before they are defined

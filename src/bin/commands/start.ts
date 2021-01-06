@@ -4,10 +4,10 @@ import {start as startDevServer} from "webpack-build-helper"
 import devServerConf from "../../config/webpack/server.config"
 import merge from "../utils/merge"
 
-function action(cmd: any) {
-    process.env.NODE_ENV = "development"
-    process.env.BABEL_ENV = "development"
+process.env.NODE_ENV = "development"
+process.env.BABEL_ENV = "development"
 
+function action(cmd: any) {
     const {
         config,
         port,
@@ -39,10 +39,10 @@ function action(cmd: any) {
 
 program
     .command("start")
-    .option("-p, --port [value]", "Specify a port")
-    .option("-c, --config <value>", "Configuration file")
+    .option("-p, --port [port]", "Specify a port")
+    .option("-c, --config <config>", "Configuration file")
     .option("--no-ts", "Use javascript")
     .option("-o, --open", "Open browser")
-    .option("-e, --entry <value>", "Entry file")
-    .option("--index <value>", "index.html file")
+    .option("-e, --entry <entry>", "Entry file")
+    .option("--index <index>", "index.html file")
     .action(action)

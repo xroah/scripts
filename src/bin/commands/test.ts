@@ -6,7 +6,7 @@ import {run as runTest} from "jest"
 process.env.NODE_ENV = "test"
 process.env.BABEL_ENV = "test"
 
-function action(file: string, cmd: any) {
+function action(files: string, cmd: any) {
     const packageJSON = require(path.join(process.cwd(), "package.json"))
     const jestConf = packageJSON.jest || {}
     const mergedJestConf: any = {
@@ -19,7 +19,7 @@ function action(file: string, cmd: any) {
         "verbose"
     ])
     const cmdValueArgs = new Set(["env", "outputFile"])
-    const args = ["--config", JSON.stringify(mergedJestConf)]
+    let args = ["--config", JSON.stringify(mergedJestConf)]
 
     for (let key in cmd) {
         if (Object.prototype.hasOwnProperty.call(cmd, key)) {
@@ -31,18 +31,18 @@ function action(file: string, cmd: any) {
         }
     }
 
-    if (file) {
-        args.unshift(file)
+    if (files) {
+        args = [...files, ...args]
     }
 
     runTest(args)
 }
 
 program
-    .command("test [file]")
+    .command("test [files...]")
     .option("--coverage", "Test coverage information")
-    .option("--env <value>", "The test environment used for all tests")
+    .option("--env <environment>", "The test environment used for all tests")
     .option("--json", "Prints the test results in JSON")
-    .option("-o, --outputFile <value>", "Write test results to a file when the --json option is also specified")
+    .option("-o, --outputFile <outputFile>", "Write test results to a file when the --json option is also specified")
     .option("--verbose", "Display individual test results with the test suite hierarchy")
     .action(action)

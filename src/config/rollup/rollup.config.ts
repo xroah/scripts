@@ -9,10 +9,10 @@ import resolve from "@rollup/plugin-node-resolve"
 import cjs from "@rollup/plugin-commonjs"
 import babel from "@rollup/plugin-babel"
 import getBabelConf from "../babel/babel.config"
+import getAbsPath from "../../bin/utils/get-abs-path"
 
 export default (customOption: any = {}, ts = true) => {
-    const cwd = process.cwd()
-    const dist = `${path.join(cwd, customOption.outDir || "dist")}`
+    const dist = getAbsPath(customOption.outDir || "dist")
     const name = customOption.libName || "reap"
     const commonOutputConf: OutputOptions = {
         name,
@@ -35,8 +35,8 @@ export default (customOption: any = {}, ts = true) => {
             jsx: "react",
             strict: true,
             moduleResolution: "node",
-            include: [path.join(cwd, customOption.include || "src")],
-            exclude: ["node_modules"],
+            include: customOption.include || ["src"],
+            exclude: customOption.exclude || ["node_modules"],
             esModuleInterop: true,
             experimentalDecorators: true
         }),
@@ -58,7 +58,7 @@ export default (customOption: any = {}, ts = true) => {
         plugins: [terser()]
     }
     const options: RollupOptions = {
-        input: path.join(cwd, customOption.entry || "./src/index.ts"),
+        input: getAbsPath(customOption.entry || "./src/index.ts"),
         output: [outputOption, outputProdOption],
         plugins,
         external: customOption.external === false ? [] :

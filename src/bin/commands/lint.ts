@@ -5,7 +5,6 @@ import ora from "ora"
 import path from "path"
 
 async function action(files: string[], cmd: any) {
-    const reg = /,|\s/g
     const {
         fix,
         config,
@@ -13,7 +12,7 @@ async function action(files: string[], cmd: any) {
         ext,
         react
     } = cmd
-    const extensions = ext ? ext.toLowerCase().split(reg) : [".ts", ".tsx"]
+    const extensions = ext || [".ts", ".tsx"]
     const loading = ora("Linting...")
     const lintTS = extensions.includes(".ts") || extensions.includes(".tsx")
     const eslint = new ESLint({
@@ -47,9 +46,9 @@ async function action(files: string[], cmd: any) {
 
 program
     .command("lint <files...>")
-    .option("--ext <value>", "Extensions")
-    .option("--fix", "Autofix")
-    .option("-c, --config <value>", "Disable use of configuration from .eslintrc.*")
+    .option("--ext <extensions...>", "Extensions")
+    .option("--fix", "Auto fix")
+    .option("-c, --config <config>", "Disable use of configuration from .eslintrc.*")
     .option("--no-eslintrc", "Load .eslintrc.* files")
     .option("--no-react", "No react")
     .action(action)

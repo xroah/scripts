@@ -12,5 +12,4 @@ const packageJSON = require("../package.json")
 
 program
     .version(packageJSON.version, "-v, --version")
-
-program.parse()
+    .parse()

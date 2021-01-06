@@ -9,10 +9,18 @@ import chalk from "chalk"
 import rimraf from "rimraf"
 import loadConfig from "../utils/load-config"
 
-async function rollupBuild(cmd: any) {
-    process.env.NODE_ENV = "production"
-    process.env.BABEL_ENV = "production"
+process.env.NODE_ENV = "production"
+process.env.BABEL_ENV = "production"
 
+function removeDist(dist: string) {
+    try {
+        rimraf.sync(dist)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function rollupBuild(cmd: any) {
     const {
         ts,
         config
@@ -21,9 +29,10 @@ async function rollupBuild(cmd: any) {
         "entry",
         "outDir",
         "libName",
-        "include"
+        "include",
+        "exclude"
     ])
-    const loading = ora("Building for production use rollup")
+    const loading = ora("Building for production use rollup...")
     const cmdConfig: any = {}
     let customConfig: any = loadConfig(config).rollup
 
@@ -33,7 +42,7 @@ async function rollupBuild(cmd: any) {
         }
     }
 
-    const mergedConfig = {
+    customConfig = {
         ...customConfig,
         ...cmdConfig
     }
@@ -42,15 +51,10 @@ async function rollupBuild(cmd: any) {
         outputOption,
         outputProdOption,
         dist
-    } = getRollupOptions(mergedConfig, ts)
+    } = getRollupOptions(customConfig, ts)
 
     loading.start()
-
-    try {
-        rimraf.sync(dist)
-    } catch (error) {
-        //do nothing
-    }
+    removeDist(dist)
 
     try {
         const bundle = await rollup(rollupOptions)
@@ -81,7 +85,10 @@ function action(cmd: any) {
     if (!useRollup) {
         const {merged} = merge(prodConf, config, ts, entry, index)
 
-        return webpackBuild(merged)
+        removeDist(merged.output!.path!)
+        webpackBuild(merged)
+
+        return
     }
 
     rollupBuild(cmd)
@@ -91,10 +98,11 @@ program
     .command("build")
     .option("-r, --rollup", "Use rollup to build")
     .option("--no-ts", "Use javascript")
-    .option("-c, --config <value>", "Configuration file")
-    .option("-o, --outDir <value>", "Output dir")
-    .option("-e, --entry <value>", "Entry file")
-    .option("-n, --libName <value>", "Library name(rollup only)")
-    .option("--include <value>", "Typescript includes(rollup only)")
-    .option("--index <value>", "index.html file")
+    .option("-c, --config <configFile>", "Configuration file")
+    .option("-o, --outDir <dir>", "Output dir")
+    .option("-e, --entry <entry>", "Entry file")
+    .option("-n, --libName <name>", "Library name(rollup only)")
+    .option("--include <files...>", "Typescript includes(rollup only)")
+    .option("--exclude <files...>", "Typescript excludes(rollup only)")
+    .option("--index <index>", "index.html file")
     .action(action)
