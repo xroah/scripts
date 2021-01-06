@@ -8,9 +8,7 @@ import ora from "ora"
 import chalk from "chalk"
 import rimraf from "rimraf"
 import loadConfig from "../utils/load-config"
-
-process.env.NODE_ENV = "production"
-process.env.BABEL_ENV = "production"
+import setEnv from "../utils/set-env"
 
 function removeDist(dist: string) {
     try {
@@ -81,6 +79,8 @@ function action(cmd: any) {
         entry,
         index
     } = cmd
+
+    setEnv("production")
 
     if (!useRollup) {
         const {merged} = merge(prodConf, config, ts, entry, index)

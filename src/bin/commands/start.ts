@@ -3,9 +3,7 @@ import devConf from "../../config/webpack/webpack.dev"
 import {start as startDevServer} from "webpack-build-helper"
 import devServerConf from "../../config/webpack/server.config"
 import merge from "../utils/merge"
-
-process.env.NODE_ENV = "development"
-process.env.BABEL_ENV = "development"
+import setEnv from "../utils/set-env"
 
 function action(cmd: any) {
     const {
@@ -34,6 +32,7 @@ function action(cmd: any) {
         serverConf.open = open
     }
 
+    setEnv("development")
     startDevServer(merged, serverConf)
 }
 

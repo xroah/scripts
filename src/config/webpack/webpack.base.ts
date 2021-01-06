@@ -38,13 +38,11 @@ export default (mode: "production" | "development") => {
                     }
                 ]
             }, {
-                test: /.scss$/,
-                use: require.resolve("sass-loader")
-            }, {
-                test: /.css$/,
+                test: /\.s?css$/,
                 use: [
                     isDev ? require.resolve("style-loader") : MiniCssExtractPlugin.loader,
-                    require.resolve("css-loader")
+                    require.resolve("css-loader"),
+                    require.resolve("sass-loader")
                 ]
             }]
         }

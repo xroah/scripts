@@ -1,6 +1,5 @@
 import defaultHTMLPluginOptions from "../../config/webpack/html-webpack-plugin"
 import {merge} from "webpack-merge"
-import path from "path"
 import {Configuration} from "webpack"
 import HTMLWebpackPlugin from "html-webpack-plugin"
 import loadConfig from "../utils/load-config"
@@ -19,7 +18,7 @@ export default (
     let merged = {...baseConf}
 
     if (!ts) {
-        merged.entry = path.join(process.cwd(), "./src/index.jsx")
+        merged.entry = getAbsPath("./src/index.jsx")
     }
 
     const customConfig = loadConfig(configFile)

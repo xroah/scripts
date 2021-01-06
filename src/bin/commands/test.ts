@@ -2,9 +2,7 @@ import {program} from "commander"
 import path from "path"
 import defaultJestConf from "../../config/jest/jest.config"
 import {run as runTest} from "jest"
-
-process.env.NODE_ENV = "test"
-process.env.BABEL_ENV = "test"
+import setEnv from "../utils/set-env"
 
 function action(files: string, cmd: any) {
     const packageJSON = require(path.join(process.cwd(), "package.json"))
@@ -35,6 +33,7 @@ function action(files: string, cmd: any) {
         args = [...files, ...args]
     }
 
+    setEnv("test")
     runTest(args)
 }
 
