@@ -9,6 +9,7 @@ import chalk from "chalk"
 import rimraf from "rimraf"
 import loadConfig from "../utils/load-config"
 import setEnv from "../utils/set-env"
+import getAbsPath from "../utils/get-abs-path"
 
 function removeDist(dist: string) {
     try {
@@ -77,7 +78,8 @@ function action(cmd: any) {
         config,
         ts,
         entry,
-        index
+        index,
+        outDir
     } = cmd
 
     setEnv("production")
@@ -85,7 +87,11 @@ function action(cmd: any) {
     if (!useRollup) {
         const {merged} = merge(prodConf, config, ts, entry, index)
 
-        removeDist(merged.output!.path!)
+        if (outDir) {
+            merged.output!.path = getAbsPath(outDir)
+        }
+
+        removeDist(merged.output!.path as string)
         webpackBuild(merged)
 
         return
