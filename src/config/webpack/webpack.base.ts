@@ -1,7 +1,7 @@
 import {Configuration} from "webpack"
-import path from "path"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import getBabelConf from "../babel/babel.config"
+import getAbsPath from "../../bin/utils/get-abs-path"
 
 export default (mode: "production" | "development") => {
     const cwd = process.cwd()
@@ -9,12 +9,12 @@ export default (mode: "production" | "development") => {
     const babelOptions = getBabelConf()
     const config: Configuration = {
         mode,
-        entry: path.join(cwd, "./src/index.tsx"),
+        entry: getAbsPath("src/index.tsx"),
         context: cwd,
         output: {
-            filename: "main.[contenthash].js",
-            chunkFilename: "chunk.[contenthash].js",
-            path: path.resolve(cwd, "dist")
+            filename: "js/main.[contenthash].js",
+            chunkFilename: "js/chunk.[contenthash].js",
+            path: getAbsPath("dist")
         },
         resolve: {
             extensions: [".js", ".ts", ".jsx", ".tsx"]
