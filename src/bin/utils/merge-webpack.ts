@@ -2,7 +2,7 @@ import defaultHTMLPluginOptions from "../../config/webpack/html-webpack-plugin"
 import {merge} from "webpack-merge"
 import {Configuration} from "webpack"
 import HTMLWebpackPlugin from "html-webpack-plugin"
-import loadConfig from "../utils/load-config"
+import loadConfig from "./load-config"
 import getAbsPath from "./get-abs-path"
 
 export default (
