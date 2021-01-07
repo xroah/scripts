@@ -33,7 +33,13 @@ function action(cmd: any) {
     }
 
     setEnv("development")
-    startDevServer(merged, serverConf)
+    startDevServer(
+        merged,
+        {
+            ...serverConf,
+            hot: true
+        }
+    )
 }
 
 program
