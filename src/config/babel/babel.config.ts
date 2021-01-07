@@ -1,6 +1,10 @@
+import loadConfig from "../../bin/utils/load-config"
+import mergeBabel from "../../bin/utils/merge-babel"
+
 export default () => {
     const env = process.env.BABEL_ENV || process.env.NODE_ENV
-    
+    const customConfig = loadConfig().babel
+
     const config = {
         babelrc: false,
         configFile: false,
@@ -21,5 +25,5 @@ export default () => {
         ].filter(Boolean)
     }
 
-    return config
+    return mergeBabel(config, customConfig)
 }

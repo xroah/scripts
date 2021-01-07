@@ -2,7 +2,7 @@ import path from "path"
 import fs from "fs"
 import getAbsPath from "./get-abs-path"
 
-export default (configFile: string) => {
+export default (configFile?: string) => {
     const defaultConfFile = path.join(process.cwd(), "reap.config.js")
     let config: any = {}
 
