@@ -17,6 +17,7 @@ const devDeps = [
     "mini-css-extract-plugin",
     "css-minimizer-webpack-plugin",
     "react-refresh",
+    "rimraf",
     "style-loader",
     "terser-webpack-plugin",
     "url-loader",
