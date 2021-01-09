@@ -7,6 +7,8 @@ module.exports = function spawn(dir, cmd, args, msg) {
     }
 
     return new Promise((resolve, reject) => {
+        let rejected = false
+        let resolved = false
         const rejectPromise = err => {
             if (!rejected) {
                 rejected = true
@@ -37,8 +39,6 @@ module.exports = function spawn(dir, cmd, args, msg) {
 
             resolvePromise()
         }
-        let rejected = false
-        let resolved = false
 
         proc
             .on("close", handleExit)

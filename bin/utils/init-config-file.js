@@ -34,7 +34,7 @@ module.exports = {
     appIndex: "${useTypescript ? "./src/index.tsx" : "./src/index.jsx"}",
     typescript: ${useTypescript}
 }
-    `;
+    `
     const srcDir = path.join(
         baseDir,
         "src",
@@ -73,5 +73,5 @@ module.exports = {
     //copy public dir
     copy(path.join(baseDir, "public"), path.join(appName, "public"))
     //create app.config.js
-    fs.writeFileSync(path.join(buildDir, "config/app.config.js"), appConfig);
+    fs.writeFileSync(path.join(buildDir, "config/app.config.js"), appConfig)
 }

@@ -9,7 +9,7 @@ module.exports = function removeDir(appDir) {
         }
 
         dirCleaning = true
-        
+
         //may cause error on windows:
         //Error: EBUSY: resource busy or locked
         try {

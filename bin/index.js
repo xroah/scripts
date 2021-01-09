@@ -3,7 +3,7 @@
 const chalk = require("chalk")
 const {program} = require("commander")
 const path = require("path")
-const package = require("../package.json")
+const packageJSON = require("../package.json")
 const {
     deps,
     devDeps,
@@ -19,7 +19,7 @@ let appName
 
 program
     .version(
-        package.version,
+        packageJSON.version,
         "-v, --version",
         "show version"
     )
