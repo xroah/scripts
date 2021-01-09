@@ -12,7 +12,7 @@ const {
 const {
     checkAppDir,
     initConfigFile,
-    removeDirFactory,
+    removeDir,
     spawn
 } = require("./utils")
 let appName
@@ -52,7 +52,7 @@ program
     .parse(process.argv)
 
 const appDir = checkAppDir(appName)
-const removeAppDir = removeDirFactory(appDir)
+const removeAppDir = removeDir(appDir)
 const gitPromise = (
     program.git ?
         spawn(appDir, "git", ["init"]) : //init git

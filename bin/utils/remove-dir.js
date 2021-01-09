@@ -1,6 +1,6 @@
 const rimraf = require("rimraf")
 
-module.exports = function removeDirFactory(appDir) {
+module.exports = function removeDir(appDir) {
     let dirCleaning = false // in case clean dir repetitively
 
     return function removeAppDir() {
