@@ -1,5 +1,5 @@
 import {program} from "commander"
-import devConf from "../../config/webpack/webpack.dev"
+import getDevConf from "../../config/webpack/webpack.dev"
 import {start as startDevServer} from "webpack-build-helper"
 import devServerConf from "../../config/webpack/server.config"
 import merge from "../utils/merge"
@@ -17,7 +17,7 @@ function action(cmd: any) {
     const {
         merged,
         devServer
-    } = merge(devConf, config, ts, entry, index)
+    } = merge(getDevConf(), config, ts, entry, index)
     const serverConf = {
         ...devServerConf,
         ...devServer
