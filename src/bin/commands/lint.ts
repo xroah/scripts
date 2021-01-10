@@ -17,7 +17,7 @@ async function action(files: string[], cmd: any) {
 
     if (!ext) {
         if (ts) {
-            extensions  = [".ts"]
+            extensions = [".ts"]
 
             if (react) {
                 extensions.push(".tsx")
@@ -30,7 +30,7 @@ async function action(files: string[], cmd: any) {
             }
         }
     }
-    
+
     const loading = ora("Linting...")
     const lintTS = extensions.includes(".ts") || extensions.includes(".tsx")
     const eslint = new ESLint({
