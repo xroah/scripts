@@ -3,7 +3,7 @@ import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin"
 import {merge} from "webpack-merge"
 import getBaseConf from "./webpack.base"
 
-export default merge(
+export default () => merge(
     getBaseConf("development"),
     {
         plugins: [

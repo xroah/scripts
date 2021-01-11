@@ -4,7 +4,7 @@ import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
 import getBaseConf from "./webpack.base"
 import {merge} from "webpack-merge"
 
-export default merge(
+export default () => merge(
     getBaseConf("production"),
     {
         optimization: {

@@ -10,9 +10,27 @@ async function action(files: string[], cmd: any) {
         config,
         eslintrc,
         ext,
-        react
+        react,
+        ts
     } = cmd
-    const extensions = ext || [".ts", ".tsx"]
+    let extensions = ext
+
+    if (!ext) {
+        if (ts) {
+            extensions = [".ts"]
+
+            if (react) {
+                extensions.push(".tsx")
+            }
+        } else {
+            extensions = [".js"]
+
+            if (react) {
+                extensions.push(".jsx")
+            }
+        }
+    }
+
     const loading = ora("Linting...")
     const lintTS = extensions.includes(".ts") || extensions.includes(".tsx")
     const eslint = new ESLint({
@@ -51,4 +69,5 @@ program
     .option("-c, --config <config>", "Disable use of configuration from .eslintrc.*")
     .option("--no-eslintrc", "Load .eslintrc.* files")
     .option("--no-react", "No react")
+    .option("--no-ts", "Use javascript")
     .action(action)
