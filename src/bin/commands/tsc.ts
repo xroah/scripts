@@ -19,7 +19,10 @@ function initTs() {
 
 function spawnTsc(args: string[], removeDir?: string) {
     try {
-        removeDir && rimraf.sync(removeDir)
+        if (removeDir) {
+            rimraf.sync(removeDir)
+        }
+
         spawn(
             "tsc",
             args,

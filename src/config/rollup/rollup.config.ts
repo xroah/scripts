@@ -26,7 +26,7 @@ export default (customOption: any = {}, ts = true) => {
                 }
             )
     }
-    const plugins = [
+    const plugins: any = [
         resolve(),
         cjs(),
         ts && typescript({
@@ -44,9 +44,9 @@ export default (customOption: any = {}, ts = true) => {
             exclude: /node_modules/,
             extensions: [".ts", ".tsx", ".js", ".jsx"],
             babelHelpers: "runtime",
-            ...getBabelConf() as any
+            ...getBabelConf()
         })
-    ].filter(Boolean) as any
+    ].filter(Boolean)
     const outputOption: OutputOptions = {
         ...commonOutputConf,
         file: path.join(dist, `${name}.js`)
