@@ -17,17 +17,13 @@ async function action(files: string[], cmd: any) {
 
     if (!ext) {
         if (ts) {
-            extensions = [".ts"]
-
-            if (react) {
-                extensions.push(".tsx")
-            }
+            extensions = ".ts"
         } else {
-            extensions = [".js"]
+            extensions = ".js"
+        }
 
-            if (react) {
-                extensions.push(".jsx")
-            }
+        if (react) {
+            extensions = [extensions, `${extensions}x`]
         }
     }
 
