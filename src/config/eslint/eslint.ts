@@ -1,31 +1,26 @@
 export default (react: Boolean, lintTS: boolean) => {
     const config: any = {
-        "env": {
-            "browser": true,
-            "es6": true,
-            "node": true
+        env: {
+            browser: true,
+            es6: true,
+            node: true
         },
-        "extends": [
-            "eslint:recommended",
-            lintTS && "plugin:@typescript-eslint/eslint-recommended",
-            react && "plugin:react/recommended"
-        ].filter(Boolean),
-        "globals": {
-            "Atomics": "readonly",
-            "SharedArrayBuffer": "readonly"
+        extends: [
+            "eslint:recommended"
+        ],
+        globals: {
+            Atomics: "readonly",
+            SharedArrayBuffer: "readonly"
         },
-        "parserOptions": {
-            "ecmaFeatures": {
-                "jsx": true
+        parserOptions: {
+            ecmaFeatures: {
+                jsx: true
             },
-            "ecmaVersion": 2018,
-            "sourceType": "module"
+            ecmaVersion: 2018,
+            sourceType: "module"
         },
-        "plugins": [
-            react && "react",
-            lintTS && "@typescript-eslint"
-        ].filter(Boolean),
-        "rules": {
+        plugins: [],
+        rules: {
             // require or disallow semicolons instead of ASI
             "semi": [2, "never"],
             // enforce consistent brace style for blocks, default 1tbs
@@ -143,11 +138,19 @@ export default (react: Boolean, lintTS: boolean) => {
 
     if (lintTS) {
         config.parser = require.resolve("@typescript-eslint/parser")
+
+        config.extends.push("plugin:@typescript-eslint/eslint-recommended")
+        config.plugins.push("@typescript-eslint")
         // no-use-before-define may cause: 'React' was used before it was defined
         config.rules["@typescript-eslint/no-use-before-define"] = noUseRule
     } else {
         // disallow the use of variables before they are defined
         config.rules["no-use-before-define"] = noUseRule
+    }
+
+    if (react) {
+        config.extends.push("plugin:react/recommended")
+        config.plugins.push("react")
     }
 
     return config

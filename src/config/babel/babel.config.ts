@@ -1,7 +1,7 @@
 import loadConfig from "../../bin/utils/load-config"
 import mergeBabel from "../../bin/utils/merge-babel"
 
-export default () => {
+export default (runtime = true) => {
     const env = process.env.BABEL_ENV || process.env.NODE_ENV
     const customConfig = loadConfig().babel
 
@@ -17,12 +17,18 @@ export default () => {
             ],
             require.resolve("@babel/preset-react"),
             require.resolve("@babel/preset-typescript")
-        ].filter(Boolean),
+        ],
         plugins: [
-            require.resolve("@babel/plugin-transform-runtime"),
-            require.resolve("@babel/plugin-proposal-class-properties"),
-            env === "development" && require.resolve("react-refresh/babel")
-        ].filter(Boolean)
+            require.resolve("@babel/plugin-proposal-class-properties")
+        ]
+    }
+
+    if (runtime) {
+        config.plugins.push(require.resolve("@babel/plugin-transform-runtime"))
+    }
+
+    if (env === "development") {
+        config.plugins.push(require.resolve("react-refresh/babel"))
     }
 
     return mergeBabel(config, customConfig)
