@@ -1,4 +1,4 @@
-import addSpace from "./add-space"
+import padSpace from "./pad-space"
 
 export default (str: string, length: number) => {
     const l = str.length
@@ -9,5 +9,5 @@ export default (str: string, length: number) => {
 
     const restLen = length - l
 
-    return addSpace(str, restLen)
+    return padSpace(str, restLen)
 }
