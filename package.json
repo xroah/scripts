@@ -2,9 +2,10 @@
   "name": "webpack-build-helper",
   "version": "1.3.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -16,8 +17,6 @@
     "url": "https://github.com/xroah/webpack-build-helper/issues"
   },
   "files": [
-    "index.js",
-    "index.d.ts",
     "lib"
   ],
   "homepage": "https://github.com/xroah/webpack-build-helper#readme",
