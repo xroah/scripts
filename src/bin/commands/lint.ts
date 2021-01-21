@@ -1,7 +1,6 @@
 import {ESLint} from "eslint"
 import {program} from "commander"
 import getBaseConfig from "../../config/eslint/eslint"
-import ora from "ora"
 import path from "path"
 
 async function action(files: string[], cmd: any) {
@@ -27,7 +26,7 @@ async function action(files: string[], cmd: any) {
         }
     }
 
-    const loading = ora("Linting...")
+    
     const lintTS = extensions.includes(".ts") || extensions.includes(".tsx")
     const eslint = new ESLint({
         useEslintrc: eslintrc,
@@ -39,8 +38,6 @@ async function action(files: string[], cmd: any) {
         resolvePluginsRelativeTo: path.join(__dirname, "../..")
     })
 
-    loading.start()
-
     try {
         const results = await eslint.lintFiles(files)
         const formatter = await eslint.loadFormatter("stylish")
@@ -50,10 +47,8 @@ async function action(files: string[], cmd: any) {
             ESLint.outputFixes(results)
         }
 
-        loading.stop()
         console.log(resultText)
     } catch (error) {
-        loading.stop()
         console.log(error)
     }
 }

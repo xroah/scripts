@@ -1,7 +1,7 @@
 import loadConfig from "../../bin/utils/load-config"
 import mergeBabel from "../../bin/utils/merge-babel"
 
-export default (runtime = true) => {
+export default () => {
     const env = process.env.BABEL_ENV || process.env.NODE_ENV
     const customConfig = loadConfig().babel
 
@@ -19,12 +19,9 @@ export default (runtime = true) => {
             require.resolve("@babel/preset-typescript")
         ],
         plugins: [
+            require.resolve("@babel/plugin-transform-runtime"),
             require.resolve("@babel/plugin-proposal-class-properties")
         ]
-    }
-
-    if (runtime) {
-        config.plugins.push(require.resolve("@babel/plugin-transform-runtime"))
     }
 
     if (env === "development") {
