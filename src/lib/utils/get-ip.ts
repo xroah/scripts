@@ -8,6 +8,10 @@ export default () => {
     for (let item in ni) {
         const tmp = ni[item]
 
+        if (!tmp) {
+            continue
+        }
+
         for (let i = 0, l = tmp.length; i < l; i++) {
             const {
                 address,

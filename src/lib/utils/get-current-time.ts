@@ -14,6 +14,6 @@ export default () => {
         (100 + num).toString().substring(1)
 
     return "Y-M-D h:m:s".split("").map(
-        k => map.has(k) ? convert(map.get(k)) : k
+        k => map.has(k) ? convert(map.get(k) as number) : k
     ).join("")
 }

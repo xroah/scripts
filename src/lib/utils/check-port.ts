@@ -5,7 +5,11 @@ const MAX_PORT = 65535
 
 let count = 0
 
-function startServer(port, host, callback) {
+function startServer(
+    port: number,
+    host: string,
+    callback: Function
+) {
     const server = new net.Server()
 
     server.listen(port, host, () => {
