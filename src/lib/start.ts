@@ -111,7 +111,7 @@ function startDevServer(
     })
 }
 
-export default (
+export = (
     webpackConfig: webpack.Configuration,
     devServerOptions: DevServerConf
 ) => {

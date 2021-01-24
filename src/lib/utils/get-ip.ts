@@ -1,7 +1,7 @@
 import os from "os"
 import defaultGateway from "default-gateway"
 
-export default () => {
+export = () => {
     const ni = os.networkInterfaces()
     const gateway = defaultGateway.v4.sync()
 

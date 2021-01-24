@@ -1,6 +1,6 @@
 import padSpace from "./pad-space"
 
-export default (str: string, length: number) => {
+export = (str: string, length: number) => {
     const l = str.length
 
     if (l > length) {

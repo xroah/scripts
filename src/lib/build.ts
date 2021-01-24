@@ -57,7 +57,7 @@ function statsAssets(assets: any[], outputPath: string) {
     console.log()
 }
 
-export default (webpackConfig: webpack.Configuration) => {
+export = (webpackConfig: webpack.Configuration) => {
     const outputPath = webpackConfig.output!.path || path.join(process.cwd(), "dist")
 
     spinner.start()
