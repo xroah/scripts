@@ -1,6 +1,6 @@
 export default (defaultConfig: any, customConfig: any) => {
     if (!customConfig) {
-        return
+        return defaultConfig
     }
 
     const {
