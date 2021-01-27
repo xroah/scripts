@@ -60,7 +60,7 @@ function startDevServer(
         if (stats.hasErrors()) {
             console.log(chalk.red("Failed to compile."))
             console.log(
-                stats.toJson().errors.map((e: any) => e.stack).join("\n\n")
+                stats.toJson().errors.map((e: any) => e.message).join("\n\n")
             )
         } else {
 

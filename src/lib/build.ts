@@ -79,7 +79,7 @@ export = (webpackConfig: webpack.Configuration) => {
             if (stats.hasErrors()) {
                 console.log(chalk.red("Failed to build."))
                 console.log(
-                    stats.toJson().errors.map((e: any) => e.stack).join("\n\n")
+                    stats.toJson().errors.map((e: any) => e.message).join("\n\n")
                 )
 
                 return
