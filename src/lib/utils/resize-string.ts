@@ -1,13 +1,11 @@
 import padSpace from "./pad-space"
 
 export = (str: string, length: number) => {
-    const l = str.length
+    const len = str.length
 
-    if (l > length) {
+    if (len > length) {
         return str.substring(0, length + 1)
     }
 
-    const restLen = length - l
-
-    return padSpace(str, restLen)
+    return padSpace(str, length - len)
 }
