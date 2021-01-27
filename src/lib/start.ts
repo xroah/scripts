@@ -118,6 +118,12 @@ export = (
     const options = handleOption(devServerOptions)
     const port = options.port as number
 
+    if ((options as any).progress !== false) {
+        (webpackConfig.plugins || []).push(new webpack.ProgressPlugin({
+            activeModules: true
+        }))
+    }
+
     checkPort(
         port,
         options.host as string,
