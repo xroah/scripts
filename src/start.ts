@@ -1,7 +1,7 @@
 import open from "open"
 import chalk from "chalk"
 import webpack from "webpack"
-import DevServer, {Configuration as DevServerConf} from "webpack-dev-server"
+import DevServer, { Configuration as DevServerConf } from "webpack-dev-server"
 import checkPort from "./utils/check-port"
 import clearConsole from "./utils/clear-console"
 import getIp from "./utils/get-ip"
@@ -26,6 +26,31 @@ function handleOption(options: DevServerConf) {
     return _options
 }
 
+function handleHost(host?: string) {
+    const lh = "localhost"
+
+    if (!host) {
+        return lh
+    }
+
+    if (host === DEFAULT_HOST) {
+        return lh
+    }
+
+    return host
+}
+
+function handlePort(port: number, https = false) {
+    if (
+        (https && port === 443) ||
+        port === 80
+    ) {
+        return ""
+    }
+
+    return `:${port}`
+}
+
 function startDevServer(
     webpackConfig: webpack.Configuration,
     options: DevServerConf
@@ -33,19 +58,19 @@ function startDevServer(
     const {
         open: _open,
         port,
-        host
+        host,
+        https
     } = options
-    const protocol = options.https ? "https" : "http"
+    const protocol = https ? "https" : "http"
     //windows can not open 0.0.0.0:port
     options.open = false
     const compiler = webpack(webpackConfig)
     const server = new DevServer(compiler, options)
     const events = ["SIGINT", "SIGTERM"]
+    const localUrl = `${protocol}://${handleHost(host)}${handlePort(port!, !!https)}`
 
     if (_open) {
-        const h = (!host || host === DEFAULT_HOST) ? "localhost" : host
-
-        open(`${protocol}://${h}${port === 80 ? "" : (":" + port)}`)
+        open(localUrl)
     }
 
     compiler.hooks.compile.tap("compile", () => {
@@ -78,11 +103,11 @@ function startDevServer(
             console.log()
             console.log(
                 `${resizeString("Local:", LABEL_LENGTH)} `,
-                chalk.bold(chalk.cyan(`${protocol}://localhost:${port}`))
+                chalk.bold(chalk.cyan(localUrl))
             )
             console.log(
                 `${resizeString("Network:", LABEL_LENGTH)} `,
-                chalk.bold(chalk.cyan(`${protocol}://${getIp()}:${port}`))
+                chalk.bold(chalk.cyan(`${protocol}://${getIp()}${handlePort(port!, !!https)}`))
             )
             console.log()
             console.log(
