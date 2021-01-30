@@ -9,13 +9,14 @@ import padSpace from "./utils/pad-space"
 import resizeString from "./utils/resize-string"
 import getCurrentTime from "./utils/get-current-time"
 
+const DEFAULT_PORT = 3000
+const DEFAULT_HOST = "0.0.0.0"
+
 function isPlainObject(obj: any) {
     return !!obj && Object.prototype.toString.call(obj) === "[object Object]"
 }
 
 function handleOption(options: DevServerConf) {
-    const DEFAULT_PORT = 3000
-    const DEFAULT_HOST = "0.0.0.0"
     const _options = isPlainObject(options) ? options : {}
 
     _options.quiet = true
@@ -31,7 +32,8 @@ function startDevServer(
 ) {
     const {
         open: _open,
-        port
+        port,
+        host
     } = options
     const protocol = options.https ? "https" : "http"
     //windows can not open 0.0.0.0:port
@@ -41,7 +43,9 @@ function startDevServer(
     const events = ["SIGINT", "SIGTERM"]
 
     if (_open) {
-        open(`${protocol}://localhost:${port}`)
+        const h = (!host || host === DEFAULT_HOST) ? "localhost" : host
+
+        open(`${protocol}://${h}${port === 80 ? "" : (":" + port)}`)
     }
 
     compiler.hooks.compile.tap("compile", () => {
