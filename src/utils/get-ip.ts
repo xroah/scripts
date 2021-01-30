@@ -4,12 +4,18 @@ import defaultGateway from "default-gateway"
 export = () => {
     const ni = os.networkInterfaces()
     const gateway = defaultGateway.v4.sync()
+    let ret
+    let first
 
     for (let item in ni) {
         const tmp = ni[item]
 
         if (!tmp) {
             continue
+        }
+
+        if (!first) {
+            first = tmp
         }
 
         for (let i = 0, l = tmp.length; i < l; i++) {
@@ -24,8 +30,15 @@ export = () => {
                 item === gateway.interface &&
                 family.toLowerCase() === "ipv4"
             ) {
-                return address
+                ret = address
             }
         }
     }
+
+    //use the first address
+    if (!ret && first) {
+        ret = first[0].address
+    }
+
+    return ret
 }

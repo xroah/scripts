@@ -37,8 +37,8 @@ function statsAssets(assets: any[], outputPath: string) {
         const ext = path.extname(name)
         const filePath = `${outputPath}${path.sep}${name}`
         const relativePath = path.relative(process.cwd(), filePath)
-        const sizeStr = resizeString(convertSize(size), 15)
-        const ret = `   ${sizeStr}${path.normalize(relativePath)}`
+        const sizeStr = resizeString(convertSize(size), 18)
+        const ret = `${sizeStr}${path.normalize(relativePath)}`
         switch (ext) {
             case ".js":
                 js.push(chalk.yellow(ret))
