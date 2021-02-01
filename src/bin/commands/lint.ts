@@ -10,7 +10,8 @@ async function action(files: string[], cmd: any) {
         eslintrc,
         ext,
         react,
-        ts
+        ts,
+        resolvePluginsRelativeTo
     } = cmd
     let extensions = ext
 
@@ -34,7 +35,7 @@ async function action(files: string[], cmd: any) {
         cwd: process.cwd(),
         baseConfig: getBaseConfig(react, lintTS),
         overrideConfigFile: config,
-        resolvePluginsRelativeTo: path.join(__dirname, "../..")
+        resolvePluginsRelativeTo: resolvePluginsRelativeTo || path.join(__dirname, "../..")
     })
 
     try {
@@ -54,10 +55,11 @@ async function action(files: string[], cmd: any) {
 
 program
     .command("lint <files...>")
-    .option("--ext <extensions...>", "Extensions")
+    .option("--ext <extensions...>", "File extensions - default .ts,.tsx")
     .option("--fix", "Auto fix")
-    .option("-c, --config <config>", "Disable use of configuration from .eslintrc.*")
-    .option("--no-eslintrc", "Load .eslintrc.* files")
-    .option("--no-react", "No react")
-    .option("--no-ts", "Use javascript")
+    .option("-c, --config <config>", "Use this configuration, overriding .eslintrc.* config options")
+    .option("--no-eslintrc", "Disables use of configuration from .eslintrc.* and package.json files")
+    .option("--no-react", "Do not lint .[jt]sx files")
+    .option("--no-ts", "Lint javascript only")
+    .option("--resolve-plugins-relative-to <path>", "A folder where plugins should be resolved from, the module(reap-scripts) directory by default")
     .action(action)

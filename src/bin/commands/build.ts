@@ -103,7 +103,7 @@ function action(cmd: any) {
 program
     .command("build")
     .option("-r, --rollup", "Use rollup to build")
-    .option("--no-ts", "Use javascript")
+    .option("--no-ts", "Build javascript")
     .option("-c, --config <configFile>", "Configuration file")
     .option("-o, --outDir <dir>", "Output dir")
     .option("-e, --entry <entry>", "Entry file")

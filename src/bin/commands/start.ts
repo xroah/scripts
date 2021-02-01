@@ -45,7 +45,7 @@ function action(cmd: any) {
 program
     .command("start")
     .option("-p, --port [port]", "Specify a port")
-    .option("-c, --config <config>", "Configuration file")
+    .option("-c, --config <configFile>", "Configuration file")
     .option("--no-ts", "Use javascript")
     .option("-o, --open", "Open browser")
     .option("-e, --entry <entry>", "Entry file")
