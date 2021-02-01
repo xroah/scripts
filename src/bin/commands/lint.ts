@@ -16,16 +16,15 @@ async function action(files: string[], cmd: any) {
 
     if (!ext) {
         if (ts) {
-            extensions = ".ts"
+            extensions = [".ts"]
         } else {
-            extensions = ".js"
+            extensions = [".js"]
         }
 
         if (react) {
-            extensions = [extensions, `${extensions}x`]
+            extensions = [...extensions, `${extensions}x`]
         }
     }
-
     
     const lintTS = extensions.includes(".ts") || extensions.includes(".tsx")
     const eslint = new ESLint({
