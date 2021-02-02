@@ -73,6 +73,7 @@
     "@types/mini-css-extract-plugin": "^1.2.2",
     "@types/rimraf": "^3.0.0",
     "@types/terser-webpack-plugin": "^5.0.2",
-    "@types/webpack-dev-server": "^3.11.1"
+    "@types/webpack-dev-server": "^3.11.1",
+    "camelcase": "^6.2.0"
   }
 }
