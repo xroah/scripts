@@ -26,7 +26,7 @@ async function action(files: string[], cmd: any) {
             extensions = [...extensions, `${extensions}x`]
         }
     }
-    
+
     const lintTS = extensions.includes(".ts") || extensions.includes(".tsx")
     const eslint = new ESLint({
         useEslintrc: eslintrc,
