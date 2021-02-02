@@ -19,7 +19,6 @@ export default () => {
             require.resolve("@babel/preset-typescript")
         ],
         plugins: [
-            require.resolve("@babel/plugin-transform-runtime"),
             require.resolve("@babel/plugin-proposal-class-properties")
         ]
     }

@@ -19,5 +19,9 @@ export default (defaultConfig: any, customConfig: any) => {
     ret.presets = defaultConfig.presets.concat(restConfig.presets || [])
     ret.plugins = defaultConfig.plugins.concat(restConfig.plugins || [])
 
+    if (restConfig.runtime !== false) {
+        ret.plugins.push(require.resolve("@babel/plugin-transform-runtime"))
+    }
+
     return ret
 }
