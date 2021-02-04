@@ -3,7 +3,7 @@ import fs from "fs"
 import path from "path"
 import getAbsPath from "./get-abs-path";
 
-const cacheDir = path.join(process.cwd(), ".reap-cache")
+const cacheDir = path.join(__dirname, "../../", ".cache")
 
 if (!fs.existsSync(cacheDir)) {
     fs.mkdirSync(cacheDir)
