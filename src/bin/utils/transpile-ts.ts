@@ -16,6 +16,14 @@ export default (filename: string) => {
     const result = transpileModule(source, {compilerOptions: {module: ModuleKind.CommonJS}});
 
     fs.writeFileSync(outputFilename, result.outputText.toString())
+
+    process.nextTick(() => {
+        try {
+           fs.unlinkSync(outputFilename) 
+        } catch (error) {
+            // do nothing
+        }
+    })
     
     return outputFilename
 }
