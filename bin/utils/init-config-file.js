@@ -53,7 +53,7 @@ module.exports = {
         babelPresets.push("@babel/preset-typescript")
         //copy tsconfig.json
         fs.copyFileSync(
-            path.join(__dirname, "../template/tsconfig.json"),
+            path.join(__dirname, "../../template/tsconfig.json"),
             path.join(appDir, "tsconfig.json")
         )
     }
