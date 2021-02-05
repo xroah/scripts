@@ -9,32 +9,41 @@ const packageJSON = {
     }
 }
 const copy = require("./copy")
-const BABEL_PRESETS_PLACEHOLDER = "BABEL_PRESETS_PLACEHOLDER"
-const babelPresets = ["@babel/preset-env", "@babel/preset-react"]
 
-function babelConf(api) {
+function babelConf(useTypescript) {
+    const presets = [
+        '"@babel/preset-env"',
+        '"@babel/preset-react"',
+        useTypescript && '"@babel/preset-typescript"'
+    ].filter(Boolean)
+
+    return `api => {
     const isDev = api.env("development")
-    const cfg = {
-        presets: BABEL_PRESETS_PLACEHOLDER,
-        plugins: ["@babel/plugin-transform-runtime", "@babel/plugin-proposal-class-properties"]
+    const conf = {
+        presets: [
+            ${presets.join(",\n\t\t\t")}
+        ],
+        plugins: [
+            "@babel/plugin-transform-runtime",
+            "@babel/plugin-proposal-class-properties"
+        ]
     }
 
     if (isDev) {
-        cfg.plugins.push("react-refresh/babel")
+        conf.plugins.push("react-refresh/babel")
     }
 
-    return cfg
+    return conf
+}`
 }
 
 module.exports = function initConfigFile(baseDir, appDir, appName, useTypescript) {
-    const babelFunStr = `module.exports = ${babelConf.toString()}`
+    const babelFunStr = `module.exports = ${babelConf(useTypescript).toString()}`
     //confg/app.config.js
-    const appConfig = `
-module.exports = {
+    const appConfig = `module.exports = {
     appIndex: "${useTypescript ? "./src/index.tsx" : "./src/index.jsx"}",
     typescript: ${useTypescript}
-}
-    `
+}`
     const srcDir = path.join(
         baseDir,
         "src",
@@ -50,7 +59,6 @@ module.exports = {
     )
 
     if (useTypescript) {
-        babelPresets.push("@babel/preset-typescript")
         //copy tsconfig.json
         fs.copyFileSync(
             path.join(__dirname, "../../template/tsconfig.json"),
@@ -61,10 +69,7 @@ module.exports = {
     //write babel.config.js
     fs.writeFileSync(
         path.join(appDir, "babel.config.js"),
-        babelFunStr.replace(
-            BABEL_PRESETS_PLACEHOLDER,
-            JSON.stringify(babelPresets)
-        )
+        babelFunStr
     )
     //copy build dir
     copy(path.join(baseDir, "build"), buildDir)
