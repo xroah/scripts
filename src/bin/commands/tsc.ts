@@ -44,7 +44,7 @@ function action(file: string, cmd: any) {
         declaration,
         dDir
     } = cmd
-    const args = ["-t", "ES6"]
+    const args = []
 
     if (init) {
         initTs()
@@ -74,6 +74,8 @@ function action(file: string, cmd: any) {
         spawnTsc(
             [
                 ...args,
+                "-t",
+                "ES5",
                 "-m",
                 "CommonJS",
                 "--outDir",
@@ -87,6 +89,8 @@ function action(file: string, cmd: any) {
         spawnTsc(
             [
                 ...args,
+                "-t",
+                "ESNEXT",
                 "-m",
                 "ESNext",
                 "--outDir",
