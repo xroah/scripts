@@ -26,7 +26,8 @@ module.exports = function getBaseConf() {
                 }]
             }, {
                 test: /\.(j|t)sx?$/,
-                use: ["babel-loader"]
+                use: ["babel-loader"],
+                exclude: /node_modules/
             }]
         },
         plugins: [
