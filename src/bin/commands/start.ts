@@ -2,8 +2,8 @@ import {program} from "commander"
 import getDevConf from "../../config/webpack/webpack.dev"
 import {start as startDevServer} from "webpack-build-helper"
 import devServerConf from "../../config/webpack/server.config"
-import merge from "../utils/merge-webpack"
-import setEnv from "../utils/set-env"
+import merge from "../../utils/merge-webpack"
+import setEnv from "../../utils/set-env"
 
 function action(cmd: any) {
     const {

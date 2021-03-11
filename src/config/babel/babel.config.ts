@@ -1,5 +1,5 @@
-import loadConfig from "../../bin/utils/load-config"
-import mergeBabel from "../../bin/utils/merge-babel"
+import loadConfig from "../../utils/load-config"
+import mergeBabel from "../../utils/merge-babel"
 
 export default () => {
     const env = process.env.BABEL_ENV || process.env.NODE_ENV

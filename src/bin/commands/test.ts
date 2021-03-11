@@ -2,7 +2,7 @@ import {program} from "commander"
 import path from "path"
 import defaultJestConf from "../../config/jest/jest.config"
 import {run as runTest} from "jest"
-import setEnv from "../utils/set-env"
+import setEnv from "../../utils/set-env"
 
 function action(files: string, cmd: any) {
     const packageJSON = require(path.join(process.cwd(), "package.json"))

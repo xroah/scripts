@@ -1,4 +1,4 @@
-import defaultHTMLPluginOptions from "../../config/webpack/html-webpack-plugin"
+import defaultHTMLPluginOptions from "../config/webpack/html-webpack-plugin"
 import {merge} from "webpack-merge"
 import {Configuration} from "webpack"
 import HTMLWebpackPlugin from "html-webpack-plugin"
