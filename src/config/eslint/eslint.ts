@@ -130,12 +130,6 @@ export default (react: Boolean, lintTS: boolean) => {
     }
     const noUseRule = [2, {functions: false}]
 
-    if (react) {
-        config.settings.react = {
-            "version": "detect"
-        }
-    }
-
     if (lintTS) {
         config.parser = require.resolve("@typescript-eslint/parser")
 
@@ -149,6 +143,10 @@ export default (react: Boolean, lintTS: boolean) => {
     }
 
     if (react) {
+        config.settings.react = {
+            "version": "detect"
+        }
+
         config.extends.push("plugin:react/recommended")
         config.plugins.push("react")
     }
