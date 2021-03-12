@@ -7,7 +7,6 @@ export default {
     testMatch: [
         "<rootDir>/tests/**/*.spec.[jt]s?(x)"
     ],
-    testEnvironment: "jsdom",
     transform: {
         "\\.[jt]sx?$": resolve(__dirname, "./babel-transform.js"),
         "\\.s?css$": resolve(__dirname, "./css-transform.js"),
