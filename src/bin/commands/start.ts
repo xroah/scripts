@@ -45,9 +45,9 @@ function action(cmd: any) {
 program
     .command("start")
     .option("-p, --port [port]", "Specify a port")
-    .option("-c, --config <configFile>", "Configuration file")
+    .option("-c, --config <file>", "Configuration file")
     .option("--no-ts", "Use javascript")
     .option("-o, --open", "Open browser")
-    .option("-e, --entry <entry>", "Entry file")
-    .option("--index <index>", "index.html file")
+    .option("-e, --entry <entry>", "Entry file, default src/[jt]sx")
+    .option("--index <index>", "index.html file, default public/index.html")
     .action(action)
