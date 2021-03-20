@@ -67,7 +67,6 @@ function startDevServer(
                 stats.toJson().errors.map((e: any) => e.message).join("\n\n")
             )
         } else {
-
             console.log()
             console.log(
                 time +
@@ -123,9 +122,11 @@ export = (
     const port = options.port as number
 
     if ((options as any).progress !== false) {
-        (webpackConfig.plugins || []).push(new webpack.ProgressPlugin({
-            activeModules: true
-        }))
+        (webpackConfig.plugins || []).push(
+            new webpack.ProgressPlugin({
+                activeModules: true
+            })
+        )
     }
 
     checkPort(
