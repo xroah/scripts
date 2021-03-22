@@ -18,7 +18,7 @@
   "files": [
     "bin",
     "config",
-    "template"
+    "utils"
   ],
   "bugs": {
     "url": "https://github.com/reap-ui/reap-scripts/issues"
