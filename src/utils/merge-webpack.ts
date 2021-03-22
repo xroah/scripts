@@ -23,7 +23,7 @@ export default (
 
     const customConfig = loadConfig(configFile)
     const htmlPluginOptions = customConfig.htmlWebpackPlugin
-    merged = merge(baseConf, customConfig.webpack)
+    merged = merge(baseConf, customConfig.webpack || {})
 
     // Do not need html-webpack-plugin
     if (htmlPluginOptions === false) {
