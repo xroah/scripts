@@ -11,5 +11,6 @@ import "./commands/rm"
 const packageJSON = require("../package.json")
 
 program
+    .name("reap-scripts")
     .version(packageJSON.version, "-v, --version")
     .parse()
