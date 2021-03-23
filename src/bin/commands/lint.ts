@@ -1,7 +1,7 @@
 import {ESLint} from "eslint"
 import {program} from "commander"
 import getBaseConfig from "../../config/eslint/eslint"
-import path from "path"
+import getProjectRoot from "../../utils/get-project-root"
 
 async function action(files: string[], cmd: any) {
     const {
@@ -35,7 +35,7 @@ async function action(files: string[], cmd: any) {
         cwd: process.cwd(),
         baseConfig: getBaseConfig(react, lintTS),
         overrideConfigFile: config,
-        resolvePluginsRelativeTo: resolvePluginsRelativeTo || path.join(__dirname, "../..")
+        resolvePluginsRelativeTo: resolvePluginsRelativeTo || getProjectRoot()
     })
 
     try {

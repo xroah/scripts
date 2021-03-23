@@ -2,8 +2,9 @@ import {transpileModule, ModuleKind} from "typescript";
 import fs from "fs"
 import path from "path"
 import getAbsPath from "./get-abs-path";
+import getProjectRoot from "./get-project-root";
 
-const cacheDir = path.join(__dirname, "../../", ".cache")
+const cacheDir = path.join(getProjectRoot(), ".cache")
 
 if (!fs.existsSync(cacheDir)) {
     fs.mkdirSync(cacheDir)

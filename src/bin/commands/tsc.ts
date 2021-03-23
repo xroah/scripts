@@ -4,17 +4,19 @@ import fs from "fs"
 import path from "path"
 import spawn from "cross-spawn"
 import rimraf from "rimraf"
+import getProjectRoot from "../../utils/get-project-root"
 
 function initTs() {
-    const filePath = path.join(__dirname, "../../tsconfig.json")
-    const destFile = path.join(process.cwd(), "tsconfig.json")
+    const FILENAME = "tsconfig.json"
+    const filePath = path.join(getProjectRoot(), FILENAME)
+    const destFile = path.join(process.cwd(), FILENAME)
 
     if (fs.existsSync(destFile)) {
-        return console.log(chalk.red("tsconfig.json already exists"))
+        return console.log(chalk.red(`${FILENAME} already exists`))
     }
 
     fs.copyFileSync(filePath, destFile)
-    console.log(chalk.green("Successfully created a tsconfig.json file"))
+    console.log(chalk.green(`Successfully created a ${FILENAME} file`))
 }
 
 function spawnTsc(args: string[], removeDir?: string) {
