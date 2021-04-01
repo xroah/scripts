@@ -10,3 +10,4 @@ program
             console.log(error)
         }
     })
+    .parse()
