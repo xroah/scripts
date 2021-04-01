@@ -45,3 +45,4 @@ program
     .option("-o, --outputFile <outputFile>", "Write test results to a file when the --json option is also specified")
     .option("--verbose", "Display individual test results with the test suite hierarchy")
     .action(action)
+    .parse()

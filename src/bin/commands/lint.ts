@@ -63,3 +63,4 @@ program
     .option("--no-ts", "Lint javascript only")
     .option("--resolve-plugins-relative-to <path>", "A folder where plugins should be resolved from, the module(reap-scripts) directory by default")
     .action(action)
+    .parse()

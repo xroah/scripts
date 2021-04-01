@@ -51,3 +51,4 @@ program
     .option("-e, --entry <entry>", "Entry file, default src/[jt]sx")
     .option("--index <index>", "index.html file, default public/index.html")
     .action(action)
+    .parse()

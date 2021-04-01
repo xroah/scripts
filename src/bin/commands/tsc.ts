@@ -111,3 +111,4 @@ program
     .option("-d, --declaration", "Generate declaration files")
     .option("--dDir <dir>", "Output directory for generated declaration files")
     .action(action)
+    .parse()

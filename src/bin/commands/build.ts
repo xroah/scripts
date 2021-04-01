@@ -112,3 +112,4 @@ program
     .option("--exclude <files...>", "Typescript excludes(rollup only)")
     .option("--index <index>", "index.html file, default public/index.html")
     .action(action)
+    .parse()
