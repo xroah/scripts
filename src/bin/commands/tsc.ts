@@ -5,6 +5,7 @@ import path from "path"
 import spawn from "cross-spawn"
 import rimraf from "rimraf"
 import getProjectRoot from "../../utils/get-project-root"
+import {NAME} from "../constants"
 
 function initTs() {
     const FILENAME = "tsconfig.json"
@@ -104,6 +105,7 @@ function action(file: string, cmd: any) {
 }
 
 program
+    .name(NAME)
     .command("tsc [file]")
     .option("--init", "Init tsconfig.json")
     .option("--lib", "Build commonjs")

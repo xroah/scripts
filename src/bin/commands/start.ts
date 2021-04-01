@@ -4,6 +4,7 @@ import {start as startDevServer} from "webpack-build-helper"
 import devServerConf from "../../config/webpack/server.config"
 import merge from "../../utils/merge-webpack"
 import setEnv from "../../utils/set-env"
+import {NAME} from "../constants"
 
 function action(cmd: any) {
     const {
@@ -43,6 +44,7 @@ function action(cmd: any) {
 }
 
 program
+    .name(NAME)
     .command("start")
     .option("-p, --port [port]", "Specify a port")
     .option("-c, --config <file>", "Configuration file")

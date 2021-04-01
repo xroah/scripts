@@ -10,6 +10,7 @@ import rimraf from "rimraf"
 import loadConfig from "../../utils/load-config"
 import setEnv from "../../utils/set-env"
 import getAbsPath from "../../utils/get-abs-path"
+import {NAME} from "../constants"
 
 function removeDist(dist: string) {
     try {
@@ -101,6 +102,7 @@ function action(cmd: any) {
 }
 
 program
+    .name(NAME)
     .command("build")
     .option("-r, --rollup", "Use rollup to build")
     .option("--no-ts", "Build javascript")
