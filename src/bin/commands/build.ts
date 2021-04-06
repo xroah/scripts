@@ -34,24 +34,21 @@ async function rollupBuild(cmd: any) {
     ])
     const loading = ora("Building for production use rollup...")
     const cmdConfig: any = {}
-    let customConfig: any = loadConfig(config).rollup
 
     for (let c in cmd) {
         if (cmdSet.has(c)) {
             cmdConfig[c] = cmd[c]
         }
     }
-
-    customConfig = {
-        ...customConfig,
-        ...cmdConfig
-    }
     const {
         options: rollupOptions,
         outputOption,
         outputProdOption,
         dist
-    } = getRollupOptions(customConfig, ts)
+    } = getRollupOptions({
+        ...loadConfig(config).rollup,
+        ...cmdConfig
+    }, ts)
 
     loading.start()
     removeDist(dist)
