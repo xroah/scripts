@@ -1,31 +1,48 @@
 import loadConfig from "../../utils/load-config"
-import mergeBabel from "../../utils/merge-babel"
+
+function handleBabelConf(config: any, env?: string) {
+    const RUNTIME_PLUGIN = "@babel/plugin-transform-runtime"
+    const REACT_REFRESH = "react-refresh/babel"
+    const ret = {
+        ...config
+    } as any
+    const presets = [
+        [
+            require.resolve("@babel/preset-env"),
+            {
+                modules: env === "test" ? "cjs" : false
+            }
+        ],
+        require.resolve("@babel/preset-react"),
+        require.resolve("@babel/preset-typescript")
+    ]
+    const plugins: string[] = [].concat(ret.plugins || [])
+    ret.presets = presets.concat(ret.presets || [])
+
+    if (config.runtime !== false && !plugins.includes(RUNTIME_PLUGIN)) {
+        plugins.push(require.resolve(RUNTIME_PLUGIN))
+    }
+
+    if (env === "development" && plugins.includes(REACT_REFRESH)) {
+        plugins.push(require.resolve(REACT_REFRESH))
+    }
+
+    ret.plugins = plugins
+
+    return ret
+}
 
 export default () => {
     const env = process.env.BABEL_ENV || process.env.NODE_ENV
-    const customConfig = loadConfig().babel
+    const config = loadConfig().babel || {}
+    const {
+        merge,
+        ...restConfig
+    } = config
 
-    const config = {
-        babelrc: false,
-        configFile: false,
-        presets: [
-            [
-                require.resolve("@babel/preset-env"),
-                {
-                    modules: env === "test" ? "cjs" : false
-                }
-            ],
-            require.resolve("@babel/preset-react"),
-            require.resolve("@babel/preset-typescript")
-        ],
-        plugins: [
-            require.resolve("@babel/plugin-proposal-class-properties")
-        ]
+    if (merge === false) {
+        return restConfig
     }
 
-    if (env === "development") {
-        config.plugins.push(require.resolve("react-refresh/babel"))
-    }
-
-    return mergeBabel(config, customConfig)
+    return handleBabelConf(config, env)
 }
