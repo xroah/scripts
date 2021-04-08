@@ -5,7 +5,7 @@ import getAbsPath from "./get-abs-path";
 import getProjectRoot from "./get-project-root";
 
 export default (filename: string) => {
-    const cacheDir = path.join(getProjectRoot(), ".cache")
+    const cacheDir = path.join(getProjectRoot(), ".reap-cache")
     const source = fs.readFileSync(getAbsPath(filename)).toString()
     const {name} = path.parse(filename)
     const outputFilename = path.join(cacheDir, `${name}.js`)
