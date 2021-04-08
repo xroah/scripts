@@ -8,11 +8,10 @@ export default (base: string = __dirname) => {
         return root
     }
 
-    const PKG = "package.json"
     const rootDir = path.parse(base).root
 
     do {
-        if (fs.existsSync(path.join(base, PKG))) {
+        if (fs.existsSync(path.join(base, "package.json"))) {
             root = base
 
             break
