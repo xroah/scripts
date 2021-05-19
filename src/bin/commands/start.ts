@@ -7,6 +7,8 @@ import setEnv from "../../utils/set-env"
 import {NAME} from "../constants"
 
 function action(cmd: any) {
+    setEnv("development")
+
     const {
         config,
         port,
@@ -33,7 +35,6 @@ function action(cmd: any) {
         serverConf.open = open
     }
 
-    setEnv("development")
     startDevServer(
         merged,
         {
