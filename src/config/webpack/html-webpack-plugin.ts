@@ -1,5 +1,5 @@
 export default {
     template: "./public/index.html",
-    inject: true,
+    inject: "body" as "body",
     filename: "index.html"
 }
