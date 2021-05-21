@@ -1,7 +1,5 @@
 /node_modules/
 .history
-/bin
-/config
 .DS_Store
 .cache
-/utils
+dist
