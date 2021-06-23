@@ -31,8 +31,9 @@ export default (
     }
 
     const customConfig = loadConfig(configFile)
-    const htmlPluginOptions = customConfig.htmlWebpackPlugin
+    const htmlPluginOptions = customConfig.htmlWebpackPlugin || {}
     merged = merge(baseConf, customConfig.webpack || {})
+    devServer = customConfig.devServer || {}
 
     // Do not need html-webpack-plugin
     if (htmlPluginOptions === false) {
@@ -43,8 +44,6 @@ export default (
             ...htmlPluginOptions
         }
     }
-
-    devServer = customConfig.devServer || {}
 
     if (entry) {
         merged.entry = getAbsPath(entry)

@@ -20,7 +20,15 @@ function action(cmd: any) {
     const {
         merged,
         devServer
-    } = merge(getDevConf(), config, ts, entry, index)
+    } = merge(
+        getDevConf(),
+        {
+            configFile: config,
+            ts,
+            entry,
+            index
+        }
+    )
     const serverConf = {
         ...devServerConf,
         ...devServer
