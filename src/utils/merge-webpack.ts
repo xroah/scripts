@@ -5,12 +5,21 @@ import HTMLWebpackPlugin from "html-webpack-plugin"
 import loadConfig from "./load-config"
 import getAbsPath from "./get-abs-path"
 
+interface Options {
+    configFile?: string
+    ts?: boolean
+    entry?: string
+    index: string
+}
+
 export default (
     baseConf: Configuration,
-    configFile: string,
-    ts: boolean,
-    entry: string,
-    index: string
+    {
+        configFile,
+        ts,
+        entry,
+        index
+    }: Options
 ) => {
     let noHTMLPlugin = false
     let htmlOptions = {...defaultHTMLPluginOptions}

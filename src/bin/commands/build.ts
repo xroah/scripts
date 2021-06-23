@@ -83,7 +83,15 @@ function action(cmd: any) {
     } = cmd
 
     if (!useRollup) {
-        const {merged} = merge(getProdConf(), config, ts, entry, index)
+        const {merged} = merge(
+            getProdConf(),
+            {
+                configFile: config,
+                ts,
+                entry,
+                index
+            }
+        )
 
         if (outDir) {
             merged.output!.path = getAbsPath(outDir)
