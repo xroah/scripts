@@ -113,7 +113,7 @@ program
     .option("--no-ts", "Build javascript")
     .option("-c, --config <file>", "Configuration file")
     .option("-o, --outDir <dir>", "Output dir")
-    .option("-e, --entry <entry>", "Entry file, default src/[jt]sx")
+    .option("-e, --entry <entry>", "Entry file, default src/index.[jt]sx")
     .option("-n, --libName <name>", "Library name(rollup only)")
     .option("--include <files...>", "Typescript includes(rollup only)")
     .option("--exclude <files...>", "Typescript excludes(rollup only)")

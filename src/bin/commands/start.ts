@@ -59,7 +59,7 @@ program
     .option("-c, --config <file>", "Configuration file")
     .option("--no-ts", "Use javascript")
     .option("-o, --open", "Open browser")
-    .option("-e, --entry <entry>", "Entry file, default src/[jt]sx")
+    .option("-e, --entry <entry>", "Entry file, default src/index.[jt]sx")
     .option("--index <index>", "index.html file, default public/index.html")
     .action(action)
     .parse()
