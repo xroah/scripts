@@ -2,7 +2,7 @@ import webpack from "webpack"
 import chalk from "chalk"
 import ora from "ora"
 import path from "path"
-import resizeString from "./utils/resize-string"
+import resizeString from "../resize-string"
 
 const spinner = ora("Building for production")
 
@@ -79,13 +79,13 @@ export = (webpackConfig: webpack.Configuration) => {
             if (stats.hasErrors()) {
                 console.log(chalk.red("Failed to build."))
                 console.log(
-                    stats.toJson().errors.map((e: any) => e.message).join("\n\n")
+                    stats.toJson().errors?.map((e: any) => e.message).join("\n\n")
                 )
 
                 return
             }
 
-            statsAssets(stats.toJson().assets, outputPath)
+            statsAssets(stats.toJson().assets || [], outputPath)
         }
 
         console.log()

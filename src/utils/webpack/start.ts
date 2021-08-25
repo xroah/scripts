@@ -2,12 +2,12 @@ import open from "open"
 import chalk from "chalk"
 import webpack from "webpack"
 import DevServer, { Configuration as DevServerConf } from "webpack-dev-server"
-import checkPort from "./utils/check-port"
-import clearConsole from "./utils/clear-console"
-import getIp from "./utils/get-ip"
-import padSpace from "./utils/pad-space"
-import resizeString from "./utils/resize-string"
-import getCurrentTime from "./utils/get-current-time"
+import checkPort from "../check-port"
+import clearConsole from "../clear-console"
+import getIp from "../get-ip"
+import padSpace from "../pad-space"
+import resizeString from "../resize-string"
+import getCurrentTime from "../get-current-time"
 
 const DEFAULT_PORT = 3000
 const DEFAULT_HOST = "0.0.0.0"
@@ -89,7 +89,7 @@ function startDevServer(
         if (stats.hasErrors()) {
             console.log(chalk.red("Failed to compile."))
             console.log(
-                stats.toJson().errors.map((e: any) => e.message).join("\n\n")
+                stats.toJson().errors?.map((e: any) => e.message).join("\n\n")
             )
         } else {
             console.log()
