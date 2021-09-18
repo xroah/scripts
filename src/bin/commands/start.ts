@@ -1,6 +1,6 @@
 import {program} from "commander"
 import getDevConf from "../../config/webpack/webpack.dev"
-import {start as startDevServer} from "webpack-build-helper"
+import startDevServer from "../../utils/webpack/start"
 import devServerConf from "../../config/webpack/server.config"
 import merge from "../../utils/merge-webpack"
 import setEnv from "../../utils/set-env"

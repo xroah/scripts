@@ -1,6 +1,6 @@
 import {program} from "commander"
 import merge from "../../utils/merge-webpack"
-import {build as webpackBuild} from "webpack-build-helper"
+import webpackBuild from "../../utils/webpack/build"
 import getProdConf from "../../config/webpack/webpack.prod"
 import getRollupOptions from "../../config/rollup/rollup.config"
 import {rollup} from "rollup"
