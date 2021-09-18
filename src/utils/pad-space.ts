@@ -1,4 +1,4 @@
-export = (str: string, spaceNum: number, prepend = false) => {
+export default (str: string, spaceNum: number, prepend = false) => {
     const spaces = Array(spaceNum).fill(" ").join("")
 
     return prepend ? `${spaces}${str}` : `${str}${spaces}`
