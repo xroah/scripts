@@ -1,8 +1,8 @@
 import {program} from "commander"
 import path from "path"
-import defaultJestConf from "@config/jest/jest.config"
+import defaultJestConf from "../../config/jest/jest.config"
 import {run as runTest} from "jest"
-import setEnv from "@utils/set-env"
+import setEnv from "../../utils/set-env"
 import {NAME} from "../constants"
 
 function action(files: string, cmd: any) {
