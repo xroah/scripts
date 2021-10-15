@@ -9,7 +9,7 @@ import resolve from "@rollup/plugin-node-resolve"
 import cjs from "@rollup/plugin-commonjs"
 import babel from "@rollup/plugin-babel"
 import getBabelConf from "../babel/babel.config"
-import getAbsPath from "../../utils/get-abs-path"
+import getAbsPath from "@utils/get-abs-path"
 
 export default (customOption: any = {}, ts = true) => {
     const dist = getAbsPath(customOption.outDir || "dist")

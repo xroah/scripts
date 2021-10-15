@@ -1,15 +1,22 @@
 import {program} from "commander"
+<<<<<<< HEAD
+import merge from "@utils/merge-webpack"
+import webpackBuild from "@utils/webpack/build"
+import getProdConf from "@config/webpack/webpack.prod"
+import getRollupOptions from "@config/rollup/rollup.config"
+=======
 import merge from "../../utils/merge-webpack"
-import webpackBuild from "../../utils/webpack/build"
+import {build as webpackBuild} from "webpack-build-helper"
 import getProdConf from "../../config/webpack/webpack.prod"
 import getRollupOptions from "../../config/rollup/rollup.config"
+>>>>>>> parent of db2a4f6... fix errors
 import {rollup} from "rollup"
 import ora from "ora"
 import chalk from "chalk"
 import rimraf from "rimraf"
-import loadConfig from "../../utils/load-config"
-import setEnv from "../../utils/set-env"
-import getAbsPath from "../../utils/get-abs-path"
+import loadConfig from "@utils/load-config"
+import setEnv from "@utils/set-env"
+import getAbsPath from "@utils/get-abs-path"
 import {NAME} from "../constants"
 
 function removeDist(dist: string) {

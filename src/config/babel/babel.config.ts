@@ -1,4 +1,4 @@
-import loadConfig from "../../utils/load-config"
+import loadConfig from "@utils/load-config"
 
 function handleBabelConf(config: any, env?: string) {
     const RUNTIME_PLUGIN = "@babel/plugin-transform-runtime"

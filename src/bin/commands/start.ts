@@ -1,9 +1,17 @@
 import {program} from "commander"
+<<<<<<< HEAD
+import getDevConf from "@config/webpack/webpack.dev"
+import startDevServer from "@utils/webpack/start"
+import devServerConf from "@config/webpack/server.config"
+import merge from "@utils/merge-webpack"
+import setEnv from "@utils/set-env"
+=======
 import getDevConf from "../../config/webpack/webpack.dev"
-import startDevServer from "../../utils/webpack/start"
+import {start as startDevServer} from "webpack-build-helper"
 import devServerConf from "../../config/webpack/server.config"
 import merge from "../../utils/merge-webpack"
 import setEnv from "../../utils/set-env"
+>>>>>>> parent of db2a4f6... fix errors
 import {NAME} from "../constants"
 
 function action(cmd: any) {

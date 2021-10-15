@@ -1,7 +1,7 @@
 import {ESLint} from "eslint"
 import {program} from "commander"
-import getBaseConfig from "../../config/eslint/eslint"
-import getProjectRoot from "../../utils/get-project-root"
+import getBaseConfig from "@config/eslint/eslint"
+import getProjectRoot from "@utils/get-project-root"
 import {NAME} from "../constants"
 
 async function action(files: string[], cmd: any) {

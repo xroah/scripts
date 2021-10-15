@@ -3,7 +3,7 @@
 import {program} from "commander"
 import {readFileSync} from "fs"
 import {join} from "path"
-import getProjectRoot from "../utils/get-project-root"
+import getProjectRoot from "@utils/get-project-root"
 import {commands, NAME} from "./constants"
 
 const rootDir = getProjectRoot()

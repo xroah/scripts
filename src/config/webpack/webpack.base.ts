@@ -1,7 +1,7 @@
 import {Configuration} from "webpack"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import getBabelConf from "../babel/babel.config"
-import getAbsPath from "../../utils/get-abs-path"
+import getAbsPath from "@utils/get-abs-path"
 
 export default (mode: "production" | "development") => {
     const cwd = process.cwd()

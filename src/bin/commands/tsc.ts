@@ -4,7 +4,7 @@ import fs from "fs"
 import path from "path"
 import spawn from "cross-spawn"
 import rimraf from "rimraf"
-import getProjectRoot from "../../utils/get-project-root"
+import getProjectRoot from "@utils/get-project-root"
 import {NAME} from "../constants"
 
 function initTs() {
