@@ -1,4 +1,4 @@
-import padSpace from "./pad-space"
+import padSpace from "./pad-space.js"
 
 export default (str: string, length: number) => {
     const len = str.length

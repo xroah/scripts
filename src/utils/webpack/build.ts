@@ -2,7 +2,7 @@ import webpack from "webpack"
 import chalk from "chalk"
 import ora from "ora"
 import path from "path"
-import resizeString from "../resize-string"
+import resizeString from "../resize-string.js"
 
 const spinner = ora("Building for production")
 
@@ -57,7 +57,7 @@ function statsAssets(assets: any[], outputPath: string) {
     console.log()
 }
 
-export = (webpackConfig: webpack.Configuration) => {
+export default (webpackConfig: webpack.Configuration) => {
     const outputPath = webpackConfig.output!.path || path.join(process.cwd(), "dist")
 
     spinner.start()

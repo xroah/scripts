@@ -1,13 +1,14 @@
 import open from "open"
 import chalk from "chalk"
 import webpack from "webpack"
-import DevServer, { Configuration as DevServerConf } from "webpack-dev-server"
-import checkPort from "../check-port"
-import clearConsole from "../clear-console"
-import getIp from "../get-ip"
-import padSpace from "../pad-space"
-import resizeString from "../resize-string"
-import getCurrentTime from "../get-current-time"
+import DevServer,
+{Configuration as DevServerConf} from "webpack-dev-server"
+import checkPort from "../check-port.js"
+import clearConsole from "../clear-console.js"
+import getIp from "../get-ip.js"
+import padSpace from "../pad-space.js"
+import resizeString from "../resize-string.js"
+import getCurrentTime from "../get-current-time.js"
 
 const DEFAULT_PORT = 3000
 const DEFAULT_HOST = "0.0.0.0"
@@ -19,7 +20,6 @@ function isPlainObject(obj: any) {
 function handleOption(options: DevServerConf) {
     const _options = isPlainObject(options) ? options : {}
 
-    _options.quiet = true
     _options.host = options.host || DEFAULT_HOST
     _options.port = options.port || DEFAULT_PORT
 
@@ -67,7 +67,7 @@ function startDevServer(
     const compiler = webpack(webpackConfig)
     const server = new DevServer(compiler, options)
     const events = ["SIGINT", "SIGTERM"]
-    const localUrl = `${protocol}://${handleHost(host)}${handlePort(port!, !!https)}`
+    const localUrl = `${protocol}://${handleHost(host)}${handlePort(+port!, !!https)}`
 
     if (_open) {
         open(localUrl)
@@ -106,7 +106,7 @@ function startDevServer(
             )
             console.log(
                 `${resizeString("Network:", LABEL_LENGTH)} `,
-                chalk.bold(chalk.cyan(`${protocol}://${getIp()}${handlePort(port!, !!https)}`))
+                chalk.bold(chalk.cyan(`${protocol}://${getIp()}${handlePort(+port!, !!https)}`))
             )
             console.log()
             console.log(
@@ -139,7 +139,7 @@ function startDevServer(
     })
 }
 
-export = (
+export default (
     webpackConfig: webpack.Configuration,
     devServerOptions: DevServerConf
 ) => {

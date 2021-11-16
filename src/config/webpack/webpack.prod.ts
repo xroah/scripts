@@ -1,7 +1,7 @@
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import TerserWebpackPlugin from "terser-webpack-plugin"
 import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
-import getBaseConf from "./webpack.base"
+import getBaseConf from "./webpack.base.js"
 import {merge} from "webpack-merge"
 
 export default () => merge(

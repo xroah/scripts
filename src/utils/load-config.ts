@@ -1,7 +1,7 @@
 import path from "path"
 import fs from "fs"
-import getAbsPath from "./get-abs-path"
-import transpileTs from "./transpile-ts"
+import getAbsPath from "./get-abs-path.js"
+import transpileTs from "./transpile-ts.js"
 
 function handleRequireTS(configFile: string) {
     const config = require(transpileTs(configFile)) || {}

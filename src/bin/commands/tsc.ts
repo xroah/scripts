@@ -4,8 +4,8 @@ import fs from "fs"
 import path from "path"
 import spawn from "cross-spawn"
 import rimraf from "rimraf"
-import getProjectRoot from "../../utils/get-project-root"
-import {NAME} from "../constants"
+import getProjectRoot from "../../utils/get-project-root.js"
+import {NAME} from "../constants.js"
 
 function initTs() {
     const FILENAME = "tsconfig.json"

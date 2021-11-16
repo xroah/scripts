@@ -3,11 +3,13 @@ import fs from "fs"
 
 let root: string
 
-export default (base: string = __dirname) => {
+const fileUrl = import.meta.url.replace(/file:[\\\/]+/g, "")
+
+export default (base: string = path.parse(fileUrl).dir) => {
     if (root) {
         return root
     }
-
+    
     const rootDir = path.parse(base).root
 
     do {

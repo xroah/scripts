@@ -1,8 +1,8 @@
 import {transpileModule, ModuleKind} from "typescript";
 import fs from "fs"
 import path from "path"
-import getAbsPath from "./get-abs-path";
-import getProjectRoot from "./get-project-root";
+import getAbsPath from "./get-abs-path.js";
+import getProjectRoot from "./get-project-root.js";
 
 export default (filename: string) => {
     const cacheDir = path.join(getProjectRoot(), ".reap-cache")

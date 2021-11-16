@@ -1,10 +1,10 @@
 import {program} from "commander"
-import getDevConf from "../../config/webpack/webpack.dev"
-import startDevServer from "../../utils/webpack/start"
-import devServerConf from "../../config/webpack/server.config"
-import merge from "../../utils/merge-webpack"
-import setEnv from "../../utils/set-env"
-import {NAME} from "../constants"
+import getDevConf from "../../config/webpack/webpack.dev.js"
+import startDevServer from "../../utils/webpack/start.js"
+import devServerConf from "../../config/webpack/server.config.js"
+import merge from "../../utils/merge-webpack.js"
+import setEnv from "../../utils/set-env.js"
+import {NAME} from "../constants.js"
 
 function action(cmd: any) {
     setEnv("development")
