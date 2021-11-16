@@ -1,15 +1,23 @@
-import {transpileModule, ModuleKind} from "typescript";
+import ts from "typescript";
 import fs from "fs"
 import path from "path"
 import getAbsPath from "./get-abs-path.js";
 import getProjectRoot from "./get-project-root.js";
 
+export const cacheDir = path.join(getProjectRoot(), ".reap-cache")
+
 export default (filename: string) => {
-    const cacheDir = path.join(getProjectRoot(), ".reap-cache")
     const source = fs.readFileSync(getAbsPath(filename)).toString()
     const {name} = path.parse(filename)
-    const outputFilename = path.join(cacheDir, `${name}.js`)
-    const result = transpileModule(source, {compilerOptions: {module: ModuleKind.CommonJS}});
+    const outputFilename = path.join(cacheDir, `${name}.cjs`)
+    const result = ts.transpileModule(
+        source,
+        {
+            compilerOptions: {
+                module: ts.ModuleKind.CommonJS
+            }
+        }
+    );
 
     if (!fs.existsSync(cacheDir)) {
         fs.mkdirSync(cacheDir)

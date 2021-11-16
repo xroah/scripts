@@ -3,7 +3,7 @@ import fs from "fs"
 
 let root: string
 
-const fileUrl = import.meta.url.replace(/file:[\\\/]+/g, "")
+const fileUrl = new URL(import.meta.url).pathname
 
 export default (base: string = path.parse(fileUrl).dir) => {
     if (root) {
