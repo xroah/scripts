@@ -29,11 +29,7 @@ function handleOption(options: DevServerConf) {
 function handleHost(host?: string) {
     const lh = "localhost"
 
-    if (!host) {
-        return lh
-    }
-
-    if (host === DEFAULT_HOST) {
+    if (!host || host === DEFAULT_HOST) {
         return lh
     }
 
@@ -70,12 +66,13 @@ function startDevServer(
     const compiler = webpack(webpackConfig)
     const server = new DevServer(options, compiler)
     const events = ["SIGINT", "SIGTERM"]
-    const localUrl = `${protocol}://${handleHost(host)}${handlePort(+port!, !!https)}`
+    const _port = handlePort(+port!, !!https)
+    const localUrl = `${protocol}://${handleHost(host)}${_port}`
 
     if (_open) {
         open(localUrl)
     }
-    
+
     compiler.hooks.compile.tap("compile", () => {
         clearConsole()
         console.log(
@@ -134,8 +131,15 @@ function startDevServer(
 
     events.forEach(sig => {
         process.on(sig, () => {
-            server.close()
-            process.exit()
+            server.stopCallback(
+                (err?: any) => {
+                    if (err) {
+                        throw err
+                    }
+
+                    process.exit()
+                }
+            )
         })
     })
 }

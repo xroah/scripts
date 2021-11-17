@@ -1,7 +1,4 @@
-import {
-    RollupOptions,
-    OutputOptions
-} from "rollup"
+import {RollupOptions, OutputOptions} from "rollup"
 import path from "path"
 import {terser} from "rollup-plugin-terser"
 import typescript from "@rollup/plugin-typescript"

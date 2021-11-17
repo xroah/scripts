@@ -21,7 +21,6 @@ export default (
         index
     }: Options
 ) => {
-    let noHTMLPlugin = false
     let htmlOptions = {...defaultHTMLPluginOptions}
     let devServer = {}
     let merged = {...baseConf}
@@ -36,25 +35,23 @@ export default (
     devServer = customConfig.devServer || {}
 
     // Do not need html-webpack-plugin
-    if (htmlPluginOptions === false) {
-        noHTMLPlugin = true
-    } else {
+    if (htmlPluginOptions !== false) {
         htmlOptions = {
             ...htmlOptions,
             ...htmlPluginOptions
         }
-    }
 
-    if (entry) {
-        merged.entry = getAbsPath(entry)
-    }
-
-    if (!noHTMLPlugin) {
         if (index) {
             htmlOptions.template = getAbsPath(index)
         }
 
-        merged.plugins!.push(new HTMLWebpackPlugin(htmlOptions))
+        merged.plugins!.push(
+            new HTMLWebpackPlugin(htmlOptions as any)
+        )
+    }
+
+    if (entry) {
+        merged.entry = getAbsPath(entry)
     }
 
     return {
