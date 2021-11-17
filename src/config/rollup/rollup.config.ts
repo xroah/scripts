@@ -7,7 +7,7 @@ import {terser} from "rollup-plugin-terser"
 import typescript from "@rollup/plugin-typescript"
 import resolve from "@rollup/plugin-node-resolve"
 import cjs from "@rollup/plugin-commonjs"
-import babel from "@rollup/plugin-babel"
+import {babel} from "@rollup/plugin-babel"
 import getBabelConf from "../babel/babel.config.js"
 import getAbsPath from "../../utils/get-abs-path.js"
 
