@@ -2,6 +2,7 @@ import {Configuration} from "webpack"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import getBabelConf from "../babel/babel.config.js"
 import getAbsPath from "../../utils/get-abs-path.js"
+import resolve from "../../utils/resolve.js"
 
 export default (mode: "production" | "development") => {
     const cwd = process.cwd()
@@ -24,14 +25,14 @@ export default (mode: "production" | "development") => {
                 test: /\.[jt]sx?$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: require.resolve("babel-loader"),
+                    loader: resolve("babel-loader"),
                     options: babelOptions
                 }
             }, {
                 test: /\.(png|jpe?g|gif|svg|bmp|webp)$/i,
                 use: [
                     {
-                        loader: require.resolve("url-loader"),
+                        loader: resolve("url-loader"),
                         options: {
                             limit: 8192
                         }
@@ -40,9 +41,9 @@ export default (mode: "production" | "development") => {
             }, {
                 test: /\.s?css$/,
                 use: [
-                    isDev ? require.resolve("style-loader") : MiniCssExtractPlugin.loader,
-                    require.resolve("css-loader"),
-                    require.resolve("sass-loader")
+                    isDev ? resolve("style-loader") : MiniCssExtractPlugin.loader,
+                    resolve("css-loader"),
+                    resolve("sass-loader")
                 ]
             }]
         }

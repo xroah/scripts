@@ -1,3 +1,5 @@
+import resolve from "../../utils/resolve.js"
+
 export default (react: Boolean, lintTS: boolean) => {
     const config: any = {
         env: {
@@ -131,7 +133,7 @@ export default (react: Boolean, lintTS: boolean) => {
     const noUseRule = [2, {functions: false}]
 
     if (lintTS) {
-        config.parser = require.resolve("@typescript-eslint/parser")
+        config.parser = resolve("@typescript-eslint/parser")
 
         config.extends.push("plugin:@typescript-eslint/eslint-recommended")
         config.plugins.push("@typescript-eslint")

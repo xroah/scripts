@@ -1,3 +1,4 @@
+import resolve from "../../utils/resolve.js"
 import loadConfig from "../../utils/load-config.js"
 
 function handleBabelConf(config: any, env?: string) {
@@ -8,23 +9,23 @@ function handleBabelConf(config: any, env?: string) {
     } as any
     const presets = [
         [
-            require.resolve("@babel/preset-env"),
+            resolve("@babel/preset-env"),
             {
                 modules: env === "test" ? "cjs" : false
             }
         ],
-        require.resolve("@babel/preset-react"),
-        require.resolve("@babel/preset-typescript")
+        resolve("@babel/preset-react"),
+        resolve("@babel/preset-typescript")
     ]
     const plugins: string[] = [].concat(ret.plugins || [])
     ret.presets = presets.concat(ret.presets || [])
 
     if (config.runtime !== false && !plugins.includes(RUNTIME_PLUGIN)) {
-        plugins.push(require.resolve(RUNTIME_PLUGIN))
+        plugins.push(resolve(RUNTIME_PLUGIN))
     }
 
     if (env === "development" && plugins.includes(REACT_REFRESH)) {
-        plugins.push(require.resolve(REACT_REFRESH))
+        plugins.push(resolve(REACT_REFRESH))
     }
 
     ret.plugins = plugins

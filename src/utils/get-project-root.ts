@@ -1,9 +1,10 @@
 import path from "path"
 import fs from "fs"
+import url from "url"
 
 let root: string
 
-const fileUrl = new URL(import.meta.url).pathname
+const fileUrl = url.fileURLToPath(import.meta.url)
 
 export default (base: string = path.parse(fileUrl).dir) => {
     if (root) {
