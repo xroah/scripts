@@ -1,8 +1,8 @@
 import open from "open"
 import chalk from "chalk"
 import webpack from "webpack"
-import DevServer,
-{Configuration as DevServerConf} from "webpack-dev-server"
+import DevServer from "./dev-server.js"
+import {Configuration as DevServerConf} from "webpack-dev-server"
 import checkPort from "../check-port.js"
 import clearConsole from "../clear-console.js"
 import getIp from "../get-ip.js"
@@ -62,17 +62,20 @@ function startDevServer(
         https
     } = options
     const protocol = https ? "https" : "http"
+
     //windows can not open 0.0.0.0:port
     options.open = false
+    webpackConfig.stats = "none"
+
     const compiler = webpack(webpackConfig)
-    const server = new DevServer(compiler, options)
+    const server = new DevServer(options, compiler)
     const events = ["SIGINT", "SIGTERM"]
     const localUrl = `${protocol}://${handleHost(host)}${handlePort(+port!, !!https)}`
 
     if (_open) {
         open(localUrl)
     }
-
+    
     compiler.hooks.compile.tap("compile", () => {
         clearConsole()
         console.log(
@@ -116,10 +119,8 @@ function startDevServer(
         }
     })
 
-    server.listen(
-        port as number,
-        options.host as string,
-        err => {
+    server.startCallback(
+        (err?: any) => {
             if (err) {
                 throw err
             }
