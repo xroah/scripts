@@ -1,6 +1,6 @@
 import open from "open"
 import chalk from "chalk"
-import webpack from "webpack"
+import webpack, {Stats} from "webpack"
 import DevServer from "./dev-server.js"
 import {Configuration as DevServerConf} from "webpack-dev-server"
 import checkPort from "../check-port.js"
@@ -9,13 +9,16 @@ import getIp from "../get-ip.js"
 import padSpace from "../pad-space.js"
 import resizeString from "../resize-string.js"
 import getCurrentTime from "../get-current-time.js"
+import isPlainObject from "../is-plain-object.js"
+
+declare module "webpack-dev-server" {
+    interface Configuration {
+        progress?: boolean
+    }
+}
 
 const DEFAULT_PORT = 3000
 const DEFAULT_HOST = "0.0.0.0"
-
-function isPlainObject(obj: any) {
-    return !!obj && Object.prototype.toString.call(obj) === "[object Object]"
-}
 
 function handleOption(options: DevServerConf) {
     const _options = isPlainObject(options) ? options : {}
@@ -37,49 +40,24 @@ function handleHost(host?: string) {
 }
 
 function handlePort(port: number, https = false) {
-    if (
-        (https && port === 443) ||
-        port === 80
-    ) {
+    if ((https && port === 443) || port === 80) {
         return ""
     }
 
     return `:${port}`
 }
 
-function startDevServer(
-    webpackConfig: webpack.Configuration,
-    options: DevServerConf
+function handleCompile() {
+    clearConsole()
+    console.log(chalk.greenBright("Compiling"))
+}
+
+function createDoneCallback(
+    protocol: string,
+    localUrl: string,
+    portString: string
 ) {
-    const {
-        open: _open,
-        port,
-        host,
-        https
-    } = options
-    const protocol = https ? "https" : "http"
-
-    //windows can not open 0.0.0.0:port
-    options.open = false
-    webpackConfig.stats = "none"
-
-    const compiler = webpack(webpackConfig)
-    const server = new DevServer(options, compiler)
-    const events = ["SIGINT", "SIGTERM"]
-    const _port = handlePort(+port!, !!https)
-    const localUrl = `${protocol}://${handleHost(host)}${_port}`
-
-    if (_open) {
-        open(localUrl)
-    }
-
-    compiler.hooks.compile.tap("compile", () => {
-        clearConsole()
-        console.log(
-            chalk.greenBright("Compiling")
-        )
-    })
-    compiler.hooks.done.tap("done", stats => {
+    return (stats: Stats) => {
         const time = padSpace(getCurrentTime(), 5)
         const LABEL_LENGTH = 8
 
@@ -106,7 +84,7 @@ function startDevServer(
             )
             console.log(
                 `${resizeString("Network:", LABEL_LENGTH)} `,
-                chalk.bold(chalk.cyan(`${protocol}://${getIp()}${handlePort(+port!, !!https)}`))
+                chalk.bold(chalk.cyan(`${protocol}://${getIp()}${portString}`))
             )
             console.log()
             console.log(
@@ -114,8 +92,10 @@ function startDevServer(
                 chalk.green("npm run build")
             )
         }
-    })
+    }
+}
 
+function start(server: DevServer) {
     server.startCallback(
         (err?: any) => {
             if (err) {
@@ -123,13 +103,14 @@ function startDevServer(
             }
 
             clearConsole()
-
             console.log()
             console.log(chalk.greenBright("Starting dev server..."))
         }
     )
+}
 
-    events.forEach(sig => {
+function handleProcessEvents(server: DevServer) {
+    ["SIGINT", "SIGTERM"].forEach(sig => {
         process.on(sig, () => {
             server.stopCallback(
                 (err?: any) => {
@@ -144,6 +125,42 @@ function startDevServer(
     })
 }
 
+function startDevServer(
+    webpackConfig: webpack.Configuration,
+    options: DevServerConf
+) {
+    const {
+        open: _open,
+        port,
+        host,
+        https
+    } = options
+    const protocol = https ? "https" : "http"
+
+    //windows can not open 0.0.0.0:port
+    options.open = false
+    webpackConfig.stats = "none"
+
+    const compiler = webpack(webpackConfig)
+    const server = new DevServer(options, compiler)
+    const _port = handlePort(+port!, !!https)
+    const localUrl = `${protocol}://${handleHost(host)}${_port}`
+
+    if (_open) {
+        open(localUrl)
+    }
+
+    compiler.hooks.compile.tap("compile", handleCompile)
+    compiler.hooks.done.tap(
+        "done",
+        createDoneCallback(protocol, localUrl, _port)
+    )
+
+    start(server)
+    handleProcessEvents(server)
+}
+
+
 export default (
     webpackConfig: webpack.Configuration,
     devServerOptions: DevServerConf
@@ -151,7 +168,7 @@ export default (
     const options = handleOption(devServerOptions)
     const port = options.port as number
 
-    if ((options as any).progress !== false) {
+    if (options.progress !== false) {
         (webpackConfig.plugins || []).push(
             new webpack.ProgressPlugin({
                 activeModules: true
