@@ -1,9 +1,9 @@
-import defaultHTMLPluginOptions from ".././config/webpack/html-webpack-plugin.js"
+import defaultHTMLPluginOptions from "../../config/webpack/html-webpack-plugin.js"
 import {merge} from "webpack-merge"
 import {Configuration} from "webpack"
 import HTMLWebpackPlugin from "html-webpack-plugin"
-import loadConfig from "./load-config.js"
-import getAbsPath from "./get-abs-path.js"
+import loadConfig from "../load-config.js"
+import getAbsPath from "../get-abs-path.js"
 
 interface Options {
     configFile?: string

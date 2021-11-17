@@ -2,7 +2,7 @@ import {program} from "commander"
 import getDevConf from "../../config/webpack/webpack.dev.js"
 import startDevServer from "../../utils/webpack/start.js"
 import devServerConf from "../../config/webpack/server.config.js"
-import merge from "../../utils/merge-webpack.js"
+import merge from "../../utils/webpack/merge.js"
 import setEnv from "../../utils/set-env.js"
 import {NAME} from "../constants.js"
 

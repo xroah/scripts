@@ -1,5 +1,5 @@
 import {program} from "commander"
-import merge from "../../utils/merge-webpack.js"
+import merge from "../../utils/webpack/merge.js"
 import webpackBuild from "../../utils/webpack/build.js"
 import getProdConf from "../../config/webpack/webpack.prod.js"
 import getRollupOptions from "../../config/rollup/rollup.config.js"
