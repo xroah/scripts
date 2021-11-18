@@ -15,7 +15,7 @@ import {join} from "path"
  * figure out what you want is HelloWorld.ts during compilation.
  */
 import getProjectRoot from "../utils/get-project-root.js"
-import {commands, NAME} from "./constants.js"
+import {commands, NAME} from "../utils/constants.js"
 
 const rootDir = getProjectRoot()
 const pkg = JSON.parse(readFileSync(join(rootDir, "package.json")).toString())

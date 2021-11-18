@@ -3,7 +3,7 @@ import startDevServer from "../../utils/webpack/start.js"
 import devServerConf from "../../config/webpack/server.config.js"
 import merge from "../../utils/webpack/merge.js"
 import setEnv from "../../utils/set-env.js"
-import {NAME} from "../constants.js"
+import {NAME} from "../../utils/constants.js"
 
 async function action(cmd: any) {
     setEnv("development")

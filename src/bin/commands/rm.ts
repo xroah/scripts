@@ -1,6 +1,6 @@
 import {program} from "commander"
 import rimraf from "rimraf"
-import {NAME} from "../constants.js"
+import {NAME} from "../../utils/constants.js"
 
 program
     .name(NAME)

@@ -9,7 +9,7 @@ import rimraf from "rimraf"
 import loadConfig from "../../utils/load-config.js"
 import setEnv from "../../utils/set-env.js"
 import getAbsPath from "../../utils/get-abs-path.js"
-import {NAME} from "../constants.js"
+import {NAME} from "../../utils/constants.js"
 
 function removeDist(dist: string) {
     try {
