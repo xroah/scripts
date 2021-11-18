@@ -3,10 +3,13 @@ import fs from "fs"
 import getAbsPath from "./get-abs-path.js"
 import transpileTs from "./transpile-ts.js"
 import {createRequire} from "module"
+import transformES from "./transform-es.js"
+import {cacheDir} from "./constants.js"
 
-function handleRequireTS(configFile: string) {
-    const filename = transpileTs(configFile)
-    const require = createRequire(filename)
+const require = createRequire(path.join(cacheDir, "a.js"))
+
+function handleRequire(configFile: string, ts: boolean) {
+    const filename = (ts ? transpileTs : transformES)(configFile)
     const module = `./${path.parse(filename).base}`
     const config = require(module) || {}
 
@@ -18,23 +21,23 @@ export default (configFile?: string) => {
     const defaultConfFileJS = getAbsPath(`${DEFAULT_CONF_NAME}.js`)
     const defaultConfFileTS = getAbsPath(`${DEFAULT_CONF_NAME}.ts`)
     const pkgJSON = getAbsPath("package.json")
-    const require = createRequire(pkgJSON)
     let config: any = {}
 
     if (configFile) {
         configFile = getAbsPath(configFile)
-
-        if (path.extname(configFile) === ".ts") {
-            config = handleRequireTS(configFile)
-        } else {
-            config = require(configFile)
-        }
     } else if (fs.existsSync(defaultConfFileJS)) {
-        config = require(defaultConfFileJS)
+        configFile = defaultConfFileJS
     } else if (fs.existsSync(defaultConfFileTS)) {
-        config = handleRequireTS(defaultConfFileTS)
+        configFile = defaultConfFileTS
     } else if (fs.existsSync(pkgJSON)) {
-        config = require(pkgJSON).reap
+        const jsonContent = JSON.parse(fs.readFileSync(pkgJSON).toString())
+        config = jsonContent.reap
+    }
+
+    if (configFile) {
+        const ts = path.extname(configFile) === ".ts"
+
+        config = handleRequire(configFile, ts)
     }
 
     return config || {}
