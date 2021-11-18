@@ -1,13 +1,10 @@
 import ts from "typescript"
 import fs from "fs"
-import path from "path"
 import getAbsPath from "./get-abs-path.js"
-import {cacheDir} from "./constants.js"
+import writeCodeToCache from "./write-code-to-cache.js"
 
 export default (filename: string) => {
     const source = fs.readFileSync(getAbsPath(filename)).toString()
-    const {name} = path.parse(filename)
-    const outputFilename = path.join(cacheDir, `${name}.cjs`)
     const result = ts.transpileModule(
         source,
         {
@@ -15,23 +12,7 @@ export default (filename: string) => {
                 module: ts.ModuleKind.CommonJS
             }
         }
-    );
-
-    if (!fs.existsSync(cacheDir)) {
-        fs.mkdirSync(cacheDir)
-    }
-
-    fs.writeFileSync(outputFilename, result.outputText.toString())
-
-    process.nextTick(
-        () => {
-            try {
-                fs.unlinkSync(outputFilename)
-            } catch (error) {
-                // do nothing
-            }
-        }
     )
 
-    return outputFilename
+    return writeCodeToCache(result.outputText.toString())
 }
