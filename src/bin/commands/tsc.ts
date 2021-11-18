@@ -1,11 +1,10 @@
 import chalk from "chalk"
-import {program} from "commander"
 import fs from "fs"
 import path from "path"
 import spawn from "cross-spawn"
 import rimraf from "rimraf"
 import getProjectRoot from "../../utils/get-project-root.js"
-import {NAME} from "../../utils/constants.js"
+import program from "./program.js"
 
 function initTs() {
     const FILENAME = "tsconfig.json"
@@ -105,7 +104,6 @@ function action(file: string, cmd: any) {
 }
 
 program
-    .name(NAME)
     .command("tsc [file]")
     .option("--init", "Init tsconfig.json")
     .option("--lib", "Build commonjs")

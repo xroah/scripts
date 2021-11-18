@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import {program} from "commander"
 import {readFileSync} from "fs"
 import {join} from "path"
 /**
@@ -16,9 +15,11 @@ import {join} from "path"
  */
 import getProjectRoot from "../utils/get-project-root.js"
 import {commands, NAME} from "../utils/constants.js"
+import program from "./commands/program.js"
 
 const rootDir = getProjectRoot()
-const pkg = JSON.parse(readFileSync(join(rootDir, "package.json")).toString())
+const packageJSON = readFileSync(join(rootDir, "package.json")).toString()
+const pkg = JSON.parse(packageJSON)
 
 program
     .name(NAME)

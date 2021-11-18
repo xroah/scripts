@@ -1,4 +1,3 @@
-import {program} from "commander"
 import merge from "../../utils/webpack/merge.js"
 import webpackBuild from "../../utils/webpack/build.js"
 import getRollupOptions from "../../config/rollup/rollup.config.js"
@@ -9,7 +8,14 @@ import rimraf from "rimraf"
 import loadConfig from "../../utils/load-config.js"
 import setEnv from "../../utils/set-env.js"
 import getAbsPath from "../../utils/get-abs-path.js"
-import {NAME} from "../../utils/constants.js"
+import program from "./program.js"
+
+import {
+    config,
+    entry,
+    index,
+    noTs
+} from "./common-options.js"
 
 function removeDist(dist: string) {
     try {
@@ -104,16 +110,15 @@ async function action(cmd: any) {
 }
 
 program
-    .name(NAME)
     .command("build")
     .option("-r, --rollup", "Use rollup to build")
-    .option("--no-ts", "Build javascript")
-    .option("-c, --config <file>", "Configuration file")
+    .option(...noTs)
+    .option(...config)
     .option("-o, --outDir <dir>", "Output dir")
-    .option("-e, --entry <entry>", "Entry file, default src/index.[jt]sx")
+    .option(...entry)
     .option("-n, --libName <name>", "Library name(rollup only)")
     .option("--include <files...>", "Typescript includes(rollup only)")
     .option("--exclude <files...>", "Typescript excludes(rollup only)")
-    .option("--index <index>", "index.html file, default public/index.html")
+    .option(...index)
     .action(action)
     .parse()

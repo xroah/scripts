@@ -1,9 +1,14 @@
-import {program} from "commander"
 import startDevServer from "../../utils/webpack/start.js"
 import devServerConf from "../../config/webpack/server.config.js"
 import merge from "../../utils/webpack/merge.js"
 import setEnv from "../../utils/set-env.js"
-import {NAME} from "../../utils/constants.js"
+import program from "./program.js"
+import {
+    config,
+    entry,
+    index,
+    noTs
+} from "./common-options.js"
 
 async function action(cmd: any) {
     setEnv("development")
@@ -51,13 +56,12 @@ async function action(cmd: any) {
 }
 
 program
-    .name(NAME)
     .command("start")
     .option("-p, --port [port]", "Specify a port")
-    .option("-c, --config <file>", "Configuration file")
-    .option("--no-ts", "Use javascript")
+    .option(...config)
+    .option(...noTs)
     .option("-o, --open", "Open browser")
-    .option("-e, --entry <entry>", "Entry file, default src/index.[jt]sx")
-    .option("--index <index>", "index.html file, default public/index.html")
+    .option(...entry)
+    .option(...index)
     .action(action)
     .parse()

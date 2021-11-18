@@ -1,8 +1,7 @@
 import {ESLint} from "eslint"
-import {program} from "commander"
 import getBaseConfig from "../../config/eslint/eslint.js"
 import getProjectRoot from "../../utils/get-project-root.js"
-import {NAME} from "../../utils/constants.js"
+import program from "./program.js"
 
 async function action(files: string[], cmd: any) {
     const {
@@ -55,7 +54,6 @@ async function action(files: string[], cmd: any) {
 }
 
 program
-    .name(NAME)
     .command("lint <files...>")
     .option("--ext <extensions...>", "File extensions - default .ts,.tsx")
     .option("--fix", "Auto fix")

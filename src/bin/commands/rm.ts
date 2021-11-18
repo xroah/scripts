@@ -1,9 +1,7 @@
-import {program} from "commander"
 import rimraf from "rimraf"
-import {NAME} from "../../utils/constants.js"
+import program from "./program.js"
 
 program
-    .name(NAME)
     .command("rm <paths...>")
     .action((paths: string[]) => {
         try {
