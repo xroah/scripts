@@ -8,7 +8,10 @@ import {babel} from "@rollup/plugin-babel"
 import getBabelConf from "../babel/babel.config.js"
 import getAbsPath from "../../utils/get-abs-path.js"
 
-export default (customOption: any = {}, ts = true) => {
+export default function getRollupOptions(
+    customOption: any = {}
+    , ts = true
+) {
     const dist = getAbsPath(customOption.outDir || "dist")
     const name = customOption.libName || "reap"
     const commonOutputConf: OutputOptions = {

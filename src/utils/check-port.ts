@@ -47,7 +47,11 @@ function check(port: number, host: string, callback: Function) {
     })
 }
 
-export default (port: number, host: string, callback: Function) => {
+export default function checkPort(
+    port: number,
+    host: string,
+    callback: Function
+) {
     count = 0
 
     //check the host

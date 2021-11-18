@@ -1,5 +1,5 @@
 
-export default () => {
+export default function getCurrentTime() {
     const date = new Date()
     const map = new Map([
         ["Y", date.getFullYear()],

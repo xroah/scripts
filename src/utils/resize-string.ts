@@ -1,6 +1,6 @@
 import padSpace from "./pad-space.js"
 
-export default (str: string, length: number) => {
+export default function resizeString(str: string, length: number) {
     const len = str.length
 
     if (len > length) {

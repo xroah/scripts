@@ -3,7 +3,7 @@ import fs from "fs"
 import getAbsPath from "./get-abs-path.js"
 import writeCodeToCache from "./write-code-to-cache.js"
 
-export default (filename: string) => {
+export default function transpireTS(filename: string) {
     const source = fs.readFileSync(getAbsPath(filename)).toString()
     const result = ts.transpileModule(
         source,

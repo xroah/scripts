@@ -161,10 +161,10 @@ function startDevServer(
 }
 
 
-export default (
+export default function startWebpackServer(
     webpackConfig: webpack.Configuration,
     devServerOptions: DevServerConf
-) => {
+) {
     const options = handleOption(devServerOptions)
     const port = options.port as number
 

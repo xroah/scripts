@@ -8,7 +8,10 @@ interface Options {
     babel?: object
 }
 
-export default (mode: "production" | "development", option: Options) => {
+export default function getBaseConf(
+    mode: "production" | "development",
+    option: Options
+) {
     const cwd = process.cwd()
     const isDev = mode === "development"
     const config: Configuration = {

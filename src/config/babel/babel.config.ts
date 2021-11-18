@@ -32,7 +32,7 @@ function handleBabelConf(config: any, env?: string) {
     return ret
 }
 
-export default (config = {} as any) => {
+export default function getBabelConf(config = {} as any) {
     const env = process.env.BABEL_ENV || process.env.NODE_ENV
     const {
         merge,

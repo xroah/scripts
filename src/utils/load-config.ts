@@ -16,7 +16,7 @@ function handleRequire(configFile: string, ts: boolean) {
     return config.default ? config.default : config
 }
 
-export default (configFile?: string) => {
+export default function loadConfig(configFile?: string) {
     const DEFAULT_CONF_NAME = "reap.config"
     const defaultConfFileJS = getAbsPath(`${DEFAULT_CONF_NAME}.js`)
     const defaultConfFileTS = getAbsPath(`${DEFAULT_CONF_NAME}.ts`)

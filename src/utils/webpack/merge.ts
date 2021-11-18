@@ -28,7 +28,7 @@ async function handleConfig(config: any, args?: any): Promise<any> {
     return config
 }
 
-export default async (
+export default async function mergeWebpack(
     {
         configFile,
         ts,
@@ -37,7 +37,7 @@ export default async (
         dev,
         args
     }: Options
-) => {
+) {
     const customConfig = await handleConfig(loadConfig(configFile), args)
     let htmlOptions = {...defaultHTMLPluginOptions}
     let devServer = {}

@@ -1,6 +1,9 @@
 import resolve from "../../utils/resolve.js"
 
-export default (react: Boolean, lintTS: boolean) => {
+export default function getESlintBaseConfig(
+    react: Boolean,
+    lintTS: boolean
+) {
     const config: any = {
         env: {
             browser: true,

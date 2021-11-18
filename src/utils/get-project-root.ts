@@ -6,11 +6,13 @@ let root: string
 
 const fileUrl = url.fileURLToPath(import.meta.url)
 
-export default (base: string = path.parse(fileUrl).dir) => {
+export default function getProjectRoot(
+    base: string = path.parse(fileUrl).dir
+) {
     if (root) {
         return root
     }
-    
+
     const rootDir = path.parse(base).root
 
     do {
