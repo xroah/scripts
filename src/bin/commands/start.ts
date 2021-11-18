@@ -1,5 +1,4 @@
 import {program} from "commander"
-import getDevConf from "../../config/webpack/webpack.dev.js"
 import startDevServer from "../../utils/webpack/start.js"
 import devServerConf from "../../config/webpack/server.config.js"
 import merge from "../../utils/webpack/merge.js"
@@ -20,15 +19,13 @@ function action(cmd: any) {
     const {
         merged,
         devServer
-    } = merge(
-        getDevConf(),
-        {
-            configFile: config,
-            ts,
-            entry,
-            index
-        }
-    )
+    } = merge({
+        configFile: config,
+        ts,
+        entry,
+        index,
+        dev: true
+    })
     const serverConf = {
         ...devServerConf,
         ...devServer

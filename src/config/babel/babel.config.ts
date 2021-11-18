@@ -1,5 +1,4 @@
 import resolve from "../../utils/resolve.js"
-import loadConfig from "../../utils/load-config.js"
 
 function handleBabelConf(config: any, env?: string) {
     const RUNTIME_PLUGIN = "@babel/plugin-transform-runtime"
@@ -33,9 +32,8 @@ function handleBabelConf(config: any, env?: string) {
     return ret
 }
 
-export default () => {
+export default (config = {} as any) => {
     const env = process.env.BABEL_ENV || process.env.NODE_ENV
-    const config = loadConfig().babel || {}
     const {
         merge,
         ...restConfig

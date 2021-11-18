@@ -1,37 +1,49 @@
-import defaultHTMLPluginOptions from "../../config/webpack/html-webpack-plugin.js"
 import {merge} from "webpack-merge"
-import {Configuration} from "webpack"
 import HTMLWebpackPlugin from "html-webpack-plugin"
+import getBaseConf from "../../config/webpack/webpack.base.js"
+import defaultHTMLPluginOptions from "../../config/webpack/html-webpack-plugin.js"
 import loadConfig from "../load-config.js"
 import getAbsPath from "../get-abs-path.js"
+import devConf from "../../config/webpack/webpack.dev.js"
+import prodConf from "../../config/webpack/webpack.prod.js"
 
 interface Options {
     configFile?: string
     ts?: boolean
     entry?: string
-    index: string
+    index: string,
+    dev?: boolean
 }
 
 export default (
-    baseConf: Configuration,
     {
         configFile,
         ts,
         entry,
-        index
+        index,
+        dev
     }: Options
 ) => {
+    const customConfig = loadConfig(configFile)
     let htmlOptions = {...defaultHTMLPluginOptions}
     let devServer = {}
-    let merged = {...baseConf}
+    let baseConf = getBaseConf(
+        dev ? "development" : "production",
+        {
+            babel: customConfig.babel
+        }
+    )
 
     if (!ts) {
-        merged.entry = getAbsPath("./src/index.jsx")
+        baseConf.entry = getAbsPath("./src/index.jsx")
     }
 
-    const customConfig = loadConfig(configFile)
     const htmlPluginOptions = customConfig.htmlWebpackPlugin || {}
-    merged = merge(baseConf, customConfig.webpack || {})
+    const merged = merge(
+        baseConf,
+        dev ? devConf : prodConf,
+        customConfig.webpack || {}
+    )
     devServer = customConfig.devServer || {}
 
     // Do not need html-webpack-plugin

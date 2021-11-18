@@ -4,10 +4,13 @@ import getBabelConf from "../babel/babel.config.js"
 import getAbsPath from "../../utils/get-abs-path.js"
 import resolve from "../../utils/resolve.js"
 
-export default (mode: "production" | "development") => {
+interface Options {
+    babel?: object
+}
+
+export default (mode: "production" | "development", option: Options) => {
     const cwd = process.cwd()
     const isDev = mode === "development"
-    const babelOptions = getBabelConf()
     const config: Configuration = {
         mode,
         entry: getAbsPath("src/index.tsx"),
@@ -26,7 +29,7 @@ export default (mode: "production" | "development") => {
                 exclude: /node_modules/,
                 use: {
                     loader: resolve("babel-loader"),
-                    options: babelOptions
+                    options: getBabelConf(option.babel)
                 }
             }, {
                 test: /\.(png|jpe?g|gif|svg|bmp|webp)$/i,

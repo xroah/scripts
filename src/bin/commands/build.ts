@@ -1,7 +1,6 @@
 import {program} from "commander"
 import merge from "../../utils/webpack/merge.js"
 import webpackBuild from "../../utils/webpack/build.js"
-import getProdConf from "../../config/webpack/webpack.prod.js"
 import getRollupOptions from "../../config/rollup/rollup.config.js"
 import {rollup} from "rollup"
 import ora from "ora"
@@ -83,15 +82,12 @@ function action(cmd: any) {
     } = cmd
 
     if (!useRollup) {
-        const {merged} = merge(
-            getProdConf(),
-            {
-                configFile: config,
-                ts,
-                entry,
-                index
-            }
-        )
+        const {merged} = merge({
+            configFile: config,
+            ts,
+            entry,
+            index
+        })
 
         if (outDir) {
             merged.output!.path = getAbsPath(outDir)
