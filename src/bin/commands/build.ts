@@ -69,7 +69,7 @@ async function rollupBuild(cmd: any) {
     }
 }
 
-function action(cmd: any) {
+async function action(cmd: any) {
     setEnv("production")
 
     const {
@@ -82,11 +82,12 @@ function action(cmd: any) {
     } = cmd
 
     if (!useRollup) {
-        const {merged} = merge({
+        const {merged} = await merge({
             configFile: config,
             ts,
             entry,
-            index
+            index,
+            args: cmd
         })
 
         if (outDir) {

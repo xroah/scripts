@@ -13,18 +13,32 @@ interface Options {
     entry?: string
     index: string,
     dev?: boolean
+    args?: any
 }
 
-export default (
+async function handleConfig(config: any, args?: any): Promise<any> {
+    if (typeof config === "function") {
+        return handleConfig(config(args), args)
+    } else if (config instanceof Promise) {
+        const ret = await config
+
+        return handleConfig(ret, args)
+    }
+
+    return config
+}
+
+export default async (
     {
         configFile,
         ts,
         entry,
         index,
-        dev
+        dev,
+        args
     }: Options
 ) => {
-    const customConfig = loadConfig(configFile)
+    const customConfig = await handleConfig(loadConfig(configFile), args)
     let htmlOptions = {...defaultHTMLPluginOptions}
     let devServer = {}
     let baseConf = getBaseConf(

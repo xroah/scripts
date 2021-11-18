@@ -5,7 +5,7 @@ import merge from "../../utils/webpack/merge.js"
 import setEnv from "../../utils/set-env.js"
 import {NAME} from "../constants.js"
 
-function action(cmd: any) {
+async function action(cmd: any) {
     setEnv("development")
 
     const {
@@ -19,12 +19,13 @@ function action(cmd: any) {
     const {
         merged,
         devServer
-    } = merge({
+    } = await merge({
         configFile: config,
         ts,
         entry,
         index,
-        dev: true
+        dev: true,
+        args: cmd
     })
     const serverConf = {
         ...devServerConf,
