@@ -2,7 +2,7 @@ import startDevServer from "../../utils/webpack/start.js"
 import devServerConf from "../../config/webpack/server.config.js"
 import merge from "../../utils/webpack/merge.js"
 import setEnv from "../../utils/set-env.js"
-import program from "./program.js"
+import createProgram from "../../utils/create-program.js"
 import {
     config,
     entry,
@@ -55,7 +55,7 @@ async function action(cmd: any) {
     )
 }
 
-program
+createProgram()
     .command("start")
     .option("-p, --port [port]", "Specify a port")
     .option(...config)

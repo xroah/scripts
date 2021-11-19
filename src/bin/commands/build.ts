@@ -8,7 +8,7 @@ import rimraf from "rimraf"
 import loadConfig from "../../utils/load-config.js"
 import setEnv from "../../utils/set-env.js"
 import getAbsPath from "../../utils/get-abs-path.js"
-import program from "./program.js"
+import createProgram from "../../utils/create-program.js"
 
 import {
     config,
@@ -109,7 +109,7 @@ async function action(cmd: any) {
     rollupBuild(cmd)
 }
 
-program
+createProgram()
     .command("build")
     .option("-r, --rollup", "Use rollup to build")
     .option(...noTs)

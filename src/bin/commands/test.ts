@@ -2,7 +2,7 @@ import path from "path"
 import defaultJestConf from "../../config/jest/jest.config.js"
 import {run as runTest} from "jest"
 import setEnv from "../../utils/set-env.js"
-import program from "./program.js"
+import createProgram from "../../utils/create-program.js"
 
 function action(files: string, cmd: any) {
     const packageJSON = require(path.join(process.cwd(), "package.json"))
@@ -37,7 +37,7 @@ function action(files: string, cmd: any) {
     runTest(args)
 }
 
-program
+createProgram()
     .command("test [files...]")
     .option("--coverage", "Test coverage information")
     .option("--env <environment>", "The test environment used for all tests")

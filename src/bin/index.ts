@@ -15,11 +15,12 @@ import {join} from "path"
  */
 import getProjectRoot from "../utils/get-project-root.js"
 import {commands, NAME} from "../utils/constants.js"
-import program from "./commands/program.js"
+import createProgram from "../utils/create-program.js"
 
 const rootDir = getProjectRoot()
 const packageJSON = readFileSync(join(rootDir, "package.json")).toString()
 const pkg = JSON.parse(packageJSON)
+const program = createProgram()
 
 program
     .name(NAME)

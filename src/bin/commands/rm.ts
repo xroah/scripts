@@ -1,7 +1,7 @@
 import rimraf from "rimraf"
-import program from "./program.js"
+import createProgram from "../../utils/create-program.js"
 
-program
+createProgram()
     .command("rm <paths...>")
     .action((paths: string[]) => {
         try {
