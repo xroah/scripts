@@ -1,9 +1,0 @@
-export default function padSpace(
-    str: string,
-    spaceNum: number,
-    prepend = false
-) {
-    const spaces = Array(spaceNum).fill(" ").join("")
-
-    return prepend ? `${spaces}${str}` : `${str}${spaces}`
-}

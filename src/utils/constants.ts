@@ -19,7 +19,4 @@ export const commands = [{
 }, {
     name: "tsc",
     desc: "Transpile ts[x] files"
-}, {
-    name: "test",
-    desc: "Run test"
 }]
