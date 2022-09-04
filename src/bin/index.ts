@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
-import {readFileSync} from "fs"
-import {join} from "path"
+import fs from "fs"
+import path from "path"
+import yargs from "yargs"
+
 /**
  * https://nodejs.org/api/esm.html#mandatory-file-extensions
  * A file extension must be provided when using the import keyword to
@@ -13,25 +15,9 @@ import {join} from "path"
  * Just import {HelloWorld} from "./HelloWorld.js"; TypeScript is clever enough to
  * figure out what you want is HelloWorld.ts during compilation.
  */
-import getProjectRoot from "../utils/get-project-root.js"
-import {commands, NAME} from "../utils/constants.js"
-import createProgram from "../utils/create-program.js"
+import { NAME } from "../utils/constants.js"
 
-const rootDir = getProjectRoot()
-const packageJSON = readFileSync(join(rootDir, "package.json")).toString()
-const pkg = JSON.parse(packageJSON)
-const program = createProgram()
 
-program
-    .name(NAME)
-    .version(pkg.version, "-v, --version")
-
-for (let cmd of commands) {
-    program.command(
-        cmd.name,
-        cmd.desc,
-        {executableFile: `./commands/${cmd.name}`}
-    )
-}
-
-program.parse()
+yargs
+    .scriptName(NAME)
+    .version()
