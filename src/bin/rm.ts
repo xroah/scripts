@@ -1,14 +1,7 @@
 import yargs from "yargs"
 import rimraf from "rimraf"
-import path from "path"
-
-function rm(file: string) {
-    if (path.isAbsolute(file)) {
-        rimraf.sync(file)
-    } else {
-        rimraf.sync(path.join(process.cwd(), file))
-    }
-}
+import fs from "fs"
+import getAbsPath from "../utils/get-abs-path.js"
 
 export default function createRMCommand(y: typeof yargs) {
     return y.command(
@@ -19,7 +12,11 @@ export default function createRMCommand(y: typeof yargs) {
             const files = argv.files as string[]
 
             for (let f of files) {
-                rm(f)
+                const absFilePath = getAbsPath(f)
+
+                if (fs.existsSync(absFilePath)) {
+                    rimraf.sync(absFilePath)
+                }
             }
         }
     )
