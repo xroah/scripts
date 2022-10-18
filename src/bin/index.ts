@@ -12,7 +12,6 @@ const cli = yargs(hideBin(process.argv))
     .command("$0", "Help", {}, () => {
         cli.showHelp()
     })
-    .usage('$0 <cmd> [args]')
 
 createRMCommand(cli)
 createServeCommand(cli)
