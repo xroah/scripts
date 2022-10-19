@@ -1,12 +1,29 @@
-import { createServer } from "vite"
+import { createServer, PluginOption } from "vite"
 import react from "@vitejs/plugin-react"
-import yargs from "yargs";
+import vue from "@vitejs/plugin-vue"
+import vueJSX from "@vitejs/plugin-vue-jsx"
+import yargs from "yargs"
 
 export default function createServeCommand(y: typeof yargs) {
     y.command(
         ["serve", "start"],
         "Start dev server",
         {
+            framework: {
+                alias: "f",
+                type: "string",
+                desc: "Framework(vue、react or none)",
+                default: "react"
+            },
+            jsx: {
+                type: "boolean",
+                desc: "Use jsx(Vue only)"
+            },
+            extensions: {
+                alias: "e",
+                type: "array",
+                desc: "Resolve extensions"
+            },
             config: {
                 alias: "c",
                 type: "string",
@@ -30,9 +47,36 @@ export default function createServeCommand(y: typeof yargs) {
             }
         },
         async argv => {
+            const plugins: PluginOption[] = []
+        
+            if (typeof argv.framework !== "undefined") {
+                switch(argv.framework) {
+                    case "react":
+                        plugins.push(react)
+                        break
+                    case "vue":
+                        plugins.push(vue())
+
+                        if (argv.jsx) {
+                            plugins.push(vueJSX())
+                        }
+                        break
+                    case "none":
+                        break
+                    default:
+                        throw new Error("Unknown framework")
+                }
+            } else {
+                plugins.push(react())
+            }
+            
             const server = await createServer({
-                plugins: [react()],
+                plugins,
                 root: process.cwd(),
+                clearScreen: true,
+                resolve: {
+                    extensions: argv.extensions as string[]
+                },
                 configFile: argv.config ? argv.config : false,
                 server: {
                     host: true,
