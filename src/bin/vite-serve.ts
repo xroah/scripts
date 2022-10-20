@@ -3,34 +3,14 @@ import react from "@vitejs/plugin-react"
 import vue from "@vitejs/plugin-vue"
 import vueJSX from "@vitejs/plugin-vue-jsx"
 import yargs from "yargs"
+import viteCommon from "./vite-common.js"
 
 export default function createServeCommand(y: typeof yargs) {
     y.command(
         ["serve", "start"],
         "Start dev server",
         {
-            framework: {
-                alias: "f",
-                type: "string",
-                desc: "Framework(vue、react or none)",
-                default: "react"
-            },
-            jsx: {
-                type: "boolean",
-                desc: "Use jsx(Vue only)"
-            },
-            extensions: {
-                alias: "e",
-                type: "string",
-                array: true,
-                desc: "Resolve extensions"
-            },
-            config: {
-                alias: "c",
-                type: "string",
-                desc: "Config file",
-                requiresArg: true
-            },
+            ...viteCommon, 
             port: {
                 alias: "p",
                 type: "number",
@@ -47,17 +27,25 @@ export default function createServeCommand(y: typeof yargs) {
                 type: "boolean"
             }
         },
-        async argv => {
+        async ({
+            framework,
+            config,
+            jsx,
+            extensions,
+            port,
+            https,
+            open
+        }) => {
             const plugins: PluginOption[] = []
 
-            switch (argv.framework) {
+            switch (framework) {
                 case "react":
                     plugins.push(react)
                     break
                 case "vue":
                     plugins.push(vue())
 
-                    if (argv.jsx) {
+                    if (jsx) {
                         plugins.push(vueJSX())
                     }
                     break
@@ -72,14 +60,14 @@ export default function createServeCommand(y: typeof yargs) {
                 root: process.cwd(),
                 clearScreen: true,
                 resolve: {
-                    extensions: argv.extensions
+                    extensions: extensions  as string[] | undefined
                 },
-                configFile: argv.config ? argv.config : false,
+                configFile: config ? config as string : false,
                 server: {
                     host: true,
-                    open: argv.open,
-                    port: argv.port,
-                    https: argv.https
+                    open: open,
+                    port: port,
+                    https: https
                 }
             })
 
