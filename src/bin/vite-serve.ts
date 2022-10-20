@@ -21,7 +21,8 @@ export default function createServeCommand(y: typeof yargs) {
             },
             extensions: {
                 alias: "e",
-                type: "array",
+                type: "string",
+                array: true,
                 desc: "Resolve extensions"
             },
             config: {
@@ -48,26 +49,22 @@ export default function createServeCommand(y: typeof yargs) {
         },
         async argv => {
             const plugins: PluginOption[] = []
-        
-            if (typeof argv.framework !== "undefined") {
-                switch(argv.framework) {
-                    case "react":
-                        plugins.push(react)
-                        break
-                    case "vue":
-                        plugins.push(vue())
 
-                        if (argv.jsx) {
-                            plugins.push(vueJSX())
-                        }
-                        break
-                    case "none":
-                        break
-                    default:
-                        throw new Error("Unknown framework")
-                }
-            } else {
-                plugins.push(react())
+            switch (argv.framework) {
+                case "react":
+                    plugins.push(react)
+                    break
+                case "vue":
+                    plugins.push(vue())
+
+                    if (argv.jsx) {
+                        plugins.push(vueJSX())
+                    }
+                    break
+                case "none":
+                    break
+                default:
+                    throw new Error("Unknown framework")
             }
             
             const server = await createServer({
@@ -75,7 +72,7 @@ export default function createServeCommand(y: typeof yargs) {
                 root: process.cwd(),
                 clearScreen: true,
                 resolve: {
-                    extensions: argv.extensions as string[]
+                    extensions: argv.extensions
                 },
                 configFile: argv.config ? argv.config : false,
                 server: {
