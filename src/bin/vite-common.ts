@@ -15,12 +15,20 @@ export default {
         alias: "e",
         type: "string",
         array: true,
-        desc: "Resolve extensions"
+        desc: "Resolve extensions",
+        requiresArg: true
     },
     config: {
         alias: "c",
         type: "string",
         desc: "Config file",
         requiresArg: true
+    },
+    base: {
+        alias: "b",
+        type: "string",
+        desc: "Public base path",
+        requiresArg: true,
+        default: "/"
     }
 } as {[key: string]: Options}

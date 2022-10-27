@@ -34,7 +34,8 @@ export default function createServeCommand(y: typeof yargs) {
             extensions,
             port,
             https,
-            open
+            open,
+            base
         }) => {
             const plugins: PluginOption[] = []
 
@@ -59,6 +60,7 @@ export default function createServeCommand(y: typeof yargs) {
                 plugins,
                 root: process.cwd(),
                 clearScreen: true,
+                base: base as string,
                 resolve: {
                     extensions: extensions  as string[] | undefined
                 },
