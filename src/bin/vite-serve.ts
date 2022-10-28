@@ -1,9 +1,6 @@
-import { createServer, PluginOption } from "vite"
-import react from "@vitejs/plugin-react"
-import vue from "@vitejs/plugin-vue"
-import vueJSX from "@vitejs/plugin-vue-jsx"
+import { createServer } from "vite"
 import yargs from "yargs"
-import viteCommon from "./vite-common.js"
+import viteCommon, { getPlugins } from "./vite-common.js"
 
 export default function createServeCommand(y: typeof yargs) {
     y.command(
@@ -37,27 +34,8 @@ export default function createServeCommand(y: typeof yargs) {
             open,
             base
         }) => {
-            const plugins: PluginOption[] = []
-
-            switch (framework) {
-                case "react":
-                    plugins.push(react)
-                    break
-                case "vue":
-                    plugins.push(vue())
-
-                    if (jsx) {
-                        plugins.push(vueJSX())
-                    }
-                    break
-                case "none":
-                    break
-                default:
-                    throw new Error("Unknown framework")
-            }
-            
             const server = await createServer({
-                plugins,
+                plugins: getPlugins(framework, jsx),
                 root: process.cwd(),
                 clearScreen: true,
                 base: base as string,

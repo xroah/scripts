@@ -1,4 +1,8 @@
-import { Options } from "yargs";
+import { Options } from "yargs"
+import { PluginOption } from "vite"
+import react from "@vitejs/plugin-react"
+import vue from "@vitejs/plugin-vue"
+import vueJSX from "@vitejs/plugin-vue-jsx"
 
 export default {
     framework: {
@@ -31,4 +35,27 @@ export default {
         requiresArg: true,
         default: "/"
     }
-} as {[key: string]: Options}
+} as { [key: string]: Options }
+
+export function getPlugins(framework: unknown, jsx: unknown) {
+    const plugins: PluginOption[] = []
+
+    switch (framework) {
+        case "react":
+            plugins.push(react)
+            break
+        case "vue":
+            plugins.push(vue())
+
+            if (jsx) {
+                plugins.push(vueJSX())
+            }
+            break
+        case "none":
+            break
+        default:
+            throw new Error("Unknown framework")
+    }
+
+    return plugins
+}
