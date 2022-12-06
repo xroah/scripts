@@ -1,6 +1,6 @@
-import {build} from "vite"
 import yargs from "yargs"
-import viteCommon, { getPlugins } from "./vite-common.js"
+import buildWithVite from "./vite-build.js"
+import viteCommon from "./vite-common.js"
 
 export default function createViteBuildCommand(y: typeof yargs) {
     y.command(
@@ -18,31 +18,35 @@ export default function createViteBuildCommand(y: typeof yargs) {
                 alias: "d",
                 desc: "Output directory",
                 default: "dist"
+            },
+            tool: {
+                desc: "Build tool(vite or rollup)",
+                default: "vite"
             }
         },
-        async({
+        async ({
             framework,
             jsx,
             extensions,
             config,
             base,
             target,
-            outDir
+            outDir,
+            tool
         }) => {
-            const plugins = getPlugins(framework, jsx)
-            
-            await build({
-                configFile: config ? config as string : false,
-                resolve: {
-                    extensions: extensions as string[],
-                },
-                base: base as string,
-                plugins,
-                build: {
-                    target,
-                    outDir
-                }
-            })
+            switch (tool) {
+                case "vite":
+                    buildWithVite({
+                        framework: framework as string,
+                        jsx: jsx as boolean,
+                        extensions: extensions as string[],
+                        config: config as string,
+                        base: base as string,
+                        target,
+                        outDir
+                    })
+                    break
+            }
         }
     )
 }
