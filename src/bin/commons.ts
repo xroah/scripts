@@ -4,7 +4,9 @@ import react from "@vitejs/plugin-react"
 import vue from "@vitejs/plugin-vue"
 import vueJSX from "@vitejs/plugin-vue-jsx"
 
-export default {
+type Builder = { [key: string]: Options }
+
+export const viteCommons: Builder = {
     framework: {
         alias: "f",
         type: "string",
@@ -35,7 +37,7 @@ export default {
         requiresArg: true,
         default: "/"
     }
-} as { [key: string]: Options }
+}
 
 export function getPlugins(framework: unknown, jsx: unknown) {
     const plugins: PluginOption[] = []
@@ -58,4 +60,12 @@ export function getPlugins(framework: unknown, jsx: unknown) {
     }
 
     return plugins
+}
+
+export const buildCommons: Builder = {
+    outDir: {
+        alias: "d",
+        desc: "Output directory",
+        default: "dist"
+    }
 }

@@ -1,13 +1,13 @@
 import { createServer } from "vite"
 import yargs from "yargs"
-import viteCommon, { getPlugins } from "./vite-common.js"
+import { viteCommons, getPlugins } from "./commons.js"
 
 export default function createServeCommand(y: typeof yargs) {
     y.command(
         ["serve", "start"],
         "Start dev server",
         {
-            ...viteCommon, 
+            ...viteCommons, 
             port: {
                 alias: "p",
                 type: "number",
