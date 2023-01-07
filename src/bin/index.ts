@@ -3,7 +3,7 @@
 import yargs from "yargs"
 import { hideBin } from "yargs/helpers"
 import { NAME } from "../utils/constants.js"
-import createViteBuildCommand from "./build.js"
+import createViteBuildCommand from "./vite-build.js"
 import createRMCommand from "./rm.js"
 import createServeCommand from "./vite-serve.js"
 
