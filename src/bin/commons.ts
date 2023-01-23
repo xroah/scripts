@@ -42,6 +42,10 @@ export const viteCommons: Builder = {
 export function getPlugins(framework: unknown, jsx: unknown) {
     const plugins: PluginOption[] = []
 
+    if (framework) {
+        framework = (framework as string).toLowerCase()
+    }
+
     switch (framework) {
         case "react":
             plugins.push(react)
@@ -66,6 +70,7 @@ export const buildCommons: Builder = {
     outDir: {
         alias: "d",
         desc: "Output directory",
-        default: "dist"
+        default: "dist",
+        requiresArg: true
     }
 }
