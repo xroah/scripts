@@ -36,6 +36,12 @@ export const viteCommons: Builder = {
         desc: "Public base path",
         requiresArg: true,
         default: "/"
+    },
+    root: {
+        desc: "Project root dir",
+        requiresArg: true,
+        type: "string",
+        default: process.cwd()
     }
 }
 

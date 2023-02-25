@@ -32,11 +32,12 @@ export default function createServeCommand(y: typeof yargs) {
             port,
             https,
             open,
-            base
+            base,
+            root
         }) => {
             const server = await createServer({
                 plugins: getPlugins(framework, jsx),
-                root: process.cwd(),
+                root: root as string,
                 clearScreen: true,
                 base: base as string,
                 resolve: {

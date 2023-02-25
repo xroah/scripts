@@ -31,7 +31,8 @@ export default function createViteBuildCommand(y: typeof yargs) {
             config,
             base,
             target,
-            outDir
+            outDir,
+            root
         }) => {
             const plugins = getPlugins(framework, jsx)
 
@@ -42,6 +43,7 @@ export default function createViteBuildCommand(y: typeof yargs) {
                 },
                 base: base as string,
                 plugins,
+                root: root as string,
                 build: {
                     target,
                     outDir: outDir as string
