@@ -18,10 +18,6 @@ export default function createViteBuildCommand(y: typeof yargs) {
                 desc: "Build target",
                 type: "string",
                 requiresArg: true
-            },
-            tool: {
-                desc: "Build tool(vite or rollup)",
-                default: "vite"
             }
         },
         async ({
