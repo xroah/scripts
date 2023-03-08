@@ -54,7 +54,7 @@ export function getPlugins(framework: unknown, jsx: unknown) {
 
     switch (framework) {
         case "react":
-            plugins.push(react)
+            plugins.push(react())
             break
         case "vue":
             plugins.push(vue())
