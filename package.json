@@ -8,7 +8,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf bin config utils && tsc"
+    "build": "rimraf bin config utils && tsc",
+    "lint": "eslint src",
+    "fix": "eslint src --fix"
   },
   "repository": {
     "type": "git",
@@ -46,6 +48,9 @@
   "devDependencies": {
     "@types/babel__core": "^7.20.0",
     "@types/node": "^18.14.6",
-    "@types/yargs": "^17.0.22"
+    "@types/yargs": "^17.0.22",
+    "@typescript-eslint/eslint-plugin": "^5.54.1",
+    "@typescript-eslint/parser": "^5.54.1",
+    "eslint": "^8.35.0"
   }
 }

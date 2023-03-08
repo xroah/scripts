@@ -11,7 +11,7 @@ export default function createRMCommand(y: typeof yargs) {
         argv => {
             const files = argv.files as string[]
 
-            for (let f of files) {
+            for (const f of files) {
                 const absFilePath = getAbsPath(f)
 
                 if (fs.existsSync(absFilePath)) {

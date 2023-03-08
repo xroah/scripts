@@ -1,4 +1,4 @@
-import yargs from "yargs";
+import yargs from "yargs"
 
 // init react app
 export default function createInitCommand(y: typeof yargs) {
