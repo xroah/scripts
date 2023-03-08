@@ -9,6 +9,7 @@ import createServeCommand from "./vite-serve.js"
 import createInitCommand from "./init.js"
 
 const cli = yargs(hideBin(process.argv))
+    .usage("$0 <cmd> [args]")
     .scriptName(NAME)
     // default command
     .command("$0", "Help", {}, () => {
@@ -20,4 +21,7 @@ createServeCommand(cli)
 createViteBuildCommand(cli)
 createInitCommand(cli)
 
-cli.parse()
+cli
+    .alias("help", "h")
+    .alias("version", "v")
+    .parse()
