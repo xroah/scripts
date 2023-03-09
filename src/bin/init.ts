@@ -5,6 +5,7 @@ import { SpawnOptions, spawnSync } from "child_process"
 import chalk from "chalk"
 import ora from "ora"
 import getRootDir from "../utils/get-root-dir.js"
+import eslintCfg from "./eslint.js"
 
 function installPackages(name: string) {
     const deps = [
@@ -45,6 +46,11 @@ function installPackages(name: string) {
         options
     )
     devDepSpinner.stop()
+
+    fs.writeFileSync(
+        path.join(options.cwd as string, ".eslint.json"),
+        JSON.stringify(eslintCfg, null, 4)
+    )
 }
 
 function create(name: string) {
