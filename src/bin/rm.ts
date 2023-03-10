@@ -9,6 +9,7 @@ export default function createRMCommand(y: typeof yargs) {
         "Remove the files or directories",
         {
             verbose: {
+                alias: "V",
                 type: "boolean",
                 desc: "Show details"
             }
