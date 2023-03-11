@@ -21,7 +21,7 @@ function getRollupOptions(
     // ts = true
 ) {
     const dist = "dist"
-    const name = customOption.libName || "reap"
+    const name = customOption.libName || "main"
     const commonOutputConf: OutputOptions = {
         name,
         format: "umd",
