@@ -7,6 +7,7 @@ import createViteBuildCommand from "./vite-build.js"
 import createRMCommand from "./rm.js"
 import createServeCommand from "./vite-serve.js"
 import createInitCommand from "./init.js"
+import createRollupCommand from "./rollup.js"
 
 const cli = yargs(hideBin(process.argv))
     .usage("$0 <cmd> [args]")
@@ -20,6 +21,7 @@ createRMCommand(cli)
 createServeCommand(cli)
 createViteBuildCommand(cli)
 createInitCommand(cli)
+createRollupCommand(cli)
 
 cli
     .alias("help", "h")
