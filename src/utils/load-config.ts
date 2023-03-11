@@ -2,14 +2,14 @@ import path from "path"
 import fs from "fs"
 import getAbsPath from "./get-abs-path.js"
 import transpileTs from "./transpile-ts.js"
-import {createRequire} from "module"
-import transformES from "./transform-es.js"
-import {cacheDir} from "./constants.js"
+import { createRequire } from "module"
+import { cacheDir } from "./constants.js"
 
 const require = createRequire(path.join(cacheDir, "a.js"))
 
 function handleRequire(configFile: string, ts: boolean) {
-    const filename = (ts ? transpileTs : transformES)(configFile)
+    const absFile = getAbsPath(configFile)
+    const filename = ts ? transpileTs(configFile) : absFile
     const module = `./${path.parse(filename).base}`
     const config = require(module) || {}
 
@@ -21,7 +21,7 @@ export default function loadConfig(configFile?: string) {
     const defaultConfFileJS = getAbsPath(`${DEFAULT_CONF_NAME}.js`)
     const defaultConfFileTS = getAbsPath(`${DEFAULT_CONF_NAME}.ts`)
     const pkgJSON = getAbsPath("package.json")
-    let config: any = {}
+    let config: unknown = {}
 
     if (configFile) {
         configFile = getAbsPath(configFile)
