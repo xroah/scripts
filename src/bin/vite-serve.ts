@@ -27,7 +27,6 @@ export default function createServeCommand(y: typeof yargs) {
         async ({
             framework,
             config,
-            jsx,
             extensions,
             port,
             https,
@@ -36,7 +35,7 @@ export default function createServeCommand(y: typeof yargs) {
             root
         }) => {
             const server = await createServer({
-                plugins: getPlugins(framework, jsx),
+                plugins: getPlugins(framework),
                 root: root as string,
                 clearScreen: true,
                 base: base as string,

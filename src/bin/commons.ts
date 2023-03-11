@@ -1,8 +1,6 @@
 import { Options } from "yargs"
 import { PluginOption } from "vite"
 import react from "@vitejs/plugin-react"
-import vue from "@vitejs/plugin-vue"
-import vueJSX from "@vitejs/plugin-vue-jsx"
 
 type Builder = { [key: string]: Options }
 
@@ -10,12 +8,8 @@ export const viteCommons: Builder = {
     framework: {
         alias: "f",
         type: "string",
-        desc: "Framework(vue、react or none)",
+        desc: "Framework(react or none)",
         default: "react"
-    },
-    jsx: {
-        type: "boolean",
-        desc: "Use jsx(Vue only)"
     },
     extensions: {
         alias: "e",
@@ -45,28 +39,15 @@ export const viteCommons: Builder = {
     }
 }
 
-export function getPlugins(framework: unknown, jsx: unknown) {
+export function getPlugins(framework: unknown) {
     const plugins: PluginOption[] = []
 
     if (framework) {
         framework = (framework as string).toLowerCase()
     }
 
-    switch (framework) {
-        case "react":
-            plugins.push(react())
-            break
-        case "vue":
-            plugins.push(vue())
-
-            if (jsx) {
-                plugins.push(vueJSX())
-            }
-            break
-        case "none":
-            break
-        default:
-            throw new Error("Unknown framework")
+    if (framework === "react") {
+        plugins.push(react())
     }
 
     return plugins

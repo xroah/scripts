@@ -22,7 +22,6 @@ export default function createViteBuildCommand(y: typeof yargs) {
         },
         async ({
             framework,
-            jsx,
             extensions,
             config,
             base,
@@ -30,7 +29,7 @@ export default function createViteBuildCommand(y: typeof yargs) {
             outDir,
             root
         }) => {
-            const plugins = getPlugins(framework, jsx)
+            const plugins = getPlugins(framework)
 
             await build({
                 configFile: config ? config as string : false,
