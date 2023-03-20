@@ -1,7 +1,7 @@
 import yargs from "yargs"
 import rimraf from "rimraf"
 import fs from "fs"
-import getAbsPath from "../utils/get-abs-path.js"
+import { getAbsPath } from "../utils/index.js"
 
 export default function createRMCommand(y: typeof yargs) {
     return y.command(

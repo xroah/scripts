@@ -2,6 +2,23 @@ import path from "path"
 import fs from "fs"
 import url from "url"
 
+export function isPlainObject(obj: unknown) {
+    return !!obj &&
+        Object.prototype.toString.call(obj) === "[object Object]"
+}
+
+export function getAbsPath(file: string) {
+    if (!file) {
+        return ""
+    }
+
+    if (path.isAbsolute(file)) {
+        return file
+    }
+
+    return path.join(process.cwd(), file)
+}
+
 let root = ""
 
 function isProjectRoot(filePath: string) {
@@ -10,7 +27,7 @@ function isProjectRoot(filePath: string) {
     return fs.existsSync(path.join(filePath, PACKAGE_JSON))
 }
 
-export default function getRootDir() {
+export function getRootDir() {
     if (root) {
         return root
     }

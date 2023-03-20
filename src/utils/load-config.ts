@@ -1,9 +1,8 @@
 import path from "path"
 import fs from "fs"
-import getAbsPath from "./get-abs-path.js"
-import transpileTs from "./transpile-ts.js"
+import {getAbsPath} from "."
+import transpileTs, { cacheDir } from "./transpile-ts.js"
 import { createRequire } from "module"
-import { cacheDir } from "./constants.js"
 
 const require = createRequire(path.join(cacheDir, "a.js"))
 

@@ -2,12 +2,13 @@
 
 import yargs from "yargs"
 import { hideBin } from "yargs/helpers"
-import { NAME } from "../utils/constants.js"
 import createViteBuildCommand from "./vite-build.js"
 import createRMCommand from "./rm.js"
 import createServeCommand from "./vite-serve.js"
 import createInitCommand from "./init.js"
 import createRollupCommand from "./rollup.js"
+
+const NAME = "r-scripts"
 
 const cli = yargs(hideBin(process.argv))
     .usage("$0 <cmd> [args]")

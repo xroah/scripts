@@ -4,7 +4,7 @@ import path from "path"
 import { SpawnOptions, spawnSync } from "child_process"
 import chalk from "chalk"
 import ora from "ora"
-import getRootDir from "../utils/get-root-dir.js"
+import { getRootDir } from "../utils/index.js"
 import eslintCfg from "./eslint.js"
 
 function installPackages(name: string) {
