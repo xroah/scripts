@@ -12,13 +12,9 @@ import { babel } from "@rollup/plugin-babel"
 import terser from "@rollup/plugin-terser"
 import yargs from "yargs"
 import { buildCommons } from "./commons.js"
-import getRootDir from "../utils/get-root-dir.js"
-
-const root = getRootDir()
 
 function getRollupOptions(
-    customOption: any = {},
-    // ts = true
+    customOption: any = {}
 ) {
     const dist = "dist"
     const name = customOption.libName || "main"
