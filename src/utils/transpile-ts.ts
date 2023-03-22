@@ -19,7 +19,7 @@ function writeCodeToCache(code: string) {
     const filename = path.join(cacheDir, `${genFilename()}.cjs`)
 
     if (!fs.existsSync(cacheDir)) {
-        fs.mkdirSync(cacheDir)
+        fs.mkdirSync(cacheDir, {recursive: true})
     }
 
     fs.writeFileSync(filename, code)
