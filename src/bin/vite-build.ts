@@ -32,7 +32,6 @@ export default function createViteBuildCommand(y: typeof yargs) {
             const plugins = getPlugins(framework)
 
             await build({
-                configFile: config ? config as string : false,
                 resolve: {
                     extensions: extensions as string[],
                 },

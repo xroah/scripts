@@ -42,7 +42,9 @@ export default function createServeCommand(y: typeof yargs) {
                 resolve: {
                     extensions: extensions  as string[] | undefined
                 },
-                configFile: config ? config as string : false,
+                css: {
+                    devSourcemap: true
+                },
                 server: {
                     host: true,
                     open: open,
