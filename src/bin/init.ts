@@ -4,10 +4,11 @@ import path from "path"
 import { SpawnOptions, spawnSync } from "child_process"
 import chalk from "chalk"
 import ora from "ora"
+import rimraf from "rimraf"
 import { getRootDir } from "../utils/index.js"
 import eslintCfg from "./eslint.js"
 
-function installPackages(name: string) {
+function installPackages(cwd: string) {
     const deps = [
         "react",
         "react-dom",
@@ -24,33 +25,52 @@ function installPackages(name: string) {
         "typescript"
     ]
     const options: SpawnOptions = {
-        cwd: path.join(process.cwd(), name),
-        shell: true,
-        stdio: ["ignore", "ignore", "inherit"]
+        cwd,
+        stdio: "inherit",
+        shell: true
     }
     const depSpinner = ora(chalk.cyan("Installing dependencies..."))
     const devDepSpinner = ora(chalk.cyan("Installing dev dependencies"))
 
     depSpinner.start()
-    spawnSync(
+    const depProc = spawnSync(
         "npm",
         ["i", ...deps],
         options
     )
     depSpinner.stop()
 
+    if (depProc.status !== 0 || depProc.error) {
+        return false
+    }
+
     devDepSpinner.start()
-    spawnSync(
+
+    const devDepProc = spawnSync(
         "npm",
         ["i", "-D", ...devDeps],
         options
     )
     devDepSpinner.stop()
 
+    if (devDepProc.status !== 0 || devDepProc.error) {
+        return false
+    }
+
     fs.writeFileSync(
         path.join(options.cwd as string, ".eslint.json"),
         JSON.stringify(eslintCfg, null, 4)
     )
+
+    return 0
+}
+
+function rmDir(dir: string) {
+    try {
+        rimraf.sync(dir)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 function create(name: string) {
@@ -70,6 +90,20 @@ function create(name: string) {
     }
     const dir = path.join(process.cwd(), name)
 
+    if (fs.existsSync(path.join(dir, "package.json"))) {
+        console.log(
+            chalk.red("There is a package.json file, please try another。")
+        )
+
+        return 
+    }
+
+    process.on("exit", code => {
+        if (code !== 0) {
+            rmDir(dir)
+        }
+    })
+
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir)
     }
@@ -78,9 +112,11 @@ function create(name: string) {
         path.join(dir, "package.json"),
         JSON.stringify(packageJson, null, 4)
     )
-
-    installPackages(name)
     copyTemplate(dir)
+
+    if (!installPackages(dir)) {
+        return rmDir(dir)
+    }
 
     console.log(chalk.green("Created successfully"))
 }
