@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf bin config utils && tsc",
+    "build": "rimraf dist && tsc",
     "lint": "eslint src",
     "fix": "eslint src --fix"
   },
@@ -33,19 +33,18 @@
     "@rollup/plugin-typescript": "^11.0.0",
     "@vitejs/plugin-react": "^3.1.0",
     "chalk": "^5.2.0",
-    "ora": "^6.1.2",
-    "rimraf": "^4.3.1",
-    "rollup": "^3.18.0",
-    "typescript": "^4.9.5",
-    "vite": "^4.1.4",
+    "fast-glob": "^3.2.12",
+    "ora": "^6.3.0",
+    "rollup": "^3.20.2",
+    "typescript": "^5.0.2",
+    "vite": "^4.2.1",
     "yargs": "^17.7.1"
   },
   "devDependencies": {
-    "@types/babel__core": "^7.20.0",
-    "@types/node": "^18.14.6",
-    "@types/yargs": "^17.0.22",
-    "@typescript-eslint/eslint-plugin": "^5.54.1",
-    "@typescript-eslint/parser": "^5.54.1",
-    "eslint": "^8.35.0"
+    "@types/node": "^18.15.10",
+    "@types/yargs": "^17.0.23",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "eslint": "^8.36.0"
   }
 }

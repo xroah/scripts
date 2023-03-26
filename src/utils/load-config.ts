@@ -1,8 +1,8 @@
 import path from "path"
 import fs from "fs"
-import { getAbsPath } from "./index.js"
 import transpileTs from "./transpile-ts.js"
 import url from "url"
+import { getAbsPath } from "./path-utils.js"
 
 export default async function loadConfig(configFile?: string) {
     const DEFAULT_CONF_NAME = "r.config"

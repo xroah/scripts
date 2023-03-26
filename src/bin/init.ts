@@ -4,9 +4,9 @@ import path from "path"
 import { SpawnOptions, spawnSync } from "child_process"
 import chalk from "chalk"
 import ora from "ora"
-import rimraf from "rimraf"
-import { getRootDir } from "../utils/index.js"
 import eslintCfg from "./eslint.js"
+import rm from "../utils/rm.js"
+import { getRootDir } from "../utils/path-utils.js"
 
 function installPackages(cwd: string) {
     const deps = [
@@ -67,7 +67,7 @@ function installPackages(cwd: string) {
 
 function rmDir(dir: string) {
     try {
-        rimraf.sync(dir)
+        rm(dir)
     } catch (error) {
         console.log(error)
     }
