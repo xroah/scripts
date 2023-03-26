@@ -18,12 +18,6 @@ export const viteCommons: Builder = {
         desc: "Resolve extensions",
         requiresArg: true
     },
-    config: {
-        alias: "c",
-        type: "string",
-        desc: "Config file",
-        requiresArg: true
-    },
     base: {
         alias: "b",
         type: "string",
@@ -36,6 +30,24 @@ export const viteCommons: Builder = {
         requiresArg: true,
         type: "string",
         default: process.cwd()
+    }
+}
+
+export const buildCommons: Builder = {
+    outDir: {
+        alias: "d",
+        desc: "Output directory",
+        default: "dist",
+        requiresArg: true
+    }
+}
+
+export const commonParams: Builder = {
+    config: {
+        alias: "c",
+        type: "string",
+        desc: "Config file",
+        requiresArg: true
     }
 }
 
@@ -56,21 +68,14 @@ export function getPlugins(
     return plugins
 }
 
-export const buildCommons: Builder = {
-    outDir: {
-        alias: "d",
-        desc: "Output directory",
-        default: "dist",
-        requiresArg: true
-    }
-}
-
 export function getSharedViteConf(
     conf: InlineConfig,
     cmdConf: InlineConfig
-) {
+): InlineConfig {
     return {
+        ...conf,
         base: cmdConf.base ?? conf?.base ?? "./",
-        root: cmdConf.root ?? conf?.root
+        root: cmdConf.root ?? conf?.root,
+        configFile: false
     }
 }

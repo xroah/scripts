@@ -1,7 +1,7 @@
 import { createServer, InlineConfig } from "vite"
 import yargs from "yargs"
 import loadConfig from "../utils/load-config.js"
-import { viteCommons, getPlugins, getSharedViteConf } from "./commons.js"
+import { viteCommons, getPlugins, getSharedViteConf, commonParams } from "./commons.js"
 
 export default function createServeCommand(y: typeof yargs) {
     y.command(
@@ -9,6 +9,7 @@ export default function createServeCommand(y: typeof yargs) {
         "Start dev server",
         {
             ...viteCommons,
+            ...commonParams,
             port: {
                 alias: "p",
                 type: "number",
@@ -65,7 +66,6 @@ export default function createServeCommand(y: typeof yargs) {
                     port: port ?? serverConf?.port,
                     https: https ?? serverConf?.https
                 },
-                ...restConfig,
                 ...getSharedViteConf(
                     restConfig,
                     {
@@ -74,7 +74,6 @@ export default function createServeCommand(y: typeof yargs) {
                     }
                 )
             }
-            inlineConfig.configFile = false
 
             const server = await createServer(inlineConfig)
 

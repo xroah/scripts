@@ -5,7 +5,8 @@ import {
     viteCommons,
     buildCommons,
     getPlugins,
-    getSharedViteConf
+    getSharedViteConf,
+    commonParams
 } from "./commons.js"
 
 export default function createViteBuildCommand(y: typeof yargs) {
@@ -15,6 +16,7 @@ export default function createViteBuildCommand(y: typeof yargs) {
         {
             ...viteCommons,
             ...buildCommons,
+            ...commonParams,
             target: {
                 alias: "t",
                 desc: "Build target",
@@ -49,7 +51,6 @@ export default function createViteBuildCommand(y: typeof yargs) {
                     target: target ?? buildConf?.target,
                     outDir: outDir ?? buildConf?.outDir
                 },
-                ...restConfig,
                 ...getSharedViteConf(
                     restConfig,
                     {
@@ -58,7 +59,6 @@ export default function createViteBuildCommand(y: typeof yargs) {
                     }
                 )
             }
-            inlineConfig.configFile = false
 
             await build(inlineConfig)
         }
