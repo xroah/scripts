@@ -2,6 +2,7 @@ import path from "path"
 import fs from "fs"
 import { getAbsPath } from "./index.js"
 import transpileTs from "./transpile-ts.js"
+import url from "url"
 
 export default async function loadConfig(configFile?: string) {
     const DEFAULT_CONF_NAME = "r.config"
@@ -14,30 +15,30 @@ export default async function loadConfig(configFile?: string) {
         getDefaultJsFile("mjs")
     ]
     const defaultConfFileTS = getAbsPath(`${DEFAULT_CONF_NAME}.ts`)
+    let realConfigFile = ""
 
-    if (configFile) {
-        configFile = getAbsPath(configFile)
+    if (configFile && fs.existsSync(configFile)) {
+        realConfigFile = getAbsPath(configFile)
     }else if (fs.existsSync(defaultConfFileTS)) {
-        configFile = defaultConfFileTS
+        realConfigFile = defaultConfFileTS
     } else {
         for (const jsConfigFile of defaultJSConfigFiles) {
             if (fs.existsSync(jsConfigFile)) {
-                configFile = jsConfigFile
+                realConfigFile = jsConfigFile
                 break
             }
         }
     }
 
-    if (configFile) {
-        const ts = path.extname(configFile) === ".ts"
+    if (realConfigFile) {
+        const ts = path.extname(realConfigFile) === ".ts"
+        let modulePath = realConfigFile
 
         if (ts) {
-            const m = await import(transpileTs(configFile))
-
-            return m.default ?? m
+            modulePath = transpileTs(realConfigFile)
         }
 
-        return import(configFile)
+        return import(url.pathToFileURL(modulePath).href)
     }
 
     return Promise.resolve({})

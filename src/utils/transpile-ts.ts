@@ -4,7 +4,7 @@ import fs from "fs"
 
 export const cacheDir = path.join(
     process.cwd(),
-    "node_modules/.cache"
+    "node_modules/.r-cache"
 )
 
 let uuid = 0
@@ -16,7 +16,7 @@ function genFilename() {
 }
 
 function writeCodeToCache(code: string) {
-    const filename = path.join(cacheDir, `${genFilename()}.cjs`)
+    const filename = path.join(cacheDir, `${genFilename()}.mjs`)
 
     if (!fs.existsSync(cacheDir)) {
         fs.mkdirSync(cacheDir, {recursive: true})
@@ -33,7 +33,7 @@ function writeCodeToCache(code: string) {
             }
         }
     )
-
+    
     return filename
 }
 
@@ -43,7 +43,7 @@ export default function transpireTS(filename: string) {
         source,
         {
             compilerOptions: {
-                module: ts.ModuleKind.CommonJS
+                module: ts.ModuleKind.ES2015
             }
         }
     )
