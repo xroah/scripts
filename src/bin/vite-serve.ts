@@ -1,13 +1,14 @@
-import { createServer } from "vite"
+import { createServer, InlineConfig } from "vite"
 import yargs from "yargs"
-import { viteCommons, getPlugins } from "./commons.js"
+import loadConfig from "../utils/load-config.js"
+import { viteCommons, getPlugins, getSharedViteConf } from "./commons.js"
 
 export default function createServeCommand(y: typeof yargs) {
     y.command(
         ["serve", "start"],
         "Start dev server",
         {
-            ...viteCommons, 
+            ...viteCommons,
             port: {
                 alias: "p",
                 type: "number",
@@ -22,6 +23,9 @@ export default function createServeCommand(y: typeof yargs) {
             },
             https: {
                 type: "boolean"
+            },
+            host: {
+                type: "boolean"
             }
         },
         async ({
@@ -32,26 +36,47 @@ export default function createServeCommand(y: typeof yargs) {
             https,
             open,
             base,
-            root
+            root,
+            host
         }) => {
-            const server = await createServer({
-                plugins: getPlugins(framework),
-                root: root as string,
+            const fileConfig = await loadConfig(config as string)
+            const {
+                resolve,
+                css,
+                react,
+                server: serverConf,
+                ...restConfig
+            } = fileConfig?.default?.vite ?? {}
+            const inlineConfig: InlineConfig = {
+                plugins: getPlugins(framework, react),
                 clearScreen: true,
-                base: base as string,
                 resolve: {
-                    extensions: extensions  as string[] | undefined
+                    ...resolve,
+                    extensions: extensions ?? resolve?.extensions
                 },
                 css: {
-                    devSourcemap: true
+                    devSourcemap: true,
+                    ...css
                 },
                 server: {
-                    host: true,
-                    open: open,
-                    port: port,
-                    https: https
-                }
-            })
+                    ...serverConf,
+                    host: host ?? serverConf?.host ?? true,
+                    open: open ?? serverConf?.open,
+                    port: port ?? serverConf?.port,
+                    https: https ?? serverConf?.https
+                },
+                ...restConfig,
+                ...getSharedViteConf(
+                    restConfig,
+                    {
+                        root: root as string,
+                        base: base as string
+                    }
+                )
+            }
+            inlineConfig.configFile = false
+
+            const server = await createServer(inlineConfig)
 
             await server.listen()
 

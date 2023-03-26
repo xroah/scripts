@@ -1,9 +1,11 @@
-import { build } from "vite"
+import { build, InlineConfig } from "vite"
 import yargs from "yargs"
+import loadConfig from "../utils/load-config.js"
 import {
     viteCommons,
     buildCommons,
-    getPlugins
+    getPlugins,
+    getSharedViteConf
 } from "./commons.js"
 
 export default function createViteBuildCommand(y: typeof yargs) {
@@ -29,20 +31,36 @@ export default function createViteBuildCommand(y: typeof yargs) {
             outDir,
             root
         }) => {
-            const plugins = getPlugins(framework)
-
-            await build({
+            const fileConfig = await loadConfig(config as string)
+            const {
+                resolve,
+                build: buildConf,
+                react,
+                ...restConfig
+            } = fileConfig?.default?.vite ?? {}
+            const inlineConfig: InlineConfig = {
                 resolve: {
-                    extensions: extensions as string[],
+                    ...resolve,
+                    extensions: extensions ?? resolve?.extensions,
                 },
-                base: base as string,
-                plugins,
-                root: root as string,
+                plugins: getPlugins(framework, react),
                 build: {
-                    target,
-                    outDir: outDir as string
-                }
-            })
+                    ...buildConf,
+                    target: target ?? buildConf?.target,
+                    outDir: outDir ?? buildConf?.outDir
+                },
+                ...restConfig,
+                ...getSharedViteConf(
+                    restConfig,
+                    {
+                        root: root as string,
+                        base: base as string
+                    }
+                )
+            }
+            inlineConfig.configFile = false
+
+            await build(inlineConfig)
         }
     )
 }
