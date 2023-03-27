@@ -39,7 +39,7 @@ export default function createViteBuildCommand(y: typeof yargs) {
                 build: buildConf,
                 react,
                 ...restConfig
-            } = fileConfig?.default?.vite ?? {}
+            } = fileConfig?.vite ?? {}
             const inlineConfig: InlineConfig = {
                 resolve: {
                     ...resolve,

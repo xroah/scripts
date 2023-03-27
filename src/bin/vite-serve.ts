@@ -47,7 +47,7 @@ export default function createServeCommand(y: typeof yargs) {
                 react,
                 server: serverConf,
                 ...restConfig
-            } = fileConfig?.default?.vite ?? {}
+            } = fileConfig?.vite ?? {}
             const inlineConfig: InlineConfig = {
                 plugins: getPlugins(framework, react),
                 clearScreen: true,

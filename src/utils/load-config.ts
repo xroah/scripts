@@ -38,7 +38,9 @@ export default async function loadConfig(configFile?: string) {
             modulePath = transpileTs(realConfigFile)
         }
 
-        return import(url.pathToFileURL(modulePath).href)
+        const m = await import(url.pathToFileURL(modulePath).href)
+
+        return m.default ? m.default : m
     }
 
     return Promise.resolve({})
