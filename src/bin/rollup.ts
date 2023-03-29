@@ -11,9 +11,11 @@ import cjs from "@rollup/plugin-commonjs"
 import { babel } from "@rollup/plugin-babel"
 import terser from "@rollup/plugin-terser"
 import yargs from "yargs"
-import { buildCommons } from "./commons.js"
+import { buildCommons, commonParams } from "./commons.js"
+import { getAbsPath } from "../utils/path-utils.js"
 
 function getRollupOptions(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     customOption: any = {}
 ) {
     const dist = "dist"
@@ -34,15 +36,7 @@ function getRollupOptions(
         resolve(),
         cjs(),
         typescript({
-            tsconfig: false,
-            target: "ESNext",
-            jsx: "react",
-            strict: true,
-            moduleResolution: "node",
-            include: customOption.include || ["src/**/*"],
-            exclude: customOption.exclude || ["node_modules"],
-            esModuleInterop: true,
-            experimentalDecorators: true
+            tsconfig: getAbsPath("tsconfig.json")
         }),
         babel({
             exclude: /node_modules/,
@@ -80,7 +74,8 @@ export default function createRollupCommand(y: typeof yargs) {
         "rollup",
         "Build with rollup",
         {
-            ...buildCommons
+            ...buildCommons,
+            ...commonParams
         },
         async () => {
             const options = getRollupOptions()
