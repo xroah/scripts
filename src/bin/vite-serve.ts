@@ -1,7 +1,7 @@
 import { createServer, InlineConfig } from "vite"
 import yargs from "yargs"
 import loadConfig from "../utils/load-config.js"
-import { viteCommons, getPlugins, getSharedViteConf, commonParams } from "./commons.js"
+import { viteCommons, getPlugins, getSharedViteConf, commonParams } from "./common-conf.js"
 
 export default function createServeCommand(y: typeof yargs) {
     y.command(

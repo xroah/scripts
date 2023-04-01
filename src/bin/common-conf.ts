@@ -5,12 +5,6 @@ import react, { Options as ReactOptions } from "@vitejs/plugin-react"
 type Builder = { [key: string]: Options }
 
 export const viteCommons: Builder = {
-    framework: {
-        alias: "f",
-        type: "string",
-        desc: "Framework(react or none)",
-        default: "react"
-    },
     extensions: {
         alias: "e",
         type: "string",
@@ -48,7 +42,13 @@ export const commonParams: Builder = {
         type: "string",
         desc: "Config file",
         requiresArg: true
-    }
+    },
+    framework: {
+        alias: "f",
+        type: "string",
+        desc: "Framework(react or none)",
+        default: "react"
+    },
 }
 
 export function getPlugins(

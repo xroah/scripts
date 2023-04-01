@@ -7,7 +7,7 @@ import {
     getPlugins,
     getSharedViteConf,
     commonParams
-} from "./commons.js"
+} from "./common-conf.js"
 
 export default function createViteBuildCommand(y: typeof yargs) {
     y.command(
