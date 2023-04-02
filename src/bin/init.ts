@@ -4,7 +4,6 @@ import path from "path"
 import { SpawnOptions, spawnSync } from "child_process"
 import chalk from "chalk"
 import ora from "ora"
-import eslintCfg from "./eslint.js"
 import rm from "../utils/rm.js"
 import { getRootDir } from "../utils/path-utils.js"
 
@@ -57,12 +56,7 @@ function installPackages(cwd: string) {
         return false
     }
 
-    fs.writeFileSync(
-        path.join(options.cwd as string, ".eslint.json"),
-        JSON.stringify(eslintCfg, null, 4)
-    )
-
-    return 0
+    return true
 }
 
 function rmDir(dir: string) {
@@ -92,7 +86,7 @@ function create(name: string) {
 
     if (fs.existsSync(path.join(dir, "package.json"))) {
         console.log(
-            chalk.red("There is a package.json file, please try another。")
+            chalk.red("The directory is not empty, please try another。")
         )
 
         return 
