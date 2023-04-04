@@ -11,7 +11,7 @@ import cjs from "@rollup/plugin-commonjs"
 import { babel } from "@rollup/plugin-babel"
 import terser from "@rollup/plugin-terser"
 import yargs from "yargs"
-import { buildCommons, commonParams } from "./common-conf.js"
+import { buildParams, commonParams } from "./common-params.js"
 import { getAbsPath } from "../utils/path-utils.js"
 
 function getRollupOptions(
@@ -74,7 +74,7 @@ export default function createRollupCommand(y: typeof yargs) {
         "rollup",
         "Build with rollup",
         {
-            ...buildCommons,
+            ...buildParams,
             ...commonParams,
             entry: {
                 alias: "e",

@@ -2,11 +2,10 @@
 
 import yargs from "yargs"
 import { hideBin } from "yargs/helpers"
-import createViteBuildCommand from "./vite-build.js"
 import createRMCommand from "./remove.js"
-import createServeCommand from "./vite-serve.js"
 import createInitCommand from "./init.js"
 import createRollupCommand from "./rollup.js"
+import { createServeCommand, createViteBuildCommand } from "./vite.js"
 
 const NAME = "r-scripts"
 
