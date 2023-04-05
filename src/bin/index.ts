@@ -5,7 +5,7 @@ import { hideBin } from "yargs/helpers"
 import createRMCommand from "./remove.js"
 import createInitCommand from "./init.js"
 import createRollupCommand from "./rollup.js"
-import { createServeCommand, createViteBuildCommand } from "./vite.js"
+import { createServeCommand, createBuildCommand } from "./vite.js"
 
 const NAME = "r-scripts"
 
@@ -19,7 +19,7 @@ const cli = yargs(hideBin(process.argv))
 
 createRMCommand(cli)
 createServeCommand(cli)
-createViteBuildCommand(cli)
+createBuildCommand(cli)
 createInitCommand(cli)
 createRollupCommand(cli)
 

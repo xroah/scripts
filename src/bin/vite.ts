@@ -152,7 +152,7 @@ export function createServeCommand(y: typeof yargs) {
     )
 }
 
-export function createViteBuildCommand(y: typeof yargs) {
+export function createBuildCommand(y: typeof yargs) {
     y.command(
         ["vite", "vite-build"],
         "Build with vite",
