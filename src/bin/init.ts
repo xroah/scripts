@@ -7,7 +7,7 @@ import {
     statSync,
     copyFileSync
 } from "fs"
-import {join as joinPath} from "path"
+import { join as joinPath } from "path"
 import { SpawnOptions, spawnSync } from "child_process"
 import chalk from "chalk"
 import ora from "ora"

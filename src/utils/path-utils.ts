@@ -1,9 +1,9 @@
 import {
-    isAbsolute, 
+    isAbsolute,
     join as joinPath,
     parse as parsePath
 } from "path"
-import {existsSync} from "fs"
+import { existsSync } from "fs"
 import { fileURLToPath } from "url"
 
 export function getAbsPath(file: string) {
@@ -32,7 +32,7 @@ export function getRootDir() {
     }
 
     const basePath = fileURLToPath(import.meta.url)
-    let rootPath = parsePath(basePath).dir
+    let rootPath = basePath
 
     while (rootPath && rootPath !== "/") {
         if (isProjectRoot(rootPath)) {

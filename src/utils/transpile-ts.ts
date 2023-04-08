@@ -1,8 +1,14 @@
 import ts from "typescript"
-import path from "path"
-import fs from "fs"
+import { join as joinPath } from "path"
+import {
+    readFileSync,
+    existsSync,
+    mkdirSync,
+    writeFileSync,
+    unlinkSync
+} from "fs"
 
-export const cacheDir = path.join(
+export const cacheDir = joinPath(
     process.cwd(),
     "node_modules/.r-cache"
 )
@@ -16,29 +22,29 @@ function genFilename() {
 }
 
 function writeCodeToCache(code: string) {
-    const filename = path.join(cacheDir, `${genFilename()}.mjs`)
+    const filename = joinPath(cacheDir, `${genFilename()}.mjs`)
 
-    if (!fs.existsSync(cacheDir)) {
-        fs.mkdirSync(cacheDir, {recursive: true})
+    if (!existsSync(cacheDir)) {
+        mkdirSync(cacheDir, { recursive: true })
     }
 
-    fs.writeFileSync(filename, code)
+    writeFileSync(filename, code)
 
     process.nextTick(
         () => {
             try {
-                fs.unlinkSync(filename)
+                unlinkSync(filename)
             } catch (error) {
                 // do nothing
             }
         }
     )
-    
+
     return filename
 }
 
 export default function transpireTS(filename: string) {
-    const source = fs.readFileSync(filename).toString()
+    const source = readFileSync(filename).toString()
     const result = ts.transpileModule(
         source,
         {

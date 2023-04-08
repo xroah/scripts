@@ -1,7 +1,7 @@
 import path from "path"
-import fs from "fs"
+import { existsSync } from "fs"
 import transpileTs from "./transpile-ts.js"
-import url from "url"
+import { pathToFileURL } from "url"
 import { getAbsPath } from "./path-utils.js"
 
 export default async function loadConfig(configFile?: string) {
@@ -17,13 +17,13 @@ export default async function loadConfig(configFile?: string) {
     const defaultConfFileTS = getAbsPath(`${DEFAULT_CONF_NAME}.ts`)
     let realConfigFile = ""
 
-    if (configFile && fs.existsSync(configFile)) {
+    if (configFile && existsSync(configFile)) {
         realConfigFile = getAbsPath(configFile)
-    }else if (fs.existsSync(defaultConfFileTS)) {
+    } else if (existsSync(defaultConfFileTS)) {
         realConfigFile = defaultConfFileTS
     } else {
         for (const jsConfigFile of defaultJSConfigFiles) {
-            if (fs.existsSync(jsConfigFile)) {
+            if (existsSync(jsConfigFile)) {
                 realConfigFile = jsConfigFile
                 break
             }
@@ -38,7 +38,7 @@ export default async function loadConfig(configFile?: string) {
             modulePath = transpileTs(realConfigFile)
         }
 
-        const m = await import(url.pathToFileURL(modulePath).href)
+        const m = await import(pathToFileURL(modulePath).href)
 
         return m.default ? m.default : m
     }
