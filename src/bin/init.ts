@@ -1,6 +1,13 @@
 import yargs from "yargs"
-import fs from "fs"
-import path from "path"
+import {
+    existsSync,
+    readdirSync,
+    mkdirSync,
+    writeFileSync,
+    statSync,
+    copyFileSync
+} from "fs"
+import {join as joinPath} from "path"
 import { SpawnOptions, spawnSync } from "child_process"
 import chalk from "chalk"
 import ora from "ora"
@@ -82,14 +89,14 @@ function create(name: string) {
         author: "",
         license: ""
     }
-    const dir = path.join(process.cwd(), name)
+    const dir = joinPath(process.cwd(), name)
 
-    if (fs.existsSync(path.join(dir, "package.json"))) {
+    if (existsSync(dir) && readdirSync(dir).length) {
         console.log(
             chalk.red("The directory is not empty, please try another。")
         )
 
-        return 
+        return
     }
 
     process.on("exit", code => {
@@ -98,12 +105,12 @@ function create(name: string) {
         }
     })
 
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir)
+    if (!existsSync(dir)) {
+        mkdirSync(dir)
     }
 
-    fs.writeFileSync(
-        path.join(dir, "package.json"),
+    writeFileSync(
+        joinPath(dir, "package.json"),
         JSON.stringify(packageJson, null, 4)
     )
     copyTemplate(dir)
@@ -116,28 +123,28 @@ function create(name: string) {
 }
 
 function copyTemplate(dest: string) {
-    const srcDir = path.join(getRootDir(), "template/react")
-    let files = fs.readdirSync(srcDir)
+    const srcDir = joinPath(getRootDir(), "template/react")
+    let files = readdirSync(srcDir)
 
     while (files.length) {
         const f = files.shift()!
-        const absPath = path.join(srcDir, f)
-        const stat = fs.statSync(absPath)
+        const absPath = joinPath(srcDir, f)
+        const stat = statSync(absPath)
 
         if (stat.isDirectory()) {
-            const dirFiles = fs.readdirSync(absPath).map(
-                sub => path.join(f, sub)
+            const dirFiles = readdirSync(absPath).map(
+                sub => joinPath(f, sub)
             )
             files = files.concat(dirFiles)
-            const destDir = path.join(dest, f)
+            const destDir = joinPath(dest, f)
 
-            if (!fs.existsSync(destDir)) {
-                fs.mkdirSync(path.join(dest, f))
+            if (!existsSync(destDir)) {
+                mkdirSync(joinPath(dest, f))
             }
         } else {
-            fs.copyFileSync(
+            copyFileSync(
                 absPath,
-                path.join(dest, f)
+                joinPath(dest, f)
             )
         }
     }
