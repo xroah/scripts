@@ -4,7 +4,7 @@ import {
     rollup,
     InputPluginOption
 } from "rollup"
-import path from "path"
+import { join as joinPath } from "path"
 import typescript from "@rollup/plugin-typescript"
 import resolve from "@rollup/plugin-node-resolve"
 import cjs from "@rollup/plugin-commonjs"
@@ -13,24 +13,54 @@ import terser from "@rollup/plugin-terser"
 import yargs from "yargs"
 import { buildParams, commonParams } from "./common-params.js"
 import { getAbsPath } from "../utils/path-utils.js"
+import { GlobalsOption } from "rollup"
+import loadConfig from "../utils/load-config.js"
 
-function getRollupOptions(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    customOption: any = {}
+interface Options {
+    entry?: string
+    name?: string
+    external?: string[]
+    outDir?: string
+    globals?: string[]
+    config?: string
+}
+
+function getGlobals(globals?: string[]) {
+    if (!globals) {
+        return null
+    }
+
+    const ret: GlobalsOption = {}
+
+    for (const g of globals) {
+        if (!g.includes(":")) {
+            continue
+        }
+
+        const tmp = g.split(":")
+        ret[tmp[0]] = tmp[1]
+    }
+
+    return ret
+}
+
+async function getRollupOptions(
+    {
+        name,
+        entry,
+        external,
+        globals,
+        config,
+        outDir
+    }: Options = {}
 ) {
-    const dist = "dist"
-    const name = customOption.libName || "main"
+    const { output, ...rest } = await loadConfig(config)
+    const dist = outDir ?? output?.outDir ?? "dist"
     const commonOutputConf: OutputOptions = {
+        ...output,
         name,
         format: "umd",
-        globals: customOption.globals === false ? {} :
-            (
-                customOption.globals ||
-                {
-                    "react": "React",
-                    "react-dom": "ReactDOM"
-                }
-            )
+        globals: getGlobals(globals) ?? output?.globals
     }
     const plugins: InputPluginOption = [
         resolve(),
@@ -47,25 +77,24 @@ function getRollupOptions(
     ]
     const outputOption: OutputOptions = {
         ...commonOutputConf,
-        file: path.join(dist, `${name}.js`)
+        file: joinPath(dist, `${name}.js`)
     }
     const outputProdOption: OutputOptions = {
         ...commonOutputConf,
-        file: path.join(dist, `${name}.min.js`),
+        file: joinPath(dist, `${name}.min.js`),
         sourcemap: true
     }
     const inputOptions: RollupOptions = {
-        input: "./src/index.tsx",
+        ...rest,
+        input: entry ?? rest?.entry ?? "./src/index.tsx",
         plugins,
-        external: customOption.external === false ? [] :
-            (customOption.external || ["react", "react-dom"])
+        external: external ?? rest?.external
     }
 
     return {
         inputOptions,
         outputOption,
-        outputProdOption,
-        dist
+        outputProdOption
     }
 }
 
@@ -84,16 +113,40 @@ export default function createRollupCommand(y: typeof yargs) {
             },
             name: {
                 alias: "n",
-                desc: "Same as output.name",
+                desc: "Output.name",
                 type: "string",
+                requiresArg: true
+            },
+            globals: {
+                alias: "g",
+                desc: "Output.globals(eg: react: React)",
+                type: "array",
+                requiresArg: true
+            },
+            external: {
+                alias: "x",
+                desc: "Same as external option of Rollup.",
+                type: "array",
                 requiresArg: true
             }
         },
-        async () => {
-            const options = getRollupOptions()
-            const bundle = await rollup(options.inputOptions)
+        async argv => {
+            const {
+                inputOptions,
+                outputOption,
+                outputProdOption
+            } = await getRollupOptions({
+                entry: argv.entry,
+                outDir: argv.outDir as string,
+                globals: argv.globals as string[],
+                external: argv.external as string[],
+                name: argv.name,
+                config: argv.config as string
+            })
+            const bundle = await rollup(inputOptions)
 
-            await bundle.write(options.outputOption)
+            await bundle.write(outputOption)
+            await bundle.write(outputProdOption)
         }
     )
 }
