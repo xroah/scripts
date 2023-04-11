@@ -11,10 +11,12 @@ import cjs from "@rollup/plugin-commonjs"
 import { babel } from "@rollup/plugin-babel"
 import terser from "@rollup/plugin-terser"
 import yargs from "yargs"
-import { buildParams, commonParams } from "./common-params.js"
+import { DEFAULT_OUT_DIR, buildParams, commonParams } from "./common-params.js"
 import { getAbsPath } from "../utils/path-utils.js"
 import { GlobalsOption } from "rollup"
 import loadConfig from "../utils/load-config.js"
+
+type Target = "es5" | "es2015"
 
 interface Options {
     entry?: string
@@ -23,6 +25,7 @@ interface Options {
     outDir?: string
     globals?: string[]
     config?: string
+    target?: "es5" | "es2015"
 }
 
 function getGlobals(globals?: string[]) {
@@ -51,13 +54,15 @@ async function getRollupOptions(
         external,
         globals,
         config,
-        outDir
+        outDir,
+        target
     }: Options = {}
 ) {
     const { output, ...rest } = await loadConfig(config)
-    const dist = outDir ?? output?.outDir ?? "dist"
+    const dist = outDir ?? output?.outDir ?? DEFAULT_OUT_DIR
     const commonOutputConf: OutputOptions = {
         ...output,
+        generatedCode: target ?? output?.generatedCode ?? "es2015",
         name,
         format: "umd",
         globals: getGlobals(globals) ?? output?.globals
@@ -72,8 +77,7 @@ async function getRollupOptions(
             exclude: /node_modules/,
             extensions: [".ts", ".tsx", ".js", ".jsx"],
             babelHelpers: "bundled"
-        }),
-        terser()
+        })
     ]
     const outputOption: OutputOptions = {
         ...commonOutputConf,
@@ -82,6 +86,7 @@ async function getRollupOptions(
     const outputProdOption: OutputOptions = {
         ...commonOutputConf,
         file: joinPath(dist, `${name}.min.js`),
+        plugins: [terser()],
         sourcemap: true
     }
     const inputOptions: RollupOptions = {
@@ -128,6 +133,12 @@ export default function createRollupCommand(y: typeof yargs) {
                 desc: "Same as external option of Rollup.",
                 type: "array",
                 requiresArg: true
+            },
+            target: {
+                alias: "t",
+                desc: "Output.generateCode",
+                type: "string",
+                choices: ["es5", "es2015"]
             }
         },
         async argv => {
@@ -141,7 +152,8 @@ export default function createRollupCommand(y: typeof yargs) {
                 globals: argv.globals as string[],
                 external: argv.external as string[],
                 name: argv.name,
-                config: argv.config as string
+                config: argv.config as string,
+                target: argv.target as Target
             })
             const bundle = await rollup(inputOptions)
 

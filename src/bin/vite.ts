@@ -9,6 +9,7 @@ import yargs from "yargs"
 import loadConfig from "../utils/load-config.js"
 import {
     Builder,
+    DEFAULT_OUT_DIR,
     buildParams,
     commonParams
 } from "./common-params.js"
@@ -27,6 +28,12 @@ const params: Builder = {
         desc: "Public base path",
         requiresArg: true,
         default: "/"
+    },
+    framework: {
+        alias: "f",
+        type: "string",
+        desc: "Framework(react or none)",
+        default: "react"
     },
     root: {
         desc: "Project root dir",
@@ -192,7 +199,7 @@ export function createBuildCommand(y: typeof yargs) {
                 build: {
                     ...buildConf,
                     target: target ?? buildConf?.target,
-                    outDir: outDir ?? buildConf?.outDir
+                    outDir: outDir ?? buildConf?.outDir ?? DEFAULT_OUT_DIR
                 },
                 ...getSharedViteConf(
                     restConfig,

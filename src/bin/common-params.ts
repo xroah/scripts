@@ -6,10 +6,11 @@ export const buildParams: Builder = {
     outDir: {
         alias: "d",
         desc: "Output directory",
-        default: "dist",
         requiresArg: true
     }
 }
+
+export const DEFAULT_OUT_DIR = "dist"
 
 export const commonParams: Builder = {
     config: {
@@ -17,12 +18,6 @@ export const commonParams: Builder = {
         type: "string",
         desc: "Config file",
         requiresArg: true
-    },
-    framework: {
-        alias: "f",
-        type: "string",
-        desc: "Framework(react or none)",
-        default: "react"
-    },
+    }
 }
 
