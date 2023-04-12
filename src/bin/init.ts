@@ -7,8 +7,8 @@ import {
     statSync,
     copyFileSync
 } from "fs"
-import { join as joinPath } from "path"
-import { SpawnOptions, spawnSync } from "child_process"
+import { join as joinPath } from "node:path"
+import { SpawnOptions, spawnSync } from "node:child_process"
 import chalk from "chalk"
 import ora from "ora"
 import rm from "../utils/rm.js"

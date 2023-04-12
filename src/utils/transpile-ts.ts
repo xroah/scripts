@@ -1,12 +1,12 @@
 import ts from "typescript"
-import { join as joinPath } from "path"
+import { join as joinPath } from "node:path"
 import {
     readFileSync,
     existsSync,
     mkdirSync,
     writeFileSync,
     unlinkSync
-} from "fs"
+} from "node:fs"
 
 export const cacheDir = joinPath(
     process.cwd(),

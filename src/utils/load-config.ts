@@ -1,7 +1,7 @@
-import path from "path"
-import { existsSync } from "fs"
+import path from "node:path"
+import { existsSync } from "node:fs"
 import transpileTs from "./transpile-ts.js"
-import { pathToFileURL } from "url"
+import { pathToFileURL } from "node:url"
 import { getAbsPath } from "./path-utils.js"
 
 export default async function loadConfig(configFile?: string) {

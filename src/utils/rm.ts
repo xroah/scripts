@@ -1,5 +1,5 @@
 
-import { join as joinPath } from "path"
+import { join as joinPath } from "node:path"
 import fg from "fast-glob"
 import {
     existsSync,
@@ -7,7 +7,7 @@ import {
     rmdirSync,
     statSync,
     unlinkSync
-} from "fs"
+} from "node:fs"
 import { getAbsPath } from "./path-utils.js"
 
 type Filter = (f: string) => boolean

@@ -2,18 +2,22 @@ import {
     RollupOptions,
     OutputOptions,
     rollup,
-    InputPluginOption
+    InputPluginOption,
+    GlobalsOption
 } from "rollup"
-import { join as joinPath } from "path"
+import { join as joinPath } from "node:path"
 import typescript from "@rollup/plugin-typescript"
 import resolve from "@rollup/plugin-node-resolve"
 import cjs from "@rollup/plugin-commonjs"
 import { babel } from "@rollup/plugin-babel"
 import terser from "@rollup/plugin-terser"
 import yargs from "yargs"
-import { DEFAULT_OUT_DIR, buildParams, commonParams } from "./common-params.js"
+import {
+    DEFAULT_OUT_DIR,
+    buildParams,
+    commonParams
+} from "./common-params.js"
 import { getAbsPath } from "../utils/path-utils.js"
-import { GlobalsOption } from "rollup"
 import loadConfig from "../utils/load-config.js"
 
 type Target = "es5" | "es2015"

@@ -2,9 +2,9 @@ import {
     isAbsolute,
     join as joinPath,
     parse as parsePath
-} from "path"
-import { existsSync } from "fs"
-import { fileURLToPath } from "url"
+} from "node:path"
+import { existsSync } from "node:fs"
+import { fileURLToPath } from "node:url"
 
 export function getAbsPath(file: string) {
     if (!file) {
