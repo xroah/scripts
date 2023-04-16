@@ -14,6 +14,7 @@ import terser from "@rollup/plugin-terser"
 import yargs from "yargs"
 import ora from "ora"
 import chalk from "chalk"
+import scss from "rollup-plugin-scss"
 import {
     DEFAULT_OUT_DIR,
     buildParams,
@@ -72,7 +73,8 @@ async function getRollupOptions(
         generatedCode: target ?? output?.generatedCode ?? "es2015",
         name: realName,
         format: "umd",
-        globals: getGlobals(globals) ?? output?.globals
+        globals: getGlobals(globals) ?? output?.globals,
+        assetFileNames: "[name][extname]"
     }
     const plugins: InputPluginOption = [
         resolve(),
@@ -84,6 +86,10 @@ async function getRollupOptions(
             exclude: /node_modules/,
             extensions: [".ts", ".tsx", ".js", ".jsx"],
             babelHelpers: "bundled"
+        }),
+        scss({
+            outputStyle: "compressed",
+            fileName: `${realName}.min.css`
         })
     ]
     const outputOption: OutputOptions = {
