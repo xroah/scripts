@@ -83,13 +83,14 @@ async function getRollupOptions(
             babelHelpers: "bundled"
         })
     ]
+    const finalName = name ?? "main"
     const outputOption: OutputOptions = {
         ...commonOutputConf,
-        file: joinPath(dist, `${name}.js`)
+        file: joinPath(dist, `${finalName}.js`)
     }
     const outputProdOption: OutputOptions = {
         ...commonOutputConf,
-        file: joinPath(dist, `${name}.min.js`),
+        file: joinPath(dist, `${finalName}.min.js`),
         plugins: [terser()],
         sourcemap: true
     }
