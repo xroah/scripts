@@ -12,6 +12,8 @@ import cjs from "@rollup/plugin-commonjs"
 import { babel } from "@rollup/plugin-babel"
 import terser from "@rollup/plugin-terser"
 import yargs from "yargs"
+import ora from "ora"
+import chalk from "chalk"
 import {
     DEFAULT_OUT_DIR,
     buildParams,
@@ -64,10 +66,11 @@ async function getRollupOptions(
 ) {
     const { output, ...rest } = await loadConfig(config)
     const dist = outDir ?? output?.outDir ?? DEFAULT_OUT_DIR
+    const realName = name ?? "main"
     const commonOutputConf: OutputOptions = {
         ...output,
         generatedCode: target ?? output?.generatedCode ?? "es2015",
-        name,
+        name: realName,
         format: "umd",
         globals: getGlobals(globals) ?? output?.globals
     }
@@ -83,14 +86,13 @@ async function getRollupOptions(
             babelHelpers: "bundled"
         })
     ]
-    const finalName = name ?? "main"
     const outputOption: OutputOptions = {
         ...commonOutputConf,
-        file: joinPath(dist, `${finalName}.js`)
+        file: joinPath(dist, `${realName}.js`)
     }
     const outputProdOption: OutputOptions = {
         ...commonOutputConf,
-        file: joinPath(dist, `${finalName}.min.js`),
+        file: joinPath(dist, `${realName}.min.js`),
         plugins: [terser()],
         sourcemap: true
     }
@@ -147,6 +149,10 @@ export default function createRollupCommand(y: typeof yargs) {
             }
         },
         async argv => {
+            const spinner = ora(chalk.cyan("Building..."))
+
+            spinner.start()
+
             const {
                 inputOptions,
                 outputOption,
@@ -164,6 +170,9 @@ export default function createRollupCommand(y: typeof yargs) {
 
             await bundle.write(outputOption)
             await bundle.write(outputProdOption)
+            spinner.stop()
+
+            console.log(chalk.green("Built successfully."))
         }
     )
 }
