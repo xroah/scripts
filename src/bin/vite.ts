@@ -26,8 +26,7 @@ const params: Builder = {
         alias: "b",
         type: "string",
         desc: "Public base path",
-        requiresArg: true,
-        default: "/"
+        requiresArg: true
     },
     framework: {
         alias: "f",
@@ -209,7 +208,7 @@ export function createBuildCommand(y: typeof yargs) {
                     }
                 )
             }
-
+            
             await build(inlineConfig)
         }
     )
