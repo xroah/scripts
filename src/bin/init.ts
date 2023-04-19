@@ -83,7 +83,7 @@ function create(name: string) {
         scripts: {
             test: "echo \"Error: no test specified\" && exit 1",
             serve: "r-scripts serve",
-            build: "r-scripts vite-build",
+            build: "r-scripts vite",
             lint: "eslint src/**/*.ts",
             fix: "eslint src/**/*.ts"
         },
