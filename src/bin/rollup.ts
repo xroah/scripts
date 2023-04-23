@@ -65,7 +65,13 @@ async function getRollupOptions(
         target
     }: Options = {}
 ) {
-    const { output, ...rest } = await loadConfig(config)
+    const {
+        output,
+        ts,
+        babel: babelConf,
+        scss: scssConf,
+        ...rest
+    } = await loadConfig(config)
     const dist = outDir ?? output?.outDir ?? DEFAULT_OUT_DIR
     const realName = name ?? "main"
     const commonOutputConf: OutputOptions = {
@@ -80,16 +86,19 @@ async function getRollupOptions(
         resolve(),
         cjs(),
         typescript({
-            tsconfig: getAbsPath("tsconfig.json")
+            tsconfig: getAbsPath("tsconfig.json"),
+            ...ts
         }),
         babel({
             exclude: /node_modules/,
             extensions: [".ts", ".tsx", ".js", ".jsx"],
-            babelHelpers: "bundled"
+            babelHelpers: "bundled",
+            ...babelConf
         }),
         scss({
             outputStyle: "compressed",
-            fileName: `${realName}.min.css`
+            fileName: `${realName}.min.css`,
+            ...scssConf
         })
     ]
     const outputOption: OutputOptions = {
